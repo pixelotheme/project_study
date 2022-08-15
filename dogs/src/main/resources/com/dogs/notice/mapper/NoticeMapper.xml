@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dogs.notice.mapper.NoticeMapper">
+
+<select id="list" resultType="com.dogs.notice.domain.NoticeVO">
+	<![CDATA[
+	select rnum, noticeNo, id, title, writeDate, startDate, endDate, updateDate
+	from(
+	    select 
+	    /*+ index_desc (notice NOTICE_NOTICENO_PK) */
+	    rownum rnum, noticeNo, id,title, writeDate, startDate, endDate, updateDate
+	    from notice
+	    where 
+	    	]]> 
+	    	
+	    <include refid="search"></include>
+	    	
+	    <include refid="period"></include>
+	    	
+	    	<![CDATA[
+	    	rownum <= ${page * perPageNum} 
+		)
+	where rnum > ${(page-1) * perPageNum} 
+	]]>
+</select>
+<select id="getTotalRow" resultType="long">
+	select count(*) from notice
+	where 
+	    <include refid="search"></include>
+	    	
+	    <include refid="period"></include>
+	noticeNo>0
+</select>
+
+	<sql id="search">
+		<trim prefix="(" suffix=")and" prefixOverrides="or"> 
+			<foreach collection="keyArr" item="key">
+				<trim prefix="or">
+					<choose>
+						<when test="key == 'T'.toString()">
+							title like '%' || #{word} ||'%'
+						</when>
+						<when test="key == 'C'.toString()">
+							content like '%' || #{word} ||'%'
+						</when>
+					</choose>
+				</trim>
+				
+			</foreach>
+		
+		</trim>
+	</sql>
+
+<sql id="period">
+	<trim prefix="(" suffix=")and" > 
+		<choose>
+			<when test="period == 'pre'.toString()">
+			<![CDATA[
+			startDate <= sysdate and trunc(sysdate) <= endDate
+			]]>
+			</when>
+			<when test="period == 'old'.toString()">
+			<![CDATA[
+			endDate < trunc(sysdate)
+			]]>
+			</when>
+			<when test="period == 'res'.toString()">
+			<![CDATA[
+			startDate > sysdate
+			]]>
+			</when>
+			<when test="period == 'all'.toString()">
+			1=1
+			</when>
+		</choose>
+	</trim>
+</sql>
+
+</mapper>
