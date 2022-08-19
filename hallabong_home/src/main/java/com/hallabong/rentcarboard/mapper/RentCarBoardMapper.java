@@ -2,30 +2,46 @@ package com.hallabong.rentcarboard.mapper;
 
 import java.util.List;
 
+import com.hallabong.rentcarboard.domain.CarFileUploadVO;
 import com.hallabong.rentcarboard.domain.CarInsuranceVO;
 import com.hallabong.rentcarboard.domain.CarOptionVO;
 import com.hallabong.rentcarboard.domain.CarsVO;
-import com.hallabong.rentcarboard.domain.RentCarBoardVO;
 import com.hallabong.rentcarboard.domain.RentCarCompanyVO;
-import com.hallabong.util.PageObjectCustom;
+import com.hallabong.rentcarboard.domain.RentCarSynthesizeDTO;
+import com.hallabong.rentcarboard.util.PageObjectCustom;
 
 public interface RentCarBoardMapper {
 
 	//회사, 차 검색 -> 문자열로 가져온다 -> 회사는 companyname 으로 선택, 차도 carname
 	
-//	//각 db 내용을 모두 불러온다 
-//	//company 테이블가져오기
-//	public List<RentCarCompanyVO> getCompany(PageObjectCustom pageObject); 
-//	
-//	//특정 차량, 모든차량 정보가져오기, - 이름으로 검색 가능
-//	public List<CarsVO> getAllCars(PageObjectCustom pageObject);
-//	
-//	// 차량 옵션정보 --검색한 경우 검색한 차종의 번호가 들어와야함
-//	public List<CarOptionVO> getOption(long carNo);
-//	
-//	//보험
-//	public List<CarInsuranceVO> getInsurance()
-	
 	//전체 데이터 가져오기
-	public List<RentCarBoardVO> list(PageObjectCustom pageObject);
+	public List<RentCarSynthesizeDTO> list(PageObjectCustom pageObject);
+	//페이징 위해 전체 데이터 가져와야함
+	
+//	public List<RentCarSynthesizeDTO> getCarOptionForList(PageObjectCustom pageObject);
+	
+	//각 vo 별로 꺼내서  service에서 뭉쳐준다
+//	public List<RentCarCompanyVO> companyList(PageObjectCustom pageObject);
+//	public List<CarsVO> carsList(PageObjectCustom pageObject);
+//	public List<CarOptionVO> carOptionList(PageObjectCustom pageObject);
+//	public List<CarInsuranceVO> carInsuranceList(PageObjectCustom pageObject);
+//	public List<CarsFileUploadVO> carsUploadList(PageObjectCustom pageObject);
+	
+	//기준 carno
+	//회사내용
+	public RentCarCompanyVO getCompany(long carNo);
+	//차내용
+	public CarsVO getCars(long carNo);
+	//차옵션
+	public CarOptionVO getCarOption(long carNo);
+	//보험
+	public List<CarInsuranceVO> getCarInsurance(long carNo);
+	//파일업로드
+	public CarFileUploadVO getCarFileUpload(long carNo);
+	
+	
+	//회사 등록
+	public int writeRentCarCompany(RentCarCompanyVO vo);
+	
+	
 }

@@ -3,29 +3,83 @@
 
 <mapper namespace="com.hallabong.rentcarboard.mapper.RentCarBoardMapper">
 <!-- 리스트 불러올 내용 
-companyName, company테이블
+companyName, company테이블 + rcc.insuranceInfo,rcc.rentCarNote,rcc.cancelAndRefund,rcc.id
 carName,carTypes,carFuel,modelYears,rentAge,price, 차테이블
 smoking,navigation,blackbox,rearCamera,rearSensor,frontSensor,sunroof,
-bluetooth,heatingSheet,heatingHandle - 옵션테이블-->
-	<select id="list" resultType="com.hallabong.rentcarboard.domain.RentCarBoardVO">
+bluetooth,heatingSheet,heatingHandle - 옵션테이블
+리스트 전체 가져오기-->
+	<select id="list" resultType="com.hallabong.rentcarboard.domain.RentCarSynthesizeDTO">
 	<![CDATA[
 	select 
-		rcc.companyName,
-		cars.companyno,cars.carNo,cars.carName, cars.carTypes, cars.carFuel,cars.modelYears,cars.rentAge, cars.price,
+		rcc.companyName, rcc.companyNo,
+		cars.insuranceInfo,cars.rentCarNote,cars.cancelAndRefund,rcc.id,
+		cars.carNo,cars.carName, cars.carTypes, cars.carFuel,cars.modelYears,cars.rentAge, cars.price,
 		cop.smoking,cop.navigation,cop.blackbox,cop.rearCamera,cop.rearSensor,cop.frontSensor,cop.sunroof,
-		cop.bluetooth,cop.heatingSheet,cop.heatingHandle,
-		rcb.rentNo
+		cop.bluetooth,cop.heatingSheet,cop.heatingHandle
 	from 
-		rentcarcompany rcc,cars cars,caroption cop , rentcarboard rcb
+		rentcarcompany rcc,cars cars,caroption cop
 	where 
 		rcc.companyno = cars.companyno and cop.carno = cars.carno 
-		and (rcb.carno = cars.carno and rcb.companyno = rcc.companyno) 
-	order by cars.carno desc	
-	
+	order by cars.carno desc
 	]]>
 	
 	
 	</select>
 	
+	<select id="getCompany" resultType="com.hallabong.rentcarboard.domain.RentCarCompanyVO">
+	select 
+		rcc.companyNo, rcc.companyName, rcc.tel, rcc.address, rcc.id
+	from 
+		rentcarcompany rcc, cars cars
+	where 
+		rcc.companyNo = cars.companyNo and cars.carNo = #{carNo}
+	</select>
 	
+	<select id="getCars" resultType="com.hallabong.rentcarboard.domain.CarsVO">
+	select 
+		carNo, companyNo, carName, price, gearbox, modelyears, carTypes, rentAge,
+		rentExperience,carFuel,carCapacity ,license,insuranceInfo ,
+		rentCarNote ,cancelAndRefund,writeDate ,updateDate, id
+	from 
+		cars
+	where 
+		carNo = #{carNo}
+	</select>
+	<select id="getCarOption" resultType="com.hallabong.rentcarboard.domain.CarOptionVO">
+	select 
+		carNo ,smoking,navigation,blackbox,rearCamera,rearSensor,frontSensor,
+		sunroof,bluetooth,heatingSheet,leatherSheet,ventilationSheet,carSeatPay ,carSeatFree,
+		driverAirbag,passengerAirbag ,fourWheel ,smartKey,rearAutomaticDoor,freeCharge,usb,
+		aux,dmb,camping
+	from 
+		caroption
+	where 
+		carNo = #{carNo}
+	</select>
+	<select id="getCarInsurance" resultType="com.hallabong.rentcarboard.domain.CarInsuranceVO">
+	select 
+		carNo, insuranceNo,category ,insurancePrice ,insuranceAge,
+		insuranceExperience ,compensation, customerCharge 
+	from 
+		carinsurance
+	where 
+		carNo = #{carNo}
+	</select>
+	<select id="getCarFileUpload" resultType="com.hallabong.rentcarboard.domain.CarFileUploadVO">
+	select 
+		carNo, orgFileName, fileName, realSavePath
+	from 
+		car_fileupload
+	where 
+		carNo = #{carNo}
+	</select>
+	
+	
+	<!-- 렌트카회사 등록 -->
+	<insert id="writeRentCarCompany">
+	insert into 
+		rentCarCompany (companyNo, companyName, tel, address,id)
+	VALUES
+		(seq_RentCarCompany.nextval, #{companyName},#{tel},#{address},#{id})
+	</insert>
 </mapper>

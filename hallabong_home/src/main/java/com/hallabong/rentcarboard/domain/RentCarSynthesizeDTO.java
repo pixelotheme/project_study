@@ -1,46 +1,51 @@
 package com.hallabong.rentcarboard.domain;
 
+
+import java.util.Date;
+import java.util.List;
+
 import lombok.Data;
 
 @Data
-public class RentCarBoardVO {
+public class RentCarSynthesizeDTO {
 
-	//합쳐서 해보고 안되면 분리 or 특전 부분에서 분리한 vo 쓴다
+//	private List<RentCarCompanyVO> rentCarCompanyVO;
+//	private List<CarsVO> carsVO;
+//	private List<CarOptionVO> carOptionVO;
+//	private List<CarInsuranceVO> carInsuranceVO;
+//	private List<CarsFileUploadVO> carsFileUploadVO;
 	
 	//렌트카 회사
 	private long companyNo;
 	private String companyName;//회사이름
 	private String tel;
 	private String address;
-	
-	//렌트카 게시판
-	private Long rentNo;//글번호
-	private long carNo; //리스트 불러올때, view 불러올때 사용예정
-//	private long companyNo;
-	private String title;
-	private String id;
-	private String insuranceInfo; //보험안내
-	private String rentCarNote; // 참고사항
-	private String cancelAndRefund; // 취소,환불
-	//companyNo 는 위에서 이미 지정 - 각자 vo 따로만들어 줘서 다시 넣어줌
-	
+	private String id; //등록한 아이디
+
 	
 	//cars 테이블 차등록
-//	private Long carNo;
-	//companyNo 중복
+	private Long carNo;
+	//companyNo 중복 - 
 	private String carName;
 	private Long price;
 	private String gearbox;
-	private Long modelYears; //연식
-	private String insuranceType;
-	private String carTypes; //대형,중형...
+	private String insuranceType; //자자포함 미포함 여부
+	private String carTypes; //중형, 대형....
 	private Long rentAge; //차량 대여 가능 나이
 	private Long rentExperience; //차량 대여 가능 운전경력
 	private String carFuel; // 차 연료 종류
 	private Long carCapacity; // 승차정원
 	private String license; //면허종류
+	private String insuranceInfo; //보험안내
+	private String rentCarNote; // 참고사항
+	private String cancelAndRefund; // 취소,환불
+	private Date writeDate;
+	private Date updateDate;
+	private Date modelYears;
+	//id 중복 
 	
-	//차량 옵션 --string으로 변경됨
+	
+	//차량 옵션
 	//carNo 중복
 	private String smoking;
 	private String navigation;
@@ -66,6 +71,8 @@ public class RentCarBoardVO {
 	private String aux;
 	private String dmb;
 	private String camping;
+//	private List<CarOptionVO> carOptionVO;
+	
 	
 	//보험세부 내용
 	//carNo 중복
@@ -76,11 +83,9 @@ public class RentCarBoardVO {
 	private Long insuranceExperience; //보험가입 가능 운전경력
 	private Long compensation; //보상 한도(숫자로만)
 	private String customerCharge; //사고시 고객 부담금
-
-	
 	
 	//fileUpload
-	//rentNo 중복
+//	private Long carNo;//차번호
 	private String orgFileName;//처음 파일 제목
 	private String fileName; //중복으로 인해 변환된 파일 이름
 	private String realSavePath;

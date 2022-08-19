@@ -6,9 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.hallabong.rentcarboard.domain.RentCarBoardVO;
+import com.hallabong.rentcarboard.domain.CarFileUploadVO;
+import com.hallabong.rentcarboard.domain.CarInsuranceVO;
+import com.hallabong.rentcarboard.domain.CarOptionVO;
+import com.hallabong.rentcarboard.domain.CarsVO;
+import com.hallabong.rentcarboard.domain.RentCarCompanyVO;
+import com.hallabong.rentcarboard.domain.RentCarSynthesizeDTO;
 import com.hallabong.rentcarboard.mapper.RentCarBoardMapper;
-import com.hallabong.util.PageObjectCustom;
+import com.hallabong.rentcarboard.util.PageObjectCustom;
 
 import lombok.extern.log4j.Log4j;
 
@@ -21,13 +26,52 @@ public class RentCarBoardServiceImpl implements RentCarBoardService {
 	private RentCarBoardMapper mapper;
 	
 	@Override
-	public List<RentCarBoardVO> list(PageObjectCustom pageObject) {
+	public List<RentCarSynthesizeDTO> list(PageObjectCustom pageObject) {
 		// TODO Auto-generated method stub
 		log.info("렌트카 리스트...." + pageObject);
 		
-		//List<RentCarBoardVO> 에 각테이블에서 가져온 데이터를 한번에 넣어준다
+
+		List<RentCarSynthesizeDTO> dto = mapper.list(pageObject);
 		
-		return mapper.list(pageObject);
+		log.info("list dto :" + dto);
+		
+		return dto;
+	}
+
+	@Override
+	public RentCarCompanyVO getCompany(long carNo) {
+		// TODO Auto-generated method stub
+		return mapper.getCompany(carNo);
+	}
+
+	@Override
+	public CarsVO getCars(long carNo) {
+		// TODO Auto-generated method stub
+		return mapper.getCars(carNo);
+	}
+
+	@Override
+	public CarOptionVO getCarOption(long carNo) {
+		// TODO Auto-generated method stub
+		return mapper.getCarOption(carNo);
+	}
+
+	@Override
+	public List<CarInsuranceVO> getCarInsurance(long carNo) {
+		// TODO Auto-generated method stub
+		return mapper.getCarInsurance(carNo);
+	}
+
+	@Override
+	public CarFileUploadVO getCarFileUpload(long carNo) {
+		// TODO Auto-generated method stub
+		return mapper.getCarFileUpload(carNo);
+	}
+
+	@Override
+	public int writeRentCarCompany(RentCarCompanyVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.writeRentCarCompany(vo);
 	}
 
 }

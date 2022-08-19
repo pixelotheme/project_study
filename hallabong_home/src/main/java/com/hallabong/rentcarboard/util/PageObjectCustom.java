@@ -1,4 +1,4 @@
-package com.hallabong.util;
+package com.hallabong.rentcarboard.util;
 
 import javax.servlet.http.HttpServletRequest;
 

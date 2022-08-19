@@ -4,7 +4,7 @@
 
 
 <%@ attribute name="pageObject" required="true"
- type="com.hallabong.util.PageObjectCustom" %>
+ type="com.hallabong.rentcarboard.util.PageObjectCustom" %>
 <%@ attribute name="listURI" required="true"
  type="java.lang.String" %>
 <%@ attribute name="query" required="false"
