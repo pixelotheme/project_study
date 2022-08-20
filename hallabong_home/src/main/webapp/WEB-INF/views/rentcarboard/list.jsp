@@ -27,8 +27,8 @@
 				<c:forEach items="${list }" var="vo">
 				<!-- move 를 클릭하면 그안에 bno 가져와서 js 로  form태그의 action을 글보기로
 				바꿔 넘겨준다 -->
-					<tr>
-						<td><img alt="차그림" src="${vo.fileName }"> </td>
+					<tr onclick="location='/rentcarboard/view.do?carNo=${vo.carNo}'">
+						<td><img alt="차그림" src="${vo.fileName }" width="100px"> </td>
 						<td data-carNo="${vo.carNo }">
 						<p>${vo.companyName}</p>
 						<p>${vo.carName }</p>
@@ -62,8 +62,10 @@
 		</table>
 				
 
-
-
+	<button type="button" onclick="location='/rentcarboard/rentCarCompanyWrite.do'">회사등록</button>
+	<button type="button" onclick="location='/rentcarboard/rentCarCompanyUpdate.do'">회사정보 수정</button>
+	
+	<button type="button" onclick="location='/rentcarboard/rentCarWrite.do'">차량등록</button>
 	<!-- 페이징 처리 -->
 	<div>
 		<pageNav:rentCarPageNav listURI="list.do" pageObject="${pageObject }"/>

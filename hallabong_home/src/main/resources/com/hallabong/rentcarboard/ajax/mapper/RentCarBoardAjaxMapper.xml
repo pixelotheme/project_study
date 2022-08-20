@@ -21,5 +21,24 @@
 		)
 	</insert>
 	
+		<select id="getCompany" resultType="com.hallabong.rentcarboard.domain.RentCarCompanyVO">
+	select 
+		companyNo, companyName, tel, address, id
+	from 
+		rentcarcompany 
+	where 
+		companyNo = #{companyNo}
+	</select>
 	
+	
+	<update id="updateCarInsurance">
+	update
+		carInsurance
+	set
+			 carNo = #{carNo}, insuranceNo = #{insuranceNo} , category = #{category}, insurancePrice = #{insurancePrice},
+			 insuranceAge = #{insuranceAge}, insuranceExperience = #{insuranceExperience} , 
+			 compensation = #{compensation}, customerCharge = #{customerCharge}
+	where
+		insuranceNo = #{insuranceNo}
+	</update>
 </mapper>

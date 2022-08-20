@@ -33,4 +33,16 @@ public class RentCarBoardAjaxServiceImpl implements RentCarBoardAjaxService {
 		return mapper.writeCarInsurance(vo);
 	}
 
+	@Override
+	public RentCarCompanyVO getCompany(long companyNo) {
+		// TODO Auto-generated method stub
+		return mapper.getCompany(companyNo);
+	}
+
+	@Override
+	public int updateCarInsurance(CarInsuranceVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.updateCarInsurance(vo);
+	}
+
 }

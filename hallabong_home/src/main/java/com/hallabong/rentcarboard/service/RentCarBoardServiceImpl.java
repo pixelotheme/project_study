@@ -114,5 +114,25 @@ public class RentCarBoardServiceImpl implements RentCarBoardService {
 		// TODO Auto-generated method stub
 		return mapper.writeCarFileUpload(list);
 	}
+	@Override
+	public int updateRentCarCompany(RentCarCompanyVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.updateRentCarCompany(vo);
+	}
+	@Override
+	public int updateCar(CarsVO carsVO) {
+		// TODO Auto-generated method stub
+		return mapper.updateCar(carsVO);
+	}
+	@Override
+	public int updateCarOption(CarOptionVO carOptionVO) {
+		// TODO Auto-generated method stub
+		return mapper.updateCarOption(carOptionVO);
+	}
+	@Override
+	public int deleteCarFileUpload(long carNo) {
+		// TODO Auto-generated method stub
+		return mapper.deleteCarFileUpload(carNo);
+	}
 
 }

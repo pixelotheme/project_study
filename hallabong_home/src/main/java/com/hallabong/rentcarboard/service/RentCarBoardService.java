@@ -42,4 +42,16 @@ public interface RentCarBoardService {
 	
 	public int writeCarFileUpload(List<CarFileUploadVO> list);
 	
+	
+	//회사 수정
+	public int updateRentCarCompany(RentCarCompanyVO vo);
+	
+	//차량 수정
+	public int updateCar(CarsVO carsVO);
+	//차량 옵션 수정
+	public int updateCarOption(CarOptionVO carOptionVO);
+	//파일 삭제 (파일업로드는 db 삭제후 다시만든다)
+	public int deleteCarFileUpload(long carNo);
 }
+
+

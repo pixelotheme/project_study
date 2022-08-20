@@ -1,5 +1,6 @@
 package com.hallabong.rentcarboard.controller;
 
+import java.awt.font.TextLayout.CaretPolicy;
 import java.io.IOException;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.hallabong.rentcarboard.domain.CarFileUploadVO;
@@ -141,5 +143,109 @@ public class RentCarBoardController {
 		
 		return "rentcarboard/carInsuranceWrite";
 	}
+	
+	
+	//렌트카 회사 수정
+	@GetMapping("/rentCarCompanyUpdate.do")
+	public String rentCarCompanyUpdateForm(Model model) {
+		//모든 회사 가져오기
+		model.addAttribute("companyVO", service.getAllCompany());
+		
+		//ajax 로 선택한 회사 정보 가져올 예정
+		return "rentcarboard/rentCarCompanyUpdate";
+	}
+
+	@PostMapping("/rentCarCompanyUpdate.do")
+	public String rentCarCompanyUpdate(RentCarCompanyVO vo) {
+		log.info("vo 찍기"+vo);
+		vo.setAddress(vo.getZipcode()+"/"+vo.getStreetAdr()+"/"+vo.getDetailAdr());
+		vo.setId("admin");
+		
+		service.updateRentCarCompany(vo);
+		return "redirect:/rentcarboard/list.do";
+	}
+	
+	
+	//렌트카 수정
+	@GetMapping("/rentCarUpdate.do")
+	public String rentCarUpdateForm(Model model, long carNo) {
+		//모든 회사 가져오기
+		model.addAttribute("companys", service.getAllCompany());
+		model.addAttribute("carsVO", service.getCars(carNo));
+		model.addAttribute("carOptionVO", service.getCarOption(carNo));
+		model.addAttribute("carFileUploadVO",  service.getCarFileUpload(carNo));
+		//ajax 로 선택한 회사 정보 가져올 예정
+		return "rentcarboard/rentCarUpdate";
+	}
+
+	@PostMapping("/rentCarUpdate.do")
+	public String rentCarUpdate(@RequestParam(defaultValue = "0") String del,CarsVO carsVO, CarOptionVO carOptionVO, MultipartFile[] uploadFile, HttpServletRequest request) throws Exception {
+		//차 수정, 차옵션 수정
+		carsVO.setId("admin");
+		
+		log.info(carsVO );
+		log.info(carOptionVO);
+		log.info(uploadFile );
+		log.info( del);
+		int updateResult = service.updateCar(carsVO);
+		log.info(updateResult+"carOptionVO" + carOptionVO);
+		updateResult += service.updateCarOption(carOptionVO);
+		log.info(updateResult);
+		
+		// 파일 업로드 수정
+		RentCarBoardFileUploadController fileUploadController = new RentCarBoardFileUploadController();
+		
+		boolean fileCheck = false;
+		//write + del 서비스 2개가 되어야함 del먼저 만들자
+		//배열이 있으면 기존 db 정보삭제, 실제파일 삭제 + 파일업로드
+		//없으면(기존에 파일이 없다는뜻 ) 파일 업로드만 
+		//하나가 있다면 디폴트는 무조건 안들어감, 없다면 디폴트가 0일것
+		if(del != "0") {
+			fileCheck = true;
+			//기존에 파일이 있다
+		}
+		
+		if(fileCheck) {
+			//db에서 파일 이름을 먼저 가져온다
+			CarFileUploadVO fileList = (service.getCarFileUpload(carsVO.getCarNo()));
+			
+			//실제 파일 삭제
+			
+			fileUploadController.delete(fileList);
+			//db 삭제
+			service.deleteCarFileUpload(carsVO.getCarNo());
+			
+			
+		}
+//		다시 업로드한 파일  등록
+		List<CarFileUploadVO> list = fileUploadController.uploadFormPost(uploadFile, request, carsVO.getCarNo());
+		
+		log.info(list);
+		//업로드후 정보 db에 입력
+		updateResult = service.writeCarFileUpload(list);
+		
+		
+		return "redirect:/rentcarboard/view.do?carNo="+carsVO.getCarNo();
+	}
+	
+	// 차 보험 상세 수정
+	@GetMapping("/carInsuranceUpdate.do")
+	public String carInsuranceUpdateForm(Model model, long carNo) {
+		
+		model.addAttribute("carInsuranceVO", service.getCarInsurance(carNo));
+		
+		return "rentcarboard/carInsuranceUpdate";
+	}
+	
+
+	
+	
+	@GetMapping("/deleteCar")
+	public String deleteCar(long carNo) {
+		
+		
+		return "redirect:/rentcarboard/list.do";
+	}
+	
 	
 }

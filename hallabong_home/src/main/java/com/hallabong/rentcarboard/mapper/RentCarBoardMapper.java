@@ -49,4 +49,24 @@ public interface RentCarBoardMapper {
 //	public int writeCarInsurance(CarInsuranceVO carInsuranceVO);
 	
 	public int writeCarFileUpload(List<CarFileUploadVO> list);
+	
+	
+	
+	//회사 수정
+	public int updateRentCarCompany(RentCarCompanyVO vo);
+	
+	//차량 수정
+	public int updateCar(CarsVO carsVO);
+	//차량 옵션 수정
+	public int updateCarOption(CarOptionVO carOptionVO);
+
+	//차량 보험 수정 ajax
+	
+	
+	
+	//파일 삭제 (파일업로드는 db 삭제후 다시만든다)
+	public int deleteCarFileUpload(long carNo);
+	//차량 삭제
+	//차량 옵션 삭제
+	//차량 보험 삭제
 }

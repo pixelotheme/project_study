@@ -14,7 +14,8 @@ bluetooth,heatingSheet,heatingHandle - 옵션테이블
 	            insuranceInfo,rentCarNote,cancelAndRefund,id,
 	            carNo,carName, carTypes, carFuel,modelYears,rentAge, price,
 	            smoking,navigation,blackbox,rearCamera,rearSensor,frontSensor,sunroof,
-	            bluetooth,heatingSheet,heatinghandle
+	            bluetooth,heatingSheet,heatinghandle,
+	            filename,orgFileName, filesize, realsavepath
 	        from (
 	            select 
 	            /*+ index(cars pk_cars) */
@@ -23,11 +24,13 @@ bluetooth,heatingSheet,heatingHandle - 옵션테이블
 	                cars.insuranceInfo,cars.rentCarNote,cars.cancelAndRefund,rcc.id,
 	                cars.carNo,cars.carName, cars.carTypes, cars.carFuel,cars.modelYears,cars.rentAge, cars.price,
 	                cop.smoking,cop.navigation,cop.blackbox,cop.rearCamera,cop.rearSensor,cop.frontSensor,cop.sunroof,
-	                cop.bluetooth,cop.heatingSheet,cop.heatinghandle
+	                cop.bluetooth,cop.heatingSheet,cop.heatinghandle,
+	                cfup.filename,cfup.orgFileName, cfup.filesize, cfup.realsavepath
 	            from 
-	                rentcarcompany rcc,cars cars,caroption cop
+	                rentcarcompany rcc,cars cars,caroption cop, car_fileupload cfup
 	            where 
-	                rcc.companyno = cars.companyno and cop.carno = cars.carno and cars.carno >0 
+	                rcc.companyno = cars.companyno and cop.carno = cars.carno and cars.carno = cfup.carno
+	                and cars.carno >0 
 	            order by rownum desc
 	     )where rnum between #{startRow} and #{endRow}
 	]]>
@@ -68,7 +71,7 @@ bluetooth,heatingSheet,heatingHandle - 옵션테이블
 	
 	<select id="getCars" resultType="com.hallabong.rentcarboard.domain.CarsVO">
 	select 
-		carNo, companyNo, carName, price, gearbox, modelyears, carTypes, rentAge,
+		carNo, companyNo, carName, price, gearbox, to_char(modelyears, 'yyyy-MM') modelyears, carTypes, rentAge,
 		rentExperience,carFuel,carCapacity ,license,insuranceInfo ,
 		rentCarNote ,cancelAndRefund,writeDate ,updateDate, id
 	from 
@@ -171,4 +174,45 @@ bluetooth,heatingSheet,heatingHandle - 옵션테이블
 		(#{item.carNo}, #{item.orgFileName}, #{item.fileName}, #{item.fileSize}, #{item.realSavePath})
 		</foreach>
 	</insert>
+	
+	
+	<!-- 차회사 수정 -->
+	<update id="updateRentCarCompany">
+		update 
+			rentcarcompany
+		set
+			 companyName = #{companyName},tel = #{tel}, address = #{address}, id = #{id}
+		where companyNo = #{companyNo}
+	</update>
+	
+	<!-- 차량 수정 -->
+	<update id="updateCar">
+		update 
+			cars
+		set
+			 carNo = #{carNo}, companyNo = #{companyNo} , carName = #{carName}, price = #{price},
+			 modelYears = TO_DATE(#{modelYears},'YYYY-MM'), carTypes = #{carTypes} , rentAge = #{rentAge}, rentExperience = #{rentExperience},
+			 carFuel = #{carFuel}, carCapacity = #{carCapacity} , license = #{license}, insuranceInfo = #{insuranceInfo},
+			 rentCarNote = #{rentCarNote}, cancelAndRefund = #{cancelAndRefund} , id = #{id}
+			 
+		where carNo = #{carNo}
+		
+	</update>
+	<!-- 차량 옵션 수정 -->
+	<update id="updateCarOption">
+		update 
+			caroption
+		set
+			 carNo = #{carNo,jdbcType=VARCHAR}, smoking = #{smoking,jdbcType=VARCHAR} , navigation = #{navigation,jdbcType=VARCHAR}, blackbox = #{blackbox,jdbcType=VARCHAR},
+			 rearCamera = #{rearCamera,jdbcType=VARCHAR}, rearSensor = #{rearSensor,jdbcType=VARCHAR} , sunroof = #{sunroof,jdbcType=VARCHAR}, bluetooth = #{bluetooth,jdbcType=VARCHAR},
+			 heatingSheet = #{heatingSheet,jdbcType=VARCHAR}, heatingHandle = #{heatingHandle,jdbcType=VARCHAR} , leatherSheet = #{leatherSheet,jdbcType=VARCHAR}, driverAirbag = #{driverAirbag,jdbcType=VARCHAR},
+			 smartKey = #{smartKey,jdbcType=VARCHAR}, usb = #{usb,jdbcType=VARCHAR} , aux = #{aux,jdbcType=VARCHAR}, dmb = #{dmb,jdbcType=VARCHAR}
+			 
+		where carNo = #{carNo}
+		
+	</update>
+	<!-- 파일업로드 db 삭제 -->
+	<delete id="deleteCarFileUpload">
+	delete car_FileUpload where carNo = #{carNo}
+	</delete>
 </mapper>

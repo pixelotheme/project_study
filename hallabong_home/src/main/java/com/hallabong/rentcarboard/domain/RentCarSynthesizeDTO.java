@@ -4,6 +4,8 @@ package com.hallabong.rentcarboard.domain;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
@@ -41,7 +43,7 @@ public class RentCarSynthesizeDTO {
 	private String cancelAndRefund; // 취소,환불
 	private Date writeDate;
 	private Date updateDate;
-	private Date modelYears;
+	private String modelYears;
 	//id 중복 
 	
 	

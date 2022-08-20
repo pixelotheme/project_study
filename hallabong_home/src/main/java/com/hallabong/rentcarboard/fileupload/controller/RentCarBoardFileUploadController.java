@@ -110,17 +110,29 @@ public class RentCarBoardFileUploadController {
 
 	}
 
-	public void delete(List<CarFileUploadVO> fileNameList) throws Exception {
+	public void delete(CarFileUploadVO fileNameList) throws Exception {
 
 		// 파일정보 foreach 로 돌려 삭제 - realpath.delete 쓰면 될듯?
-		for (CarFileUploadVO fileVO : fileNameList) {
-			if (fileVO.getRealSavePath() != null && !fileVO.equals("")) {
-				new File(fileVO.getRealSavePath()).delete();
+		
+			if (fileNameList.getRealSavePath() != null && !fileNameList.equals("")) {
+				new File(fileNameList.getRealSavePath()).delete();
 //					delFile = new File(request.getServletContext().getRealPath(del));
-			}
-
 		}
 		return;
 
 	}
+	//다중파일 이면 쓴다
+//	public void delete(List<CarFileUploadVO> fileNameList) throws Exception {
+//		
+//		// 파일정보 foreach 로 돌려 삭제 - realpath.delete 쓰면 될듯?
+//		for (CarFileUploadVO fileVO : fileNameList) {
+//			if (fileVO.getRealSavePath() != null && !fileVO.equals("")) {
+//				new File(fileVO.getRealSavePath()).delete();
+////					delFile = new File(request.getServletContext().getRealPath(del));
+//			}
+//			
+//		}
+//		return;
+//		
+//	}
 }

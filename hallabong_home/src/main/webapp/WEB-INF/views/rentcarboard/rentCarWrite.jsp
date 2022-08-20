@@ -61,7 +61,7 @@ $(function(){
 			<div>
 				<!-- yyyy-MM -->
 				<label for="modelYears">연식</label> <input name="modelYears"
-					id="modelYears"/>
+					id="modelYears" />
 			</div>
 			<div>
 			보험

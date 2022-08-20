@@ -17,4 +17,9 @@ public interface RentCarBoardAjaxMapper {
 	//보험내용 등록
 	public int writeCarInsurance(CarInsuranceVO vo);
 	
+	//회사 정보 가져오기
+	public RentCarCompanyVO getCompany(long companyNo);
+	
+	//차량 보험 수정 ajax
+	public int updateCarInsurance(CarInsuranceVO vo);
 }

@@ -35,10 +35,17 @@
 		${carOptionVO }
 		${carInsuranceVO }
 		${carFileUploadVO }
-		<span>날짜<fmt:formatDate value="${carsVO.modelYears }" pattern="yyyy-MM"/></span>
+		<span>날짜 ${carsVO.modelYears }
+		<img alt="이미지" src="${carFileUploadVO.fileName }">
+		</span>
 		<ul class="list-group">
 		</ul>
 	<input class="datepicker">
+
+<button type="button" onclick="location='/rentcarboard/rentCarUpdate.do?carNo=${carsVO.carNo}'">차량 수정</button>
+<button type="button" onclick="location='/rentcarboard/carInsuranceUpdate.do?carNo=${carsVO.carNo}'">보험 상세 수정</button>
+
+<button type="button" onclick="location='/rentcarboard/rentCarUpdate.do?carNo=${carsVO.carNo}'">차량 삭제</button>
 
 </div>
 

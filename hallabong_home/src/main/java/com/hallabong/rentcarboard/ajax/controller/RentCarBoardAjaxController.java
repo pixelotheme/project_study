@@ -1,12 +1,15 @@
 package com.hallabong.rentcarboard.ajax.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +30,9 @@ public class RentCarBoardAjaxController {
 	@Autowired
 	@Qualifier("rcbasi")
 	private RentCarBoardAjaxService service;
+	@Autowired
+	@Qualifier("rcbsi")
+	private RentCarBoardService rentCarBoardService;
 	
 	//write, consumes 받는 형식, porduces 넘기는 형식
 	//json 타입 받으려면 RequestBody 써줘야함
@@ -49,6 +55,45 @@ public class RentCarBoardAjaxController {
 		return	result == 1 ?
 				new ResponseEntity<String>("write success",HttpStatus.OK)
 				: new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	
+	@GetMapping(value = "/companyView.do",
+			produces = {
+					MediaType.APPLICATION_XML_VALUE,
+					MediaType.APPLICATION_JSON_UTF8_VALUE
+			})
+	public ResponseEntity<Map<String, Object>> companyView(long companyNo){
+		log.info(companyNo);
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("companyView",service.getCompany(companyNo));
+		
+		//map 자체를 넘겨준다
+		return new ResponseEntity<>(map, HttpStatus.OK);
+		
+	}
+	
+	//write, consumes 받는 형식, porduces 넘기는 형식
+	//json 타입 받으려면 RequestBody 써줘야함
+	@PostMapping(value = "/updateCarInsurance.do", consumes = "application/json",produces = {MediaType.TEXT_PLAIN_VALUE})
+	public ResponseEntity<String> updateCarInsurance(@RequestBody List<CarInsuranceVO> carInsuranceVO){
+		log.info("ajax : =" +carInsuranceVO);
+
+		int result = 0;
+		for(CarInsuranceVO vo : carInsuranceVO) {
+
+			if(vo.getInsuranceExperience() != null) {
+				//2번값이 있을떄만 실행한다
+				log.info("ajax if문 : =" +vo);
+				
+				result = service.updateCarInsurance(vo);
+			}
+			
+		}
+		System.out.println(result);
+		//write 가 안되면 오류~ 예외처리 따로해준다
+		return	new ResponseEntity<String>("update success",HttpStatus.OK);
 	}
 	
 }
