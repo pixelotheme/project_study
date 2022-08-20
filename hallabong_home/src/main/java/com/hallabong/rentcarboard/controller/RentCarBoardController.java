@@ -1,6 +1,9 @@
 package com.hallabong.rentcarboard.controller;
 
+import java.io.IOException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,9 +12,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.hallabong.rentcarboard.domain.CarFileUploadVO;
+import com.hallabong.rentcarboard.domain.CarInsuranceVO;
+import com.hallabong.rentcarboard.domain.CarOptionVO;
+import com.hallabong.rentcarboard.domain.CarsVO;
 import com.hallabong.rentcarboard.domain.RentCarCompanyVO;
 import com.hallabong.rentcarboard.domain.RentCarSynthesizeDTO;
+import com.hallabong.rentcarboard.fileupload.controller.RentCarBoardFileUploadController;
 import com.hallabong.rentcarboard.service.RentCarBoardService;
 import com.hallabong.rentcarboard.util.PageObjectCustom;
 
@@ -61,6 +70,8 @@ public class RentCarBoardController {
 	@GetMapping("/rentCarCompanyWrite.do")
 	public String rentCarCompanyWriteForm() {
 		
+
+		
 		return "rentcarboard/rentCarCompanyWrite";
 	}
 
@@ -73,4 +84,62 @@ public class RentCarBoardController {
 		service.writeRentCarCompany(vo);
 		return "redirect:/rentcarboard/list.do";
 	}
+	
+	@GetMapping("/rentCarWrite.do")
+	public String rentCarwriteForm(Model model) {
+		
+		//모든 회사 가져오기
+		model.addAttribute("companys", service.getAllCompany());
+		
+		return "rentcarboard/rentCarWrite";
+	}
+	//등록 
+	@PostMapping("/rentCarWrite.do")
+//	public String rentCarwrite(CarsVO carsVO, CarOptionVO carOptionVO, CarInsuranceVO carInsuranceVOList, MultipartFile[] uploadFile, HttpServletRequest request) throws Exception {
+		public String rentCarwrite(CarsVO carsVO, CarOptionVO carOptionVO, MultipartFile[] uploadFile, HttpServletRequest request) throws Exception {
+		log.info("rentCarWrite"+carsVO);
+		//차량 등록후 등록된 번호 가져오기
+		carsVO.setId("admin");
+		int result = service.writeCarGetCarNo(carsVO);
+		log.info("result" + result);
+		
+		long carNo = carsVO.getCarNo();
+		
+		//차옵션
+		log.info(carOptionVO);
+		service.writeCarOption(carOptionVO, carNo);
+		
+		
+		
+//		log.info(carInsuranceVOList);
+//		for (CarInsuranceVO carInsuranceVO : carInsuranceVOList.getCarInsuranceVOList()) {
+//			
+//		log.info(carInsuranceVO);
+//		//차보험내용 - cars 에서 자차 미포함시 값이 넘어와도 공백으로해야함, list형식으로 2개 들어올떄도 있다 배열처리하자
+//		service.writeCarInsurance(carInsuranceVO, carNo);
+//		}
+		
+		//파일업로드
+		log.info(uploadFile);
+		RentCarBoardFileUploadController fileUploadController = new RentCarBoardFileUploadController();
+		List<CarFileUploadVO> list = fileUploadController.uploadFormPost(uploadFile, request, carNo);
+		
+		log.info(list);
+		//업로드후 정보 db에 입력
+		service.writeCarFileUpload(list);
+		
+		
+		
+		
+		return "redirect:/rentcarboard/carInsuranceWrite.do?carNo="+carNo;
+	}
+	
+	@GetMapping("/carInsuranceWrite.do")
+	public String carInsurancewriteForm() {
+		
+		
+		
+		return "rentcarboard/carInsuranceWrite";
+	}
+	
 }

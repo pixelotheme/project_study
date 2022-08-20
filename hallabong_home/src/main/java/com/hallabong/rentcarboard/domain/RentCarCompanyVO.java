@@ -20,13 +20,7 @@ public class RentCarCompanyVO {
 	private String streetAdr; //도로명
 	private String detailAdr;// 상세주소
 	
-	public RentCarCompanyVO(String zipcode,String streetAdr, String detailAdr) {
-		this.zipcode = zipcode;
-		this.streetAdr = streetAdr;
-		this.detailAdr = detailAdr;
 		
-		
-	}
 	
 	
 }

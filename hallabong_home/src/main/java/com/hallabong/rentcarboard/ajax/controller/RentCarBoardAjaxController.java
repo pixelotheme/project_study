@@ -1,0 +1,54 @@
+package com.hallabong.rentcarboard.ajax.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.hallabong.rentcarboard.ajax.service.RentCarBoardAjaxService;
+import com.hallabong.rentcarboard.domain.CarInsuranceVO;
+import com.hallabong.rentcarboard.service.RentCarBoardService;
+
+import lombok.extern.log4j.Log4j;
+
+@RestController//ajax 사용할거라 controller 로 쓰면 안되고 restController 로한다 - 출력해서 돌려줄때(return) responsebody 로 순수한 데이터로 넘겨줄수있다
+@RequestMapping("/rentcarboardajaxcontroller")
+@Log4j
+public class RentCarBoardAjaxController {
+
+	
+	@Autowired
+	@Qualifier("rcbasi")
+	private RentCarBoardAjaxService service;
+	
+	//write, consumes 받는 형식, porduces 넘기는 형식
+	//json 타입 받으려면 RequestBody 써줘야함
+	@PostMapping(value = "/writeCarInsurance.do", consumes = "application/json",produces = {MediaType.TEXT_PLAIN_VALUE})
+	public ResponseEntity<String> writeCarInsurance(@RequestBody List<CarInsuranceVO> carInsuranceVO){
+		log.info("ajax : =" +carInsuranceVO);
+
+		int result = 0;
+		for(CarInsuranceVO vo : carInsuranceVO) {
+
+			if(vo.getInsuranceExperience() != null) {
+				//2번값이 있을떄만 실행한다
+				log.info("ajax if문 : =" +vo);
+				result = service.writeCarInsurance(vo);
+			}
+			
+		}
+		log.info("result" + result);
+		//write 가 안되면 오류~ 예외처리 따로해준다
+		return	result == 1 ?
+				new ResponseEntity<String>("write success",HttpStatus.OK)
+				: new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+}

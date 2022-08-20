@@ -1,5 +1,7 @@
 package com.hallabong.rentcarboard.domain;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -15,4 +17,5 @@ public class CarInsuranceVO {
 	private Long insuranceExperience; //보험가입 가능 운전경력
 	private Long compensation; //보상 한도(숫자로만)
 	private String customerCharge; //사고시 고객 부담금
+	
 }

@@ -2,6 +2,8 @@ package com.hallabong.rentcarboard.domain;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
@@ -26,6 +28,6 @@ public class CarsVO {
 	private String cancelAndRefund; // 취소,환불
 	private Date writeDate;
 	private Date updateDate;
-	private Date modelYears; //date 로 변경
+	private String modelYears; //date 로 변경 -> 다시 string으로 설정
 	private String id;//id 중복 
 }

@@ -10,21 +10,52 @@ bluetooth,heatingSheet,heatingHandle - 옵션테이블
 리스트 전체 가져오기-->
 	<select id="list" resultType="com.hallabong.rentcarboard.domain.RentCarSynthesizeDTO">
 	<![CDATA[
-	select 
-		rcc.companyName, rcc.companyNo,
-		cars.insuranceInfo,cars.rentCarNote,cars.cancelAndRefund,rcc.id,
-		cars.carNo,cars.carName, cars.carTypes, cars.carFuel,cars.modelYears,cars.rentAge, cars.price,
-		cop.smoking,cop.navigation,cop.blackbox,cop.rearCamera,cop.rearSensor,cop.frontSensor,cop.sunroof,
-		cop.bluetooth,cop.heatingSheet,cop.heatingHandle
-	from 
-		rentcarcompany rcc,cars cars,caroption cop
-	where 
-		rcc.companyno = cars.companyno and cop.carno = cars.carno 
-	order by cars.carno desc
+	    select  rnum ,companyName, companyNo,
+	            insuranceInfo,rentCarNote,cancelAndRefund,id,
+	            carNo,carName, carTypes, carFuel,modelYears,rentAge, price,
+	            smoking,navigation,blackbox,rearCamera,rearSensor,frontSensor,sunroof,
+	            bluetooth,heatingSheet,heatinghandle
+	        from (
+	            select 
+	            /*+ index(cars pk_cars) */
+	            rownum rnum,
+	                rcc.companyName, rcc.companyNo,
+	                cars.insuranceInfo,cars.rentCarNote,cars.cancelAndRefund,rcc.id,
+	                cars.carNo,cars.carName, cars.carTypes, cars.carFuel,cars.modelYears,cars.rentAge, cars.price,
+	                cop.smoking,cop.navigation,cop.blackbox,cop.rearCamera,cop.rearSensor,cop.frontSensor,cop.sunroof,
+	                cop.bluetooth,cop.heatingSheet,cop.heatinghandle
+	            from 
+	                rentcarcompany rcc,cars cars,caroption cop
+	            where 
+	                rcc.companyno = cars.companyno and cop.carno = cars.carno and cars.carno >0 
+	            order by rownum desc
+	     )where rnum between #{startRow} and #{endRow}
 	]]>
 	
 	
 	</select>
+	
+	<select id="getTotalRow" resultType="long">
+			select count(carNo) 
+			from cars
+	</select>
+<!-- 	<select id="list" resultType="com.hallabong.rentcarboard.domain.RentCarSynthesizeDTO"> -->
+<!-- 	<![CDATA[ -->
+<!-- 	select  -->
+<!-- 		rcc.companyName, rcc.companyNo, -->
+<!-- 		cars.insuranceInfo,cars.rentCarNote,cars.cancelAndRefund,rcc.id, -->
+<!-- 		cars.carNo,cars.carName, cars.carTypes, cars.carFuel,cars.modelYears,cars.rentAge, cars.price, -->
+<!-- 		cop.smoking,cop.navigation,cop.blackbox,cop.rearCamera,cop.rearSensor,cop.frontSensor,cop.sunroof, -->
+<!-- 		cop.bluetooth,cop.heatingSheet,cop.heatingHandle -->
+<!-- 	from  -->
+<!-- 		rentcarcompany rcc,cars cars,caroption cop -->
+<!-- 	where  -->
+<!-- 		rcc.companyno = cars.companyno and cop.carno = cars.carno  -->
+<!-- 	order by cars.carno desc -->
+<!-- 	]]> -->
+	
+	
+<!-- 	</select> -->
 	
 	<select id="getCompany" resultType="com.hallabong.rentcarboard.domain.RentCarCompanyVO">
 	select 
@@ -81,5 +112,63 @@ bluetooth,heatingSheet,heatingHandle - 옵션테이블
 		rentCarCompany (companyNo, companyName, tel, address,id)
 	VALUES
 		(seq_RentCarCompany.nextval, #{companyName},#{tel},#{address},#{id})
+	</insert>
+	
+	
+	<!-- 자동차 등록을 위한 모든 회사 정보가져오기 -->
+	<select id="getAllCompany" resultType="com.hallabong.rentcarboard.domain.RentCarCompanyVO">
+		select companyNo,companyName
+		from rentcarcompany
+	</select>
+	
+	
+	<!-- 차량 등록후 번호리턴 -->
+	<insert id="writeCarGetCarNo" >
+	insert into 
+		cars(carNo, companyNo, carName, price, modelYears, 
+		carTypes, rentAge, rentExperience, carFuel, carCapacity,license,insuranceInfo,rentCarNote,cancelAndRefund,id)
+	VALUES
+		(seq_Cars.nextval,#{companyNo}, #{carName},#{price},TO_DATE(#{modelYears},'YYYY-MM'),
+		#{carTypes}, #{rentAge}, #{rentExperience}, #{carFuel},#{carCapacity},#{license},
+		#{insuranceInfo},#{rentCarNote},#{cancelAndRefund},#{id})
+		
+		<selectKey keyProperty="carNo" resultType="long" order="AFTER" >
+		select seq_Cars.currval from dual
+		</selectKey> 
+		
+	</insert>
+	
+	
+	
+	<!-- 차옵션 등록 -->
+	<insert id="writeCarOption">
+	insert into 
+		caroption(carNo, smoking, navigation, blackbox,rearCamera,rearSensor,
+		sunroof,bluetooth,heatingSheet, heatingHandle, leatherSheet, driverAirbag,smartKey,
+		usb,aux,dmb)
+	values(
+	#{carNo}, #{smoking,jdbcType=VARCHAR}, #{navigation,jdbcType=VARCHAR}, #{blackbox,jdbcType=VARCHAR},#{rearCamera,jdbcType=VARCHAR},#{rearSensor,jdbcType=VARCHAR},
+		#{sunroof,jdbcType=VARCHAR},#{bluetooth,jdbcType=VARCHAR},#{heatingSheet,jdbcType=VARCHAR}, #{heatingHandle,jdbcType=VARCHAR}, #{leatherSheet,jdbcType=VARCHAR}, #{driverAirbag,jdbcType=VARCHAR},#{smartKey,jdbcType=VARCHAR},
+		#{usb,jdbcType=VARCHAR},#{aux,jdbcType=VARCHAR},#{dmb,jdbcType=VARCHAR}
+	)
+	</insert>
+	
+<!-- 	<insert id="writeCarInsurance"> -->
+<!-- 	insert into  -->
+<!-- 		carInsurance(carNo, insuranceNo, category, insurancePrice, -->
+<!-- 		insuranceAge, insuranceExperience,compensation,customerCharge) -->
+<!-- 	VALUES -->
+<!-- 		(#{carNo},SEQ_CarINSURANCE.nextval, #{category}, #{insurancePrice}, -->
+<!-- 		#{insuranceAge}, #{insuranceExperience},#{compensation},#{customerCharge}) -->
+<!-- 	</insert> -->
+	
+	<insert id="writeCarFileUpload"  parameterType="java.util.List">
+	
+		<foreach collection="list" item="item" index="index" open="INSERT ALL " separator=" " close="SELECT * FROM DUAL">
+		into 
+			car_FileUpload (carNo, orgFileName, fileName, fileSize, realSavePath)
+		values
+		(#{item.carNo}, #{item.orgFileName}, #{item.fileName}, #{item.fileSize}, #{item.realSavePath})
+		</foreach>
 	</insert>
 </mapper>

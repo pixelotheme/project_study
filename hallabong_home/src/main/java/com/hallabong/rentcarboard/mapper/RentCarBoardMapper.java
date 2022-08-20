@@ -2,6 +2,8 @@ package com.hallabong.rentcarboard.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.hallabong.rentcarboard.domain.CarFileUploadVO;
 import com.hallabong.rentcarboard.domain.CarInsuranceVO;
 import com.hallabong.rentcarboard.domain.CarOptionVO;
@@ -17,15 +19,7 @@ public interface RentCarBoardMapper {
 	//전체 데이터 가져오기
 	public List<RentCarSynthesizeDTO> list(PageObjectCustom pageObject);
 	//페이징 위해 전체 데이터 가져와야함
-	
-//	public List<RentCarSynthesizeDTO> getCarOptionForList(PageObjectCustom pageObject);
-	
-	//각 vo 별로 꺼내서  service에서 뭉쳐준다
-//	public List<RentCarCompanyVO> companyList(PageObjectCustom pageObject);
-//	public List<CarsVO> carsList(PageObjectCustom pageObject);
-//	public List<CarOptionVO> carOptionList(PageObjectCustom pageObject);
-//	public List<CarInsuranceVO> carInsuranceList(PageObjectCustom pageObject);
-//	public List<CarsFileUploadVO> carsUploadList(PageObjectCustom pageObject);
+	public long getTotalRow(PageObjectCustom pageObject);
 	
 	//기준 carno
 	//회사내용
@@ -40,8 +34,19 @@ public interface RentCarBoardMapper {
 	public CarFileUploadVO getCarFileUpload(long carNo);
 	
 	
+	
+	//차량 등록시 회사 선택
+	public List<RentCarCompanyVO> getAllCompany();
 	//회사 등록
 	public int writeRentCarCompany(RentCarCompanyVO vo);
 	
 	
+	//차량(등록후 바로 가장큰 번호 가져오기) ,차옵션, 보험, 사진 등록
+	public int writeCarGetCarNo(CarsVO carsVO);
+	
+	public int writeCarOption(CarOptionVO carOptionVO);
+	//ajax로 처리
+//	public int writeCarInsurance(CarInsuranceVO carInsuranceVO);
+	
+	public int writeCarFileUpload(List<CarFileUploadVO> list);
 }
