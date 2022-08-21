@@ -21,8 +21,35 @@
 <body>
 <div class="container">
 
+					<!-- 검색 시작 -->
+		<form class="form-inline">
+			<!-- 검색 key -->
+			<div class="input-group">
+				<select class="form-control" name="key" id="key">
+						<option value="">회사 선택</option>
+					<c:forEach items="${companys }" var="company">
+						<option value="${company.companyName }">${company.companyName }</option>
+					</c:forEach>
+				</select>
+			</div>
+			<!-- 검색 word -->
+			<div class="input-group">
+				<input type="text" class="form-control" placeholder="Search" name="word" value="${pageObject.word }">
+				<div class="input-group-btn">
+					<button class="btn btn-default" type="submit">
+						<i class="glyphicon glyphicon-search"></i>
+					</button>
+				</div>
+			</div>
+		</form>
+		<!-- 검색 종료 -->
+			
 		<table width="100%"
 			class="table table-striped table-bordered table-hover">
+			
+			
+			
+			
 			<tbody>
 				<c:forEach items="${list }" var="vo">
 				<!-- move 를 클릭하면 그안에 bno 가져와서 js 로  form태그의 action을 글보기로

@@ -29,6 +29,9 @@ bluetooth,heatingSheet,heatingHandle - 옵션테이블
 	            from 
 	                rentcarcompany rcc,cars cars,caroption cop, car_fileupload cfup
 	            where 
+	            	]]>
+	            	<include refid="search"/>
+	            		<![CDATA[
 	                rcc.companyno = cars.companyno and cop.carno = cars.carno and cars.carno = cfup.carno
 	                and cars.carno >0 
 	            order by rownum desc
@@ -40,8 +43,30 @@ bluetooth,heatingSheet,heatingHandle - 옵션테이블
 	
 	<select id="getTotalRow" resultType="long">
 			select count(carNo) 
-			from cars
+			from cars cars, rentcarcompany rcc
+			where 
+ 			<include refid="search"/> 
+				cars.companyno = rcc.companyno and carNo >0
+			
 	</select>
+	
+	<sql id="search">
+		<trim prefix="(" suffix=") and" prefixOverrides="and">
+		
+				<!-- choose 회사이름은 있을때 작동 되게 해야함 "" like 둘다 쓸수없음 %% 유사한 것을 못써서 -->
+			<if test="key != null and key != ''">
+				rcc.companyName = #{key,jdbcType=VARCHAR}
+			</if >
+			
+			<trim prefix="and" >
+
+				cars.carname like '%' || #{word,jdbcType=VARCHAR} ||'%'
+			</trim>
+		
+		
+		</trim>
+	</sql>
+	
 <!-- 	<select id="list" resultType="com.hallabong.rentcarboard.domain.RentCarSynthesizeDTO"> -->
 <!-- 	<![CDATA[ -->
 <!-- 	select  -->
@@ -214,5 +239,21 @@ bluetooth,heatingSheet,heatingHandle - 옵션테이블
 	<!-- 파일업로드 db 삭제 -->
 	<delete id="deleteCarFileUpload">
 	delete car_FileUpload where carNo = #{carNo}
+	</delete>
+	
+	<!-- 회사 삭제 -->
+	<delete id="deleteCompany">
+	delete rentCarCompany where companyNo = #{companyNo}
+	</delete>
+	<!-- 회사 삭제시 모든 파일 삭제됨에 따라 파일도 삭제하기위 정보 가져오기 -->
+	<select id="getDeleteFileUpload" resultType="com.hallabong.rentcarboard.domain.CarFileUploadVO">
+	select cfup.carno, cfup.orgfilename, cfup.filename, cfup.filesize, cfup.realsavepath
+	from car_fileupload cfup, rentcarcompany rcc, cars cars
+	where cfup.carno = cars.carno and cars.companyno = #{companyNo} and rcc.companyno = #{companyNo}
+	</select>
+	
+	<!-- 차량삭제 -->
+	<delete id="deleteCar">
+	delete cars where carNo = #{carNo}
 	</delete>
 </mapper>

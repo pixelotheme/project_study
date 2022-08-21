@@ -122,17 +122,17 @@ public class RentCarBoardFileUploadController {
 
 	}
 	//다중파일 이면 쓴다
-//	public void delete(List<CarFileUploadVO> fileNameList) throws Exception {
-//		
-//		// 파일정보 foreach 로 돌려 삭제 - realpath.delete 쓰면 될듯?
-//		for (CarFileUploadVO fileVO : fileNameList) {
-//			if (fileVO.getRealSavePath() != null && !fileVO.equals("")) {
-//				new File(fileVO.getRealSavePath()).delete();
-////					delFile = new File(request.getServletContext().getRealPath(del));
-//			}
-//			
-//		}
-//		return;
-//		
-//	}
+	public void deletemulti(List<CarFileUploadVO> fileNameList) throws Exception {
+		
+		// 파일정보 foreach 로 돌려 삭제 - realpath.delete 쓰면 될듯?
+		for (CarFileUploadVO fileVO : fileNameList) {
+			if (fileVO.getRealSavePath() != null && !fileVO.equals("")) {
+				new File(fileVO.getRealSavePath()).delete();
+//					delFile = new File(request.getServletContext().getRealPath(del));
+			}
+			
+		}
+		return;
+		
+	}
 }

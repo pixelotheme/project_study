@@ -134,5 +134,20 @@ public class RentCarBoardServiceImpl implements RentCarBoardService {
 		// TODO Auto-generated method stub
 		return mapper.deleteCarFileUpload(carNo);
 	}
+	@Override
+	public int deleteCompany(long companyNo) {
+		// TODO Auto-generated method stub
+		return mapper.deleteCompany(companyNo);
+	}
+	@Override
+	public List<CarFileUploadVO> getDeleteFileUpload(long companyNo) {
+		// TODO Auto-generated method stub
+		return mapper.getDeleteFileUpload(companyNo);
+	}
+	@Override
+	public int deleteCar(long carNo) {
+		// TODO Auto-generated method stub
+		return mapper.deleteCar(carNo);
+	}
 
 }

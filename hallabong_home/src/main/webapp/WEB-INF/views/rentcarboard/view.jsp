@@ -40,12 +40,21 @@
 		</span>
 		<ul class="list-group">
 		</ul>
+	
+	<!-- 자차미포함 일때 보험 가격탭 나온다 - -->
+	
+	
+	
+<!--  선택한 날짜 차이에 따라 가격이 변해야한다 -->	
 	<input class="datepicker">
+	
+	
 
 <button type="button" onclick="location='/rentcarboard/rentCarUpdate.do?carNo=${carsVO.carNo}'">차량 수정</button>
 <button type="button" onclick="location='/rentcarboard/carInsuranceUpdate.do?carNo=${carsVO.carNo}'">보험 상세 수정</button>
 
-<button type="button" onclick="location='/rentcarboard/rentCarUpdate.do?carNo=${carsVO.carNo}'">차량 삭제</button>
+<button type="button" onclick="location='/rentcarboard/deleteCar.do?carNo=${carsVO.carNo}'">차량 삭제</button>
+<button type="button" onclick="location='/rentcarboard/list.do'">리스트</button>
 
 </div>
 

@@ -50,8 +50,18 @@ public interface RentCarBoardService {
 	public int updateCar(CarsVO carsVO);
 	//차량 옵션 수정
 	public int updateCarOption(CarOptionVO carOptionVO);
+	
 	//파일 삭제 (파일업로드는 db 삭제후 다시만든다)
 	public int deleteCarFileUpload(long carNo);
+	
+	
+	//회사 삭제
+	public int deleteCompany(long companyNo);
+	//사진도 삭제해야해서 회사번호와 같은 차량 번호 가져오기 -> 차량 번호와 같은 파일업로드 가져오기
+	public List<CarFileUploadVO> getDeleteFileUpload(long companyNo);
+	
+	////차량삭제 -> 차옵션,보험,파일db 같이 자동삭제된다
+	public int deleteCar(long carNo);
 }
 
 

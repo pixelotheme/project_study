@@ -1,5 +1,6 @@
 package com.hallabong.rentcarboard.ajax.controller;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hallabong.rentcarboard.ajax.service.RentCarBoardAjaxService;
 import com.hallabong.rentcarboard.domain.CarInsuranceVO;
+import com.hallabong.rentcarboard.domain.RentCarCompanyVO;
 import com.hallabong.rentcarboard.service.RentCarBoardService;
 
 import lombok.extern.log4j.Log4j;
@@ -67,7 +69,24 @@ public class RentCarBoardAjaxController {
 		log.info(companyNo);
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		map.put("companyView",service.getCompany(companyNo));
+		// "/" 를 기준으로 분리해서 넣기
+
+		RentCarCompanyVO companyVO =service.getCompany(companyNo);
+
+		String straddress = companyVO.getAddress();
+
+		String[] addressArray = straddress.split("/");
+		log.info(Arrays.toString(addressArray));
+		if(addressArray.length > 1) {
+			
+		companyVO.setZipcode(addressArray[0]);
+		companyVO.setStreetAdr(addressArray[1]);
+		companyVO.setDetailAdr(addressArray[2]);
+		
+		}
+		log.info(companyVO);
+		
+		map.put("companyView",companyVO);
 		
 		//map 자체를 넘겨준다
 		return new ResponseEntity<>(map, HttpStatus.OK);

@@ -47,6 +47,9 @@ public class RentCarBoardController {
 		List<RentCarSynthesizeDTO> dto = service.list(pageObject);
 		log.info("dto : "+ dto);
 		
+		//검색을 위한 전체회사 정보가져오기 
+		model.addAttribute("companys", service.getAllCompany());
+		
 		
 		model.addAttribute("list", dto);
 		model.addAttribute("pageObject", pageObject);
@@ -239,9 +242,28 @@ public class RentCarBoardController {
 	
 
 	
+// 회사 삭제	
+	@GetMapping("/companyDelete.do")
+	public String deleteCompany(long companyNo) throws Exception {
+		List<CarFileUploadVO> fileNameList = service.getDeleteFileUpload(companyNo);
+		service.deleteCompany(companyNo);
+		//회사 삭제되면 해당 자량 정보 모두 삭제 -> 사진까지 삭제 -> 회사 번호가 같은 차량번호만 가져오기 -> 차량번호와 같은 파일업로드 데이터 List로 가져오기
+		RentCarBoardFileUploadController fileUploadController = new RentCarBoardFileUploadController();
+		
+		fileUploadController.deletemulti(fileNameList);
+		
+		return "redirect:/rentcarboard/list.do";
+	}
 	
-	@GetMapping("/deleteCar")
-	public String deleteCar(long carNo) {
+	@GetMapping("/deleteCar.do")
+	public String deleteCar(long carNo) throws Exception {
+		
+		//먼저 실제 파일 db 정보 가져오기 -> 실제 파일 삭제
+		CarFileUploadVO fileName = service.getCarFileUpload(carNo);
+		RentCarBoardFileUploadController fileUploadController = new RentCarBoardFileUploadController();
+		fileUploadController.delete(fileName);
+		//차량삭제 -> 차옵션,보험,파일db 같이 자동삭제된다
+		service.deleteCar(carNo);
 		
 		
 		return "redirect:/rentcarboard/list.do";

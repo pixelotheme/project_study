@@ -16,6 +16,7 @@
 	 
 	 * 사용방법 :<pageObject:pageNav listURI="호출 List URL"
 	 			pageObject= "웹짱 페이지 객체" query="댓글 페이지 등 뒤에 붙이는 쿼리" />
+		
    */ %>
 
 <% request.setAttribute("noLinkColor", "#999"); %>

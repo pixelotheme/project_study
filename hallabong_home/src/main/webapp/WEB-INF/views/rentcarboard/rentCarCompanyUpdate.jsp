@@ -11,16 +11,19 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<title>렌트카 회사 등록</title>
+<title>렌트카 회사 수정</title>
 
 <script type="text/javascript" src="/resources/js/rentCarJS/companyWrite.js"></script>
 <script>
 $(function(){
+
+	var companyNo = 0;
+	
 	//렌트카 회사를 선택할때 변경되게
 	$("#companySelect").on("change",function(){
 		//넘어가는 데이터 회사 번호
 
-		var companyNo = $(this).val();
+		companyNo = $(this).val();
 // 		alert(companyNo);
 	 	$.getJSON(
 		 		 "/rentcarboardajaxcontroller/companyView.do?companyNo="+companyNo,
@@ -32,6 +35,11 @@ $(function(){
 		 			 $("#companyName").val(data.companyView.companyName);
 		 			 $("#tel").val(data.companyView.tel);
 		 			 $("#updateCompanyNo").val(data.companyView.companyNo);
+		 			 
+		 			 $("#zipcode").val(data.companyView.zipcode);
+		 			 $("#streetAdr").val(data.companyView.streetAdr);
+		 			 $("#detailAdr").val(data.companyView.detailAdr);
+		 			 
 		 			return ;
 		 			} 
 		 			else{
@@ -49,6 +57,17 @@ $(function(){
 		 	
 	
 	})
+
+//회사 삭제
+	$("#deleteBtn").on("click", function(){
+			alert(companyNo)
+		location='companyDelete.do?companyNo='+companyNo;
+		})
+//리스트로 돌아가기
+		$("#cancelBtn").on("click", function(){
+		location='/rentcarboard/list.do?';
+		})
+	
 })
 
 
@@ -60,6 +79,7 @@ $(function(){
 			<div>
 			회사
 				<select name="companyNo" id="companySelect">
+						<option selected="selected">회사 선택</option>
 					<c:forEach items="${companyVO }" var="company">
 						<option value="${company.companyNo }">${company.companyName }</option>
 					</c:forEach>
@@ -79,6 +99,11 @@ $(function(){
 				<label for="tel">연락처</label>
 				<input name="tel" id="tel" class="form-control" required="required">
 			</div>		
+			
+			<div>
+			<label>현재 주소</label>
+			<div></div>
+			</div>
 			<div class="input-group">
 				<!--  주소 api 쓰기-->
 <!-- 				<label for="address"></label> -->
@@ -90,6 +115,7 @@ $(function(){
 			<div>
 				<button>등록</button>
 				<button type="reset">새로입력</button>
+				<button type="button" id="deleteBtn">회사 삭제</button>
 				<button type="button" id="cancelBtn">취소</button>
 			</div>
 		
