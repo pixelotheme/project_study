@@ -2,6 +2,7 @@ package com.hallabong.rentcarboard.controller;
 
 import java.awt.font.TextLayout.CaretPolicy;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -235,7 +236,21 @@ public class RentCarBoardController {
 	@GetMapping("/carInsuranceUpdate.do")
 	public String carInsuranceUpdateForm(Model model, long carNo) {
 		
-		model.addAttribute("carInsuranceVO", service.getCarInsurance(carNo));
+		//보험 [1] 의 번호가 없다면 null 대신 공백 넣어주기
+		List<CarInsuranceVO> carInsuranceVO = service.getCarInsurance(carNo);
+
+		log.info(carInsuranceVO.get(0));
+		//0인 경우도 없으니 설정
+		if(carInsuranceVO.size() < 2) {
+			log.info("size 가  1 이다");
+			CarInsuranceVO vo = new CarInsuranceVO();
+			vo.setInsuranceNo(0);
+			
+			carInsuranceVO.add(vo);
+			log.info("두번째 값이 없을때 0 으로 세팅" + carInsuranceVO.get(1));
+		}
+		
+		model.addAttribute("carInsuranceVO", carInsuranceVO);
 		
 		return "rentcarboard/carInsuranceUpdate";
 	}

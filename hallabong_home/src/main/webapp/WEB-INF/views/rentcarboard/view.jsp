@@ -33,15 +33,18 @@
 		${companyVO }
 		${carsVO }
 		${carOptionVO }
-		${carInsuranceVO }
+		
 		${carFileUploadVO }
 		<span>날짜 ${carsVO.modelYears }
 		<img alt="이미지" src="${carFileUploadVO.fileName }">
 		</span>
 		<ul class="list-group">
 		</ul>
-	
-	<!-- 자차미포함 일때 보험 가격탭 나온다 - -->
+		<div>
+		보험
+		${carInsuranceVO }
+		</div>
+	<!-- 자차미포함 일때 보험 가격탭 나온다 + 일반자차,고급자차 둘다 표시 -->
 	
 	
 	

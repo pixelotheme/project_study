@@ -93,8 +93,7 @@ public class RentCarBoardAjaxController {
 		
 	}
 	
-	//write, consumes 받는 형식, porduces 넘기는 형식
-	//json 타입 받으려면 RequestBody 써줘야함
+//차량 보험 업데이트
 	@PostMapping(value = "/updateCarInsurance.do", consumes = "application/json",produces = {MediaType.TEXT_PLAIN_VALUE})
 	public ResponseEntity<String> updateCarInsurance(@RequestBody List<CarInsuranceVO> carInsuranceVO){
 		log.info("ajax : =" +carInsuranceVO);

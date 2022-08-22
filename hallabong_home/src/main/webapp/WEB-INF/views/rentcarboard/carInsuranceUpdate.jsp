@@ -28,14 +28,23 @@ $(function(){
 		$("#InsurancePlus").fadeToggle(100);
 		})	
 		
-		
+		//2번째 가 없을때 에러나는상황
 	$("#submitBtn").on("click",function(){
 
+		var insuranceNoCheck = "";
+		
+				if(${!empty carInsuranceVO[1].insuranceNo} != null){
+					insuranceNoCheck = ${carInsuranceVO[0].insuranceNo};
+					}
+				else{
+				var insuranceNoCheck = "";
+					}
+		
 				var carNo = "${param.carNo }";
 			let carInsuranceVOList = [
 				{
 					category : $("#category1").val(),
-					insuranceNo : ${carInsuranceVO[0].insuranceNo},
+					insuranceNo : insuranceNoCheck,
 					insurancePrice : $("#insurancePrice1").val(),
 					insuranceAge :$("#insuranceAge1").val(),
 					insuranceExperience :$("#insuranceExperience1").val(),
