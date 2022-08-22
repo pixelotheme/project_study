@@ -9,36 +9,66 @@ smoking,navigation,blackbox,rearCamera,rearSensor,frontSensor,sunroof,
 bluetooth,heatingSheet,heatingHandle - 옵션테이블
 리스트 전체 가져오기-->
 	<select id="list" resultType="com.hallabong.rentcarboard.domain.RentCarSynthesizeDTO">
-	<![CDATA[
-	    select  rnum ,companyName, companyNo,
-	            insuranceInfo,rentCarNote,cancelAndRefund,id,
-	            carNo,carName, carTypes, carFuel,modelYears,rentAge, price,
-	            smoking,navigation,blackbox,rearCamera,rearSensor,frontSensor,sunroof,
-	            bluetooth,heatingSheet,heatinghandle,
-	            filename,orgFileName, filesize, realsavepath
-	        from (
-	            select 
-	            /*+ index(cars pk_cars) */
-	            rownum rnum,
-	                rcc.companyName, rcc.companyNo,
-	                cars.insuranceInfo,cars.rentCarNote,cars.cancelAndRefund,rcc.id,
-	                cars.carNo,cars.carName, cars.carTypes, cars.carFuel,cars.modelYears,cars.rentAge, cars.price,
-	                cop.smoking,cop.navigation,cop.blackbox,cop.rearCamera,cop.rearSensor,cop.frontSensor,cop.sunroof,
-	                cop.bluetooth,cop.heatingSheet,cop.heatinghandle,
-	                cfup.filename,cfup.orgFileName, cfup.filesize, cfup.realsavepath
-	            from 
-	                rentcarcompany rcc,cars cars,caroption cop, car_fileupload cfup
-	            where 
-	            	]]>
-	            	<include refid="search"/>
-	            		<![CDATA[
-	                rcc.companyno = cars.companyno and cop.carno = cars.carno and cars.carno = cfup.carno
-	                and cars.carno >0 
-	            order by rownum desc
-	     )where rnum between #{startRow} and #{endRow}
-	]]>
-	
-	
+<!-- 	<![CDATA[ -->
+<!-- 	    select  rnum ,companyName, companyNo, -->
+<!-- 	            insuranceInfo,rentCarNote,cancelAndRefund,id, -->
+<!-- 	            carNo,carName, carTypes, carFuel,modelYears,rentAge, price, -->
+<!-- 	            smoking,navigation,blackbox,rearCamera,rearSensor,frontSensor,sunroof, -->
+<!-- 	            bluetooth,heatingSheet,heatinghandle, -->
+<!-- 	            filename,orgFileName, filesize, realsavepath -->
+<!-- 	        from ( -->
+<!-- 	            select  -->
+<!-- 	            /*+ index(cars pk_cars) */ -->
+<!-- 	            rownum rnum, -->
+<!-- 	                rcc.companyName, rcc.companyNo, -->
+<!-- 	                cars.insuranceInfo,cars.rentCarNote,cars.cancelAndRefund,rcc.id, -->
+<!-- 	                cars.carNo,cars.carName, cars.carTypes, cars.carFuel,cars.modelYears,cars.rentAge, cars.price, -->
+<!-- 	                cop.smoking,cop.navigation,cop.blackbox,cop.rearCamera,cop.rearSensor,cop.frontSensor,cop.sunroof, -->
+<!-- 	                cop.bluetooth,cop.heatingSheet,cop.heatinghandle, -->
+<!-- 	                cfup.filename,cfup.orgFileName, cfup.filesize, cfup.realsavepath -->
+<!-- 	            from  -->
+<!-- 	                rentcarcompany rcc,cars cars,caroption cop, car_fileupload cfup -->
+<!-- 	            where  -->
+<!-- 	            	]]> -->
+<!-- 	            	<include refid="search"/> -->
+<!-- 	            		<![CDATA[ -->
+<!-- 	                rcc.companyno = cars.companyno and cop.carno = cars.carno and cars.carno = cfup.carno -->
+<!-- 	                and cars.carno >0  -->
+<!-- 	            order by rownum desc -->
+<!-- 	     )where rnum between #{startRow} and #{endRow} -->
+<!-- 	]]> -->
+		<![CDATA[
+	select 
+	    rnum ,companyName, companyNo, insuranceInfo,rentCarNote,cancelAndRefund,id, carNo,carName, 
+	    carTypes, carFuel,modelYears,rentAge, price, smoking,navigation,blackbox,rearCamera,rearSensor,frontSensor,sunroof, 
+	    bluetooth,heatingSheet,heatinghandle, filename,orgFileName, filesize, realsavepath 
+	from 
+	    ( 
+		select 
+		    rownum rnum ,companyName, companyNo, insuranceInfo,rentCarNote,cancelAndRefund,id, carNo,carName, 
+		    carTypes, carFuel,modelYears,rentAge, price, smoking,navigation,blackbox,rearCamera,rearSensor,frontSensor,sunroof, 
+		    bluetooth,heatingSheet,heatinghandle, filename,orgFileName, filesize, realsavepath 
+		from 
+		    ( 
+			    select 
+			        rcc.companyName, rcc.companyNo, cars.insuranceInfo,cars.rentCarNote,cars.cancelAndRefund,rcc.id, 
+			        cars.carNo,cars.carName, cars.carTypes, cars.carFuel,cars.modelYears,cars.rentAge, cars.price, 
+			        cop.smoking,cop.navigation,cop.blackbox,cop.rearCamera,cop.rearSensor,cop.frontSensor,cop.sunroof, 
+			        cop.bluetooth,cop.heatingSheet,cop.heatinghandle, cfup.filename,cfup.orgFileName, cfup.filesize, 
+			        cfup.realsavepath 
+			    from 
+			        rentcarcompany rcc,cars cars,caroption cop, car_fileupload cfup 
+			    where 
+			    ]]>
+			        <include refid="search"/> 
+			        	<![CDATA[
+			        rcc.companyno = cars.companyno and cop.carno = 
+			        cars.carno and cars.carno = cfup.carno  order by carNo desc 
+			        
+		    )
+	)
+	where rnum between #{startRow} and #{endRow}
+		]]>
 	</select>
 	
 	<select id="getTotalRow" resultType="long">
@@ -240,6 +270,19 @@ bluetooth,heatingSheet,heatingHandle - 옵션테이블
 	<delete id="deleteCarFileUpload">
 	delete car_FileUpload where carNo = #{carNo}
 	</delete>
+	
+	<!-- 파일업로드 update For null -->
+	
+	<update id="updateFileUploadForNull">
+	update
+		car_FileUpload
+	set 
+		orgFileName = '',fileName = '',fileSize = '',realSavePath = ''
+	where
+		carNo = #{carNo}
+	</update>
+	
+	
 	
 	<!-- 회사 삭제 -->
 	<delete id="deleteCompany">

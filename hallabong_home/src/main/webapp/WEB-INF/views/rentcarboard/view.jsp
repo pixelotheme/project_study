@@ -24,6 +24,12 @@
 <!-- js -->
 <script type="text/javascript" src="/resources/js/rentCarJS/rentCarDatePicker.js"></script>
 
+<script type="text/javascript">
+$(function(){
+	
+})
+</script>
+
 </head>
 <body>
 <div class="container">
@@ -36,8 +42,22 @@
 		
 		${carFileUploadVO }
 		<span>날짜 ${carsVO.modelYears }
-		<img alt="이미지" src="${carFileUploadVO.fileName }">
 		</span>
+					<!-- 이미지바꾸기 -->
+					
+							<img alt="이미지" src="${carFileUploadVO.fileName }">							
+					<form action="imageDelete.do" method="post"
+						enctype="multipart/form-data">
+						<div class="form-group">
+							<input type="hidden" name="del" value="${carFileUploadVO.fileName != null ? carFileUploadVO.fileName:"0" }">
+							<input type="hidden" name="carNo" value="${carsVO.carNo }">
+						</div>
+						<button class="btn btn-default">이미지 삭제</button>
+						<button type="button" id="cancelBtn" class="btn btn-default">취소</button>
+					</form>
+
+				<!-- 이미지바꾸기 끝-->
+		
 		<ul class="list-group">
 		</ul>
 		<div>
@@ -53,7 +73,7 @@
 	
 	
 
-<button type="button" onclick="location='/rentcarboard/rentCarUpdate.do?carNo=${carsVO.carNo}'">차량 수정</button>
+<button type="button" onclick="location='/rentcarboard/rentCarUpdate.do?carNo=${carsVO.carNo}'">차량 정보, 이미지 수정</button>
 <button type="button" onclick="location='/rentcarboard/carInsuranceUpdate.do?carNo=${carsVO.carNo}'">보험 상세 수정</button>
 
 <button type="button" onclick="location='/rentcarboard/deleteCar.do?carNo=${carsVO.carNo}'">차량 삭제</button>

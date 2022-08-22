@@ -149,5 +149,10 @@ public class RentCarBoardServiceImpl implements RentCarBoardService {
 		// TODO Auto-generated method stub
 		return mapper.deleteCar(carNo);
 	}
+	@Override
+	public int updateFileUploadForNull(long carNo) {
+		// TODO Auto-generated method stub
+		return mapper.updateFileUploadForNull(carNo);
+	}
 
 }

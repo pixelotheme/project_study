@@ -66,6 +66,8 @@ public interface RentCarBoardMapper {
 	
 	//파일 삭제 (파일업로드는 db 삭제후 다시만든다)
 	public int deleteCarFileUpload(long carNo);
+	//파일 업로드 (파일업로드는 db 삭제 하면 안된다)
+	public int updateFileUploadForNull(long carNo);
 	
 	//회사 삭제
 	public int deleteCompany(long companyNo);

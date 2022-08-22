@@ -2,6 +2,7 @@ package com.hallabong.rentcarboard.controller;
 
 import java.awt.font.TextLayout.CaretPolicy;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -54,6 +55,9 @@ public class RentCarBoardController {
 		
 		model.addAttribute("list", dto);
 		model.addAttribute("pageObject", pageObject);
+		
+		log.info("페이지 오브젝트"+pageObject);
+		
 		return "rentcarboard/list";
 	}
 	
@@ -170,6 +174,42 @@ public class RentCarBoardController {
 	}
 	
 	
+	//렌트카 사진 삭제
+	@PostMapping("/imageDelete.do")
+	public String rentCarImageDelete(@RequestParam(defaultValue = "0") String del,long carNo, MultipartFile[] uploadFile, HttpServletRequest request) throws Exception {
+		
+		//
+		
+		// 파일 업로드 수정
+		RentCarBoardFileUploadController fileUploadController = new RentCarBoardFileUploadController();
+		
+		boolean fileCheck = false;
+		//write + del 서비스 2개가 되어야함 del먼저 만들자
+		//배열이 있으면 기존 db 정보삭제, 실제파일 삭제 + 파일업로드
+		//없으면(기존에 파일이 없다는뜻 ) 파일 업로드만 
+		//하나가 있다면 디폴트는 무조건 안들어감, 없다면 디폴트가 0일것
+		if(del != "0") {
+			fileCheck = true;
+			//기존에 파일이 있다
+		}
+		
+		if(fileCheck) {
+			//db에서 파일 이름을 먼저 가져온다
+			CarFileUploadVO fileList = (service.getCarFileUpload(carNo));
+			
+			//실제 파일 삭제
+			fileUploadController.delete(fileList);
+			//db 삭제
+			//db 를 아예 없애면 안됨 - 리스트에 안나옴 db 검색을 엮어놨다
+			//update 로 db는 살려놔야함
+			service.updateFileUploadForNull(carNo);
+			
+		}
+		
+		
+		return "redirect:/rentcarboard/view.do?carNo="+carNo;
+	}	
+	
 	//렌트카 수정
 	@GetMapping("/rentCarUpdate.do")
 	public String rentCarUpdateForm(Model model, long carNo) {
@@ -196,38 +236,44 @@ public class RentCarBoardController {
 		updateResult += service.updateCarOption(carOptionVO);
 		log.info(updateResult);
 		
-		// 파일 업로드 수정
-		RentCarBoardFileUploadController fileUploadController = new RentCarBoardFileUploadController();
 		
-		boolean fileCheck = false;
-		//write + del 서비스 2개가 되어야함 del먼저 만들자
-		//배열이 있으면 기존 db 정보삭제, 실제파일 삭제 + 파일업로드
-		//없으면(기존에 파일이 없다는뜻 ) 파일 업로드만 
-		//하나가 있다면 디폴트는 무조건 안들어감, 없다면 디폴트가 0일것
-		if(del != "0") {
-			fileCheck = true;
-			//기존에 파일이 있다
-		}
-		
-		if(fileCheck) {
-			//db에서 파일 이름을 먼저 가져온다
-			CarFileUploadVO fileList = (service.getCarFileUpload(carsVO.getCarNo()));
+		// 넘어오는 파일이 없으면 삭제 수정도 되면 안된다 - 지금 파일 인덱스가 1개만 받아오니 0 으로 써도 되긴함/
+		// 넘어오는 값이 없으면 true -> true 가 반환되면 파일이 없으면 update가 안되게 해야함
+		log.info("파일 넘어온값 확인" + uploadFile[uploadFile.length-1].isEmpty());
+		if(!uploadFile[uploadFile.length-1].isEmpty()) {
+	
+			// 파일 업로드 수정
+			RentCarBoardFileUploadController fileUploadController = new RentCarBoardFileUploadController();
 			
-			//실제 파일 삭제
+			boolean fileCheck = false;
+			//write + del 서비스 2개가 되어야함 del먼저 만들자
+			//배열이 있으면 기존 db 정보삭제, 실제파일 삭제 + 파일업로드
+			//없으면(기존에 파일이 없다는뜻 ) 파일 업로드만 
+			//하나가 있다면 디폴트는 무조건 안들어감, 없다면 디폴트가 0일것
+			if(del != "0") {
+				fileCheck = true;
+				//기존에 파일이 있다
+			}
 			
-			fileUploadController.delete(fileList);
-			//db 삭제
-			service.deleteCarFileUpload(carsVO.getCarNo());
+			if(fileCheck) {
+				//db에서 파일 이름을 먼저 가져온다
+				CarFileUploadVO fileList = (service.getCarFileUpload(carsVO.getCarNo()));
+				
+				//실제 파일 삭제
+				
+				fileUploadController.delete(fileList);
+				//db 삭제
+				service.deleteCarFileUpload(carsVO.getCarNo());
+				
+				
+			}
+	//		다시 업로드한 파일  등록
+			List<CarFileUploadVO> list = fileUploadController.uploadFormPost(uploadFile, request, carsVO.getCarNo());
 			
-			
-		}
-//		다시 업로드한 파일  등록
-		List<CarFileUploadVO> list = fileUploadController.uploadFormPost(uploadFile, request, carsVO.getCarNo());
-		
-		log.info(list);
-		//업로드후 정보 db에 입력
-		updateResult = service.writeCarFileUpload(list);
-		
+			log.info(list);
+			//업로드후 정보 db에 입력
+			updateResult = service.writeCarFileUpload(list);
+		}//파일이 넘어온 값이 있으면 수정해라
 		
 		return "redirect:/rentcarboard/view.do?carNo="+carsVO.getCarNo();
 	}
