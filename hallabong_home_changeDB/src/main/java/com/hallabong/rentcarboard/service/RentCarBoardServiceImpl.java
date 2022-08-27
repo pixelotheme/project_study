@@ -197,7 +197,7 @@ public class RentCarBoardServiceImpl implements RentCarBoardService {
 	@Override
 	public List<RentCarSynthesizeDTO> getCompanyCarsList(PageObjectCustom pageObject, long carNo, long companyNo) {
 		// TODO Auto-generated method stub
-		pageObject.setTotalRow(mapper.getTotalRowForCompanyCars(pageObject));
+		pageObject.setTotalRow(mapper.getTotalRowForCompanyCars(pageObject, carNo, companyNo));
 		
 		return mapper.getCompanyCarsList(pageObject, carNo, companyNo);
 	}

@@ -16,13 +16,16 @@
 
 
 
-<title>렌트카 리스트</title>
+<title>차량 번호판 리스트</title>
 </head>
 <body>
 <div class="container">
 
 					<!-- 검색 시작 -->
 		<form class="form-inline">
+			<input type="hidden" name="carNo" value="${param.carNo }">
+			<input type="hidden" name="companyNo" value="${param.companyNo }">
+			<input type="hidden" name="carInfoNo" value="${param.carInfoNo }">
 			<!-- 검색 key -->
 			<div class="input-group">
 				<select class="form-control" name="key" id="key">

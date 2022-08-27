@@ -118,7 +118,7 @@ public interface RentCarBoardMapper {
 	
 	//회사 차량 번호판 리스트 carno , companyNo 받아서 보여준다 - cars 등록할때 같이 등록되어있음
 	public List<RentCarSynthesizeDTO> getCompanyCarsList(@Param("pageObject") PageObjectCustom pageObject ,@Param("carNo")long carNo,@Param("companyNo") long companyNo);
-	public long getTotalRowForCompanyCars(PageObjectCustom pageObject);
+	public long getTotalRowForCompanyCars(@Param("pageObject") PageObjectCustom pageObject ,@Param("carNo")long carNo,@Param("companyNo") long companyNo);
 	//화사 차량 번호판 등록
 	public int writeCompanyCars(CompanyCarsVO companyCarsVO);
 	//회사 차량 번호판 보기

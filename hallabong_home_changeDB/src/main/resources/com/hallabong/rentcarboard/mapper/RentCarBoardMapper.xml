@@ -471,6 +471,7 @@ bluetooth,heatingSheet,heatingHandle - 옵션테이블
                 FROM 
                     companyCars cpc, carbasicinfo cbi, rentcarcompany rcc, cars cars
                 where 
+                <include refid="searCompanyCars"/>
                     cpc.carNo = cars.carno and cars.carinfono = cbi.carinfono
                     and cpc.companyno = rcc.companyNo
 
@@ -485,13 +486,26 @@ bluetooth,heatingSheet,heatingHandle - 옵션테이블
 	<!-- 리스트 페이징을위한 전체 개수 -->
 	<select id="getTotalRowForCompanyCars" resultType="long">
 	select 
-		count(companyCarsNo)
+		count(cpc.companyCarsNo)
 	from 
-		companycars  
+		companycars cpc
 	where 
-		carNo = #{startRow}  and companyNo = #{endRow}
+	<include refid="searCompanyCars"/>
+		cpc.carNo = #{carNo}  and cpc.companyNo = #{companyNo}
 	</select>
 	<!-- 리스트 검색을 위한 쿼리 -->
+	<sql id="searCompanyCars">
+		<trim prefix="(" suffix=") and" prefixOverrides="or">
+					<!-- choose 회사이름은 있을때 작동 되게 해야함 "" like 둘다 쓸수없음 %% 유사한 것을 못써서 -->
+					<if test="pageObject.key == 'P'.toString()">
+						cpc.licensePlate like '%' || #{pageObject.word,jdbcType=VARCHAR} ||'%'
+					</if >
+					<if test="pageObject.key == 'C'.toString()">
+						cpc.id like '%' || #{pageObject.word,jdbcType=VARCHAR} ||'%'
+					</if >
+				
+		</trim>
+	</sql>
 	<!-- 리스트 정렬을 위한 쿼리 -->
 	
 	<!-- 번호판 등록 -->
