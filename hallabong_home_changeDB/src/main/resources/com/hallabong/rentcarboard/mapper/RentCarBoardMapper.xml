@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hallabong.rentcarboard.mapper.RentCarBoardMapper">
+<!-- 리스트 불러올 내용 
+companyName, company테이블 + rcc.insuranceInfo,rcc.rentCarNote,rcc.cancelAndRefund,rcc.id
+carName,carTypes,carFuel,modelYears,rentAge,price, 차테이블
+smoking,navigation,blackbox,rearCamera,rearSensor,frontSensor,sunroof,
+bluetooth,heatingSheet,heatingHandle - 옵션테이블
+리스트 전체 가져오기-->
+	<select id="list" resultType="com.hallabong.rentcarboard.domain.RentCarSynthesizeDTO">
+<!-- 	<![CDATA[ -->
+<!-- 	    select  rnum ,companyName, companyNo, -->
+<!-- 	            insuranceInfo,rentCarNote,cancelAndRefund,id, -->
+<!-- 	            carNo,carName, carTypes, carFuel,modelYears,rentAge, price, -->
+<!-- 	            smoking,navigation,blackbox,rearCamera,rearSensor,frontSensor,sunroof, -->
+<!-- 	            bluetooth,heatingSheet,heatinghandle, -->
+<!-- 	            filename,orgFileName, filesize, realsavepath -->
+<!-- 	        from ( -->
+<!-- 	            select  -->
+<!-- 	            /*+ index(cars pk_cars) */ -->
+<!-- 	            rownum rnum, -->
+<!-- 	                rcc.companyName, rcc.companyNo, -->
+<!-- 	                cars.insuranceInfo,cars.rentCarNote,cars.cancelAndRefund,rcc.id, -->
+<!-- 	                cars.carNo,cars.carName, cars.carTypes, cars.carFuel,cars.modelYears,cars.rentAge, cars.price, -->
+<!-- 	                cop.smoking,cop.navigation,cop.blackbox,cop.rearCamera,cop.rearSensor,cop.frontSensor,cop.sunroof, -->
+<!-- 	                cop.bluetooth,cop.heatingSheet,cop.heatinghandle, -->
+<!-- 	                cfup.filename,cfup.orgFileName, cfup.filesize, cfup.realsavepath -->
+<!-- 	            from  -->
+<!-- 	                rentcarcompany rcc,cars cars,caroption cop, car_fileupload cfup -->
+<!-- 	            where  -->
+<!-- 	            	]]> -->
+<!-- 	            	<include refid="search"/> -->
+<!-- 	            		<![CDATA[ -->
+<!-- 	                rcc.companyno = cars.companyno and cop.carno = cars.carno and cars.carno = cfup.carno -->
+<!-- 	                and cars.carno >0  -->
+<!-- 	            order by rownum desc -->
+<!-- 	     )where rnum between #{startRow} and #{endRow} -->
+<!-- 	]]> -->
+		<![CDATA[
+	select 
+	    rnum ,companyName, companyNo, insuranceInfo,
+        carInfoNo, carName,carTypes, carFuel,
+        carNo, modelYears,rentAge, price, 
+        smoking,navigation,blackbox,rearCamera,rearSensor,frontSensor,sunroof, 
+        bluetooth,heatingSheet,heatinghandle, filename,orgFileName, filesize, 
+        realsavepath ,fileType
+	from 
+	    ( 
+    select 
+        rownum rnum ,companyName, companyNo, insuranceInfo,
+        carInfoNo, carName,carTypes, carFuel,
+        carNo, modelYears,rentAge, price, 
+        smoking,navigation,blackbox,rearCamera,rearSensor,frontSensor,sunroof, 
+        bluetooth,heatingSheet,heatinghandle, filename,orgFileName, filesize, 
+        realsavepath ,fileType
+    from 
+        ( 
+            select 
+                rcc.companyName, rcc.companyNo, cars.insuranceInfo,
+                cbi.carInfoNo,cbi.carName,cbi.carTypes, cbi.carFuel,
+                cars.carNo, cars.modelYears,cars.rentAge, cars.price, 
+                cop.smoking,cop.navigation,cop.blackbox,cop.rearCamera,cop.rearSensor,cop.frontSensor,cop.sunroof, 
+                cop.bluetooth,cop.heatingSheet,cop.heatinghandle, cfup.filename,cfup.orgFileName, cfup.filesize, 
+                cfup.realsavepath ,cfup.fileType
+            from 
+                rentcarcompany rcc,cars cars,caroption cop, car_fileupload cfup
+                ,carBasicInfo cbi
+            where 
+			    ]]>
+			        <include refid="search"/> 
+			        	<![CDATA[
+                rcc.companyno = cars.companyno and cop.carno = cars.carno 
+                and cbi.carInfoNo = cfup.carInfoNo
+                and cars.carinfono = cbi.carinfono
+                order by carNo desc 
+            )
+            
+    )
+    where rnum between #{startRow} and #{endRow}
+		]]>
+	</select>
+	
+	<select id="getTotalRow" resultType="long">
+			select count(carNo) 
+			from cars cars, rentcarcompany rcc, carBasicInfo cbi
+			where 
+ 			<include refid="search"/> 
+				cars.companyno = rcc.companyno and cars.carInfoNo = cbi.carInfoNo
+			
+	</select>
+	
+	<sql id="search">
+		<trim prefix="(" suffix=") and" prefixOverrides="and">
+		
+				<!-- choose 회사이름은 있을때 작동 되게 해야함 "" like 둘다 쓸수없음 %% 유사한 것을 못써서 -->
+			<if test="key != null and key != ''">
+				rcc.companyName = #{key,jdbcType=VARCHAR}
+			</if >
+			
+			<trim prefix="and" >
+
+				cbi.carName like '%' || #{word,jdbcType=VARCHAR} ||'%'
+			</trim>
+		
+		
+		</trim>
+	</sql>
+	
+<!-- 	<select id="list" resultType="com.hallabong.rentcarboard.domain.RentCarSynthesizeDTO"> -->
+<!-- 	<![CDATA[ -->
+<!-- 	select  -->
+<!-- 		rcc.companyName, rcc.companyNo, -->
+<!-- 		cars.insuranceInfo,cars.rentCarNote,cars.cancelAndRefund,rcc.id, -->
+<!-- 		cars.carNo,cars.carName, cars.carTypes, cars.carFuel,cars.modelYears,cars.rentAge, cars.price, -->
+<!-- 		cop.smoking,cop.navigation,cop.blackbox,cop.rearCamera,cop.rearSensor,cop.frontSensor,cop.sunroof, -->
+<!-- 		cop.bluetooth,cop.heatingSheet,cop.heatingHandle -->
+<!-- 	from  -->
+<!-- 		rentcarcompany rcc,cars cars,caroption cop -->
+<!-- 	where  -->
+<!-- 		rcc.companyno = cars.companyno and cop.carno = cars.carno  -->
+<!-- 	order by cars.carno desc -->
+<!-- 	]]> -->
+	
+	
+<!-- 	</select> -->
+	<!-- 그대로 -->
+	<select id="getCompany" resultType="com.hallabong.rentcarboard.domain.RentCarCompanyVO">
+	select 
+		rcc.companyNo, rcc.companyName, rcc.tel, rcc.address, rcc.id
+	from 
+		rentcarcompany rcc, cars cars
+	where 
+		rcc.companyNo = cars.companyNo and cars.carNo = #{carNo}
+	</select>
+	<!-- 변경 -->
+	<select id="getCars" resultType="com.hallabong.rentcarboard.domain.CarsVO">
+	select 
+		carNo, companyNo, carInfoNo, price, gearbox,
+        to_char(modelyears, 'yyyy-MM') modelyears, rentAge,
+		rentExperience,license,insuranceInfo ,
+		rentCarNote ,cancelAndRefund,writeDate ,updateDate, id
+	from 
+		cars
+	where 
+		carNo = #{carNo}
+	</select>
+	
+	<!--carBasicInfo 차량 이름... -->
+	<select id="getCarBasicInfo" resultType="com.hallabong.rentcarboard.domain.CarBasicInfoVO">
+	 	select 
+        carInfoNo,carName,  carFuel, carCapacity , carTypes
+	from 
+		carBasicInfo
+	where 
+		carInfoNo = #{carInfoNo}
+	
+	</select>
+	
+	<select id="getCarOption" resultType="com.hallabong.rentcarboard.domain.CarOptionVO">
+	select 
+		carNo ,smoking,navigation,blackbox,rearCamera,rearSensor,frontSensor,
+		sunroof,bluetooth,heatingSheet,leatherSheet,ventilationSheet,carSeatPay ,carSeatFree,
+		driverAirbag,passengerAirbag ,fourWheel ,smartKey,rearAutomaticDoor,freeCharge,usb,
+		aux,dmb,camping
+	from 
+		caroption
+	where 
+		carNo = #{carNo}
+	</select>
+	<select id="getCarInsurance" resultType="com.hallabong.rentcarboard.domain.CarInsuranceVO">
+	select 
+		carNo, insuranceNo,category ,insurancePrice ,insuranceAge,
+		insuranceExperience ,compensation, customerCharge 
+	from 
+		carinsurance
+	where 
+		carNo = #{carNo}
+	</select>
+	<!-- 변경 -->
+	<select id="getCarFileUpload" resultType="com.hallabong.rentcarboard.domain.CarFileUploadVO">
+	select 
+		carInfoNo, orgFileName, fileName, realSavePath, fileType
+	from 
+		car_fileupload
+	where 
+		carInfoNo = #{carInfoNo}
+	</select>
+	
+	<!-- 렌트카 회사 리스트 -->
+	<select id="rentCarCompanyList" resultType="com.hallabong.rentcarboard.domain.RentCarCompanyVO" >
+	<![CDATA[
+    select companyName, companyNo, tel, address, id
+    from(
+            select 
+            /*+ index_desc (rentCarCompany pk_rentCarCompany)*/
+               Rownum rnum, companyName, companyNo, tel, address, id
+            from 
+                rentcarcompany 
+            where  
+ 				]]>	
+ 			<include refid="searchRentCarCompany"/> 
+ 				<![CDATA[            
+            rownum <= #{endRow}
+         )
+         where rnum > #{startRow}-1
+	]]>
+	</select>
+	<!--  렌트카 회사 페이징 전체 개수 -->
+	<select id="getTotalRowRentCarCompany" resultType="long">
+	<![CDATA[
+			select count(companyNo) 
+			from  rentcarcompany
+			where 
+ 				]]>	
+ 			<include refid="searchRentCarCompany"/> 
+ 				<![CDATA[
+				companyNo > 0
+	]]>		
+	</select>
+	
+	<sql id="searchRentCarCompany">
+		<trim prefix="(" suffix=") and" prefixOverrides="and">
+		
+				<!-- choose 회사이름은 있을때 작동 되게 해야함 "" like 둘다 쓸수없음 %% 유사한 것을 못써서 -->
+			<if test="key != null and key != ''">
+				companyName like '%' || #{word,jdbcType=VARCHAR} ||'%'
+			</if >
+			
+		
+		
+		</trim>
+	</sql>
+	
+	<!-- 렌트카회사 등록 그대로-->
+	<insert id="writeRentCarCompany">
+	insert into 
+		rentCarCompany (companyNo, companyName, tel, address,id)
+	VALUES
+		(seq_RentCarCompany.nextval, #{companyName},#{tel},#{address},#{id})
+	</insert>
+	
+	
+	<!-- 자동차 등록을 위한 모든 회사 정보가져오기, 그대로 -->
+	<select id="getAllCompany" resultType="com.hallabong.rentcarboard.domain.RentCarCompanyVO">
+		select companyNo,companyName
+		from rentcarcompany
+	</select>
+	
+	<!-- 자동차 등록을 위한 기본 차량정보가져오기 -->
+	<select id="getAllCarBasicInfo" resultType="com.hallabong.rentcarboard.domain.CarBasicInfoVO">
+		select carInfoNo, carName,  carFuel, carCapacity , carTypes  
+		from carbasicinfo
+	</select>
+	
+	
+	<!-- 차량 등록후 번호리턴  carName,carTypes, carCapacity, carFuel 제거, carInfoNo추가-->
+	<insert id="writeCarGetCarNo" >
+	insert into 
+		cars(carInfoNo,carNo, companyNo, price, modelYears, 
+		 rentAge, rentExperience, license,insuranceInfo,rentCarNote,cancelAndRefund,id)
+	VALUES
+		(#{carInfoNo},seq_Cars.nextval,#{companyNo}, #{price},TO_DATE(#{modelYears},'YYYY-MM'),
+		 #{rentAge}, #{rentExperience}, #{license},
+		#{insuranceInfo},#{rentCarNote},#{cancelAndRefund},#{id})
+		
+		<selectKey keyProperty="carNo" resultType="long" order="AFTER" >
+		select seq_Cars.currval from dual
+		</selectKey> 
+		
+	</insert>
+	
+	
+	
+	<!-- 차옵션 등록 -->
+	<insert id="writeCarOption">
+	insert into 
+		caroption(carNo, smoking, navigation, blackbox,rearCamera,rearSensor,
+		sunroof,bluetooth,heatingSheet, heatingHandle, leatherSheet, driverAirbag,smartKey,
+		usb,aux,dmb)
+	values(
+	#{carNo}, #{smoking,jdbcType=VARCHAR}, #{navigation,jdbcType=VARCHAR}, #{blackbox,jdbcType=VARCHAR},#{rearCamera,jdbcType=VARCHAR},#{rearSensor,jdbcType=VARCHAR},
+		#{sunroof,jdbcType=VARCHAR},#{bluetooth,jdbcType=VARCHAR},#{heatingSheet,jdbcType=VARCHAR}, #{heatingHandle,jdbcType=VARCHAR}, #{leatherSheet,jdbcType=VARCHAR}, #{driverAirbag,jdbcType=VARCHAR},#{smartKey,jdbcType=VARCHAR},
+		#{usb,jdbcType=VARCHAR},#{aux,jdbcType=VARCHAR},#{dmb,jdbcType=VARCHAR}
+	)
+	</insert>
+	
+<!-- 	<insert id="writeCarInsurance"> -->
+<!-- 	insert into  -->
+<!-- 		carInsurance(carNo, insuranceNo, category, insurancePrice, -->
+<!-- 		insuranceAge, insuranceExperience,compensation,customerCharge) -->
+<!-- 	VALUES -->
+<!-- 		(#{carNo},SEQ_CarINSURANCE.nextval, #{category}, #{insurancePrice}, -->
+<!-- 		#{insuranceAge}, #{insuranceExperience},#{compensation},#{customerCharge}) -->
+<!-- 	</insert> -->
+	
+	<!-- 변경 carInfoNo 로 -->
+	<insert id="writeCarFileUpload"  parameterType="java.util.List">
+	
+		<foreach collection="list" item="item" index="index" open="INSERT ALL " separator=" " close="SELECT * FROM DUAL">
+		into 
+			car_FileUpload (carInfoNo, orgFileName, fileName, fileSize, realSavePath, fileType)
+		values
+		(#{item.carInfoNo}, #{item.orgFileName}, #{item.fileName}, #{item.fileSize}, #{item.realSavePath},#{item.fileType})
+		</foreach>
+	</insert>
+	
+	
+	<!-- 차회사 수정 -->
+	<update id="updateRentCarCompany">
+		update 
+			rentcarcompany
+		set
+			 companyName = #{companyName},tel = #{tel}, address = #{address}, id = #{id}
+		where companyNo = #{companyNo}
+	</update>
+	
+	<!-- 차량 수정  변경 carName,carTypes, carCapacity, carFuel 제거, carInfoNo추가-->
+	<update id="updateCar">
+		update 
+			cars
+		set
+			carInfoNo = #{carInfoNo}, carNo = #{carNo}, companyNo = #{companyNo} , price = #{price},
+			 modelYears = TO_DATE(#{modelYears},'YYYY-MM'), rentAge = #{rentAge}, rentExperience = #{rentExperience},
+			 license = #{license}, insuranceInfo = #{insuranceInfo},
+			 rentCarNote = #{rentCarNote}, cancelAndRefund = #{cancelAndRefund} , id = #{id}
+			 
+		where carNo = #{carNo}
+		
+	</update>
+	<!-- 차량 옵션 수정 -->
+	<update id="updateCarOption">
+		update 
+			caroption
+		set
+			 carNo = #{carNo,jdbcType=VARCHAR}, smoking = #{smoking,jdbcType=VARCHAR} , navigation = #{navigation,jdbcType=VARCHAR}, blackbox = #{blackbox,jdbcType=VARCHAR},
+			 rearCamera = #{rearCamera,jdbcType=VARCHAR}, rearSensor = #{rearSensor,jdbcType=VARCHAR} , sunroof = #{sunroof,jdbcType=VARCHAR}, bluetooth = #{bluetooth,jdbcType=VARCHAR},
+			 heatingSheet = #{heatingSheet,jdbcType=VARCHAR}, heatingHandle = #{heatingHandle,jdbcType=VARCHAR} , leatherSheet = #{leatherSheet,jdbcType=VARCHAR}, driverAirbag = #{driverAirbag,jdbcType=VARCHAR},
+			 smartKey = #{smartKey,jdbcType=VARCHAR}, usb = #{usb,jdbcType=VARCHAR} , aux = #{aux,jdbcType=VARCHAR}, dmb = #{dmb,jdbcType=VARCHAR}
+			 
+		where carNo = #{carNo}
+		
+	</update>
+	<!-- 파일업로드 db 삭제 -->
+	<delete id="deleteCarFileUpload">
+	delete car_FileUpload where carInfoNo = #{carInfoNo}
+	</delete>
+	
+	<!-- 파일업로드 update For null -->
+	
+	<update id="updateFileUploadForNull">
+	update
+		car_FileUpload
+	set 
+		orgFileName = '',fileName = '',fileSize = '',realSavePath = ''
+	where
+		carInfoNo = #{carInfoNo}
+	</update>
+	
+	
+	
+	<!-- 회사 삭제 -->
+	<delete id="deleteCompany">
+	delete rentCarCompany where companyNo = #{companyNo}
+	</delete>
+	<!-- 회사 삭제시 모든 파일 삭제됨에 따라 파일도 삭제하기위 정보 가져오기 
+	<select id="getDeleteFileUpload" resultType="com.hallabong.rentcarboard.domain.CarFileUploadVO">
+	select cfup.carno, cfup.orgfilename, cfup.filename, cfup.filesize, cfup.realsavepath
+	from car_fileupload cfup, rentcarcompany rcc, cars cars
+	where cfup.carno = cars.carno and cars.companyno = #{companyNo} and rcc.companyno = #{companyNo}
+	</select>-->
+	
+	<!-- 차량삭제 -->
+	<delete id="deleteCar">
+	delete cars where carNo = #{carNo}
+	</delete>
+	
+	
+	<!-- 추가 
+	렌트카basicInfo 삭제시 파일도 삭제됨-->
+	<select id="getDeleteFileUpload">
+		select carInfono, orgfilename, filename, 
+    filesize, realsavepath
+	from car_FileUpload 
+	where carInfono = #{carInfono}
+	</select>
+	
+	<!-- 차량 기본정보 list -->
+	<select id="carBasicInfoList" resultType="com.hallabong.rentcarboard.domain.RentCarSynthesizeDTO">
+	select cbi.carInfoNo, cbi.carName,  cbi.carFuel, cbi.carCapacity , cbi.carTypes,
+	    cfup.filename,cfup.orgFileName, cfup.filesize, 
+	        cfup.realsavepath
+	from carbasicinfo cbi, car_fileupload cfup
+	where 
+	<include refid="carBasicInfoSearch"/>
+	cbi.carinfoNo = cfup.carinfoNo
+		
+	</select>
+	<!-- 검색 -->
+	<sql id="carBasicInfoSearch">
+		<trim prefix="(" suffix=") and" prefixOverrides="or">
+		
+			<foreach collection="keyArr" item="key">
+				
+				<trim prefix="or">
+					<!-- switch case 문과 동일 -->
+					<choose>
+						<!--  type은 문자열이면 toString 안붙여도 되야하는데
+						확인 필요-->
+						<when test="key == 'N'.toString()">
+							cbi.carName like '%' || #{word} ||'%'
+						</when>
+						<when test="key == 'T'.toString()">
+							cbi.carTypes like '%' || #{word} ||'%'
+						</when>
+						<when test="key == 'F'.toString()">
+							cbi.carFuel like '%' || #{word} ||'%'
+						</when>
+					</choose>
+				</trim>
+				
+			</foreach>
+		
+		</trim>
+	</sql>
+	
+	<!-- 차량 기본정보 등록 + 파일업로드writeCarBasicInfoGetCarInfoNo -->
+		<insert id="writeCarBasicInfoGetCarInfoNo" >
+	insert into 
+		carBasicInfo(carInfoNo, carName, carTypes, carCapacity, carFuel)
+	VALUES
+		(seq_carBasicInfo.nextval, #{carName},#{carTypes},
+		 #{carCapacity}, #{carFuel})
+		
+		<selectKey keyProperty="carInfoNo" resultType="long" order="AFTER" >
+		select seq_carBasicInfo.currval from dual
+		</selectKey> 
+		
+	</insert>
+	
+	<!-- 수정 updateCarBasicInfo-->
+		<update id="updateCarBasicInfo">
+		update 
+			carBasicInfo
+		set
+			 carName = #{carName},carTypes = #{carTypes}, carCapacity = #{carCapacity}, carFuel = #{carFuel}
+		where carInfoNo = #{carInfoNo}
+	</update>
+	<!-- 차량 기본정보 삭제 - on delete 설정으로 파일도 같이 삭제 - 실제 파일도 삭제해야함-->
+	<delete id="deleteCarBasicInfo">
+	delete carBasicInfo where carInfoNo = #{carInfoNo}
+	</delete>
+	
+	
+	<!-- 해당 회사의 차량 번호판 , 검색 (번호판), 정렬 예약 남은 차량 역순-->
+	<select id="getCompanyCarsList" resultType="com.hallabong.rentcarboard.domain.RentCarSynthesizeDTO">
+	select companycarsno, carno, companyno, licenseplate, 
+            booking,consumerid, writeDate, updateDate ,
+            carname, companyname
+    from(
+    
+        select rnum, companycarsno, carno, companyno, licenseplate, 
+                booking,consumerid, writeDate, updateDate ,
+                carname, companyname
+        from(
+        
+            SELECT  
+                rownum rnum, cpc.companycarsno, cpc.carno, cpc.companyno, cpc.licenseplate, 
+                cpc.booking,cpc.consumerid, cpc.writeDate, cpc.updateDate ,cpc.id,
+                cbi.carname, rcc.companyname
+                FROM 
+                    companyCars cpc, carbasicinfo cbi, rentcarcompany rcc, cars cars
+                where 
+                    cpc.carNo = cars.carno and cars.carinfono = cbi.carinfono
+                    and cpc.companyno = rcc.companyNo
+
+                    and cpc.carNo = #{carNo}
+                    and cpc.companyNo = #{companyNo}
+                order by companycarsno desc
+            )
+   )where rnum BETWEEN #{pageObject.startRow} and #{pageObject.endRow}   
+	
+	
+	</select>
+	<!-- 리스트 페이징을위한 전체 개수 -->
+	<select id="getTotalRowForCompanyCars" resultType="long">
+	select 
+		count(companyCarsNo)
+	from 
+		companycars  
+	where 
+		carNo = #{startRow}  and companyNo = #{endRow}
+	</select>
+	<!-- 리스트 검색을 위한 쿼리 -->
+	<!-- 리스트 정렬을 위한 쿼리 -->
+	
+	<!-- 번호판 등록 -->
+	<insert id="writeCompanyCars">
+	insert into companyCars(companyCarsNo, carNo, companyNo, licensePlate,id)
+	VALUES (seq_companyCars.nextval, #{carNo}, #{companyNo}, #{licensePlate}, #{id})
+	</insert>
+	
+	<!-- 번호판 상세 보기 -->
+	<select id="viewCompanyCars" resultType="com.hallabong.rentcarboard.domain.CompanyCarsVO">
+	select companyCarsNo, carNo, companyNo, licensePlate, 
+	       booking,consumerId, writeDate, updateDate
+	    from companycars
+	where companyCarsNo = #{companyCarsNo}	
+	</select>
+	
+	<!-- 번호판 수정 -->
+	<update id="updateCompanyCars">
+		update 
+			companycars
+		set
+			licensePlate = #{licensePlate}
+		where companyCarsNo = #{companyCarsNo}
+	</update>
+	<!-- 번호판 삭제 -->
+	<delete id="deleteCompanyCars">
+	delete companycars where companyCarsNo = #{companyCarsNo}
+	</delete>
+</mapper>
