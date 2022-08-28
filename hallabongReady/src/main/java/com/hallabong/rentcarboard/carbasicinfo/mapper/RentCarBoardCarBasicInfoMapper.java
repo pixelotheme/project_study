@@ -11,6 +11,8 @@ public interface RentCarBoardCarBasicInfoMapper {
 
 	//carBasicInfo 리스트,보기,등록,수정,삭제 / 차량 기본정보에 등록할때 차량 사진등록함
 	public List<RentCarBoardSynthesizeVO> carBasicInfoList(PageObjectCustom pageObject);
+	//페이징을 위한 전체개수
+	public long getTotalRowForcarBasicInfo(PageObjectCustom pageObject);
 	
 	//view
 	//추가 차 이름 등 - carInfoNo 로 확인  리스트에서 같이 뽑아둠

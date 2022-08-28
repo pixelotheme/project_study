@@ -44,7 +44,13 @@
 		<table width="100%"
 			class="table table-striped table-bordered table-hover">
 			
-			
+			<tr>
+				<th>글번호</th>
+				<th>회사명</th>
+				<th>연락처</th>
+				<th>주소</th>
+				<th>등록자 - 안보이게 (로그인아이디와 비교)</th>
+			</tr>
 			
 			
 			<tbody>
@@ -74,16 +80,31 @@
 			</tbody>
 
 		</table>
+		
+<!-- 		<div class="list-group"> -->
+<!-- 		<div></div> -->
+		
+<%-- 		<c:forEach items="${list }" var="vo"> --%>
+<%-- 			<a href="/rentcarcompany/rentCarCompanyUpdate.do?companyNo=${vo.companyNo}" class="list-group-item"> --%>
+<%-- 				<p>${vo.companyNo}. ${vo.companyName}</p> --%>
+<!-- 				<hr> -->
+<%-- 				<strong>${vo.id}</strong> (${vo.tel}) --%>
+<!-- 			</a> -->
+<%-- 		</c:forEach> --%>
+<!-- 		</div> -->
+		
+				
+				
 				
 
 	<button type="button" onclick="location='/rentcarcompany/rentCarCompanyWrite.do'">회사등록</button>
 	<button type="button" onclick="location='/rentcarcompany/rentCarCompanyUpdate.do'">회사정보 수정</button>
 	
-	<button type="button" onclick="location='/rentcarboard/rentCarWrite.do'">차량등록</button>
+<!-- 	<button type="button" onclick="location='/rentcarboard/rentCarWrite.do'">차량등록</button> -->
 	<button type="button" onclick="location='/rentcarboard/rentCarBoardList.do'">렌트카 리스트</button>
 	<!-- 페이징 처리 -->
 	<div>
-		<pageNav:rentCarPageNav listURI="list.do" pageObject="${pageObject }"/>
+		<pageNav:rentCarPageNav listURI="rentCarCompanyList.do" pageObject="${pageObject }"/>
 	</div>
 
 

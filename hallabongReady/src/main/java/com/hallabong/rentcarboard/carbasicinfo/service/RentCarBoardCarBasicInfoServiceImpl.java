@@ -22,6 +22,8 @@ public class RentCarBoardCarBasicInfoServiceImpl implements RentCarBoardCarBasic
 	@Override
 	public List<RentCarBoardSynthesizeVO> carBasicInfoList(PageObjectCustom pageObject) {
 		// TODO Auto-generated method stub
+		pageObject.setTotalRow(mapper.getTotalRowForcarBasicInfo(pageObject));
+		
 		return mapper.carBasicInfoList(pageObject);
 	}
 	//추가

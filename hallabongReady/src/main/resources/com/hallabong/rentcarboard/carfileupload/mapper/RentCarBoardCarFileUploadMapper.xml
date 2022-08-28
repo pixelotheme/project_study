@@ -19,7 +19,7 @@
 		into 
 			car_FileUpload (carInfoNo, orgFileName, fileName, fileSize, realSavePath, fileType)
 		values
-		(#{item.carInfoNo}, #{item.orgFileName}, #{item.fileName}, #{item.fileSize}, #{item.realSavePath},#{item.fileType})
+		(#{item.carInfoNo}, #{item.orgFileName,jdbcType=VARCHAR}, #{item.fileName,jdbcType=VARCHAR}, #{item.fileSize}, #{item.realSavePath,jdbcType=VARCHAR},#{item.fileType,jdbcType=VARCHAR})
 		</foreach>
 	</insert>
 	

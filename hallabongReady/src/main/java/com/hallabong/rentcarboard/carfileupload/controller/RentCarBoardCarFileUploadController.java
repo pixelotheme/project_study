@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.ResponseEntity;
@@ -102,7 +103,7 @@ public class RentCarBoardCarFileUploadController {
 
 			
 			// 이미지 리스트를 위해서 작은 이미지 처리가 필요하다. - 섬네일 처리
-			if(checkImageType(saveFile)) {
+			if(newCheckImageType(saveFile)) {
 				//이미지 확인
 				imageCheck = true;
 				
@@ -118,7 +119,7 @@ public class RentCarBoardCarFileUploadController {
 				thumbnail.close();
 				
 			}
-			
+			log.info("실행확인");
 			// null 이면 에러나서 생성해준다
 			if (list == null)
 				list = new ArrayList<RentCarBoardCarFileUploadVO>();
@@ -138,7 +139,7 @@ public class RentCarBoardCarFileUploadController {
 			}else {
 				vo.setFileType("I");
 			}
-
+				
 			list.add(vo);
 			log.info("vo 에 저장된 fileName : " + vo.getFileName());
 
@@ -225,12 +226,30 @@ public class RentCarBoardCarFileUploadController {
 	//이미지 파일에 대한 판다
 	private boolean checkImageType(File file) throws Exception {
 		
-		//
+		// 애초에 파일이 안들어가면 null값이 반환된다
 		String contentType = Files.probeContentType(file.toPath());
 		
 		log.info("checkImageType().contentType"+contentType);
+		
+		return contentType.startsWith("image");
 		// 시작이 이미지인 경우 리턴값 true, 아닌경우 false
-		return contentType.startsWith("image"); // contentType.indexOf("image") == 0 - 처음 인덱스에 image 시작인가?
+//		return contentType.startsWith("image"); // contentType.indexOf("image") == 0 - 처음 인덱스에 image 시작인가?
+		
+	}
+	
+	//MimeTypesFileTypeMap 사용, 안에 파일이 없을때 null을 반환하는 것때문에 사용(7 이하만 나온다는데 나는 나옴)
+	//혹시몰라 예비로 만들어둠
+	private boolean newCheckImageType(File file) throws Exception{
+		MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
+		
+		String contentType = mimeTypesMap.getContentType(file);
+		
+		if(contentType.contains("image")) {
+			return true;
+		}else {
+			return false;
+		}
+		
 	}
 	
 	

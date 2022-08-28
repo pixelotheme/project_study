@@ -55,13 +55,13 @@
 						<td data-carInfoNo="${vo.carInfoNo }">
 						
 						<p>
-						${vo.carName }
+						차명 : ${vo.carName }
 						</p>
 						<p>
-						${vo.carFuel }
+						연료 : ${vo.carFuel }
 						</p>
 						<p>
-						${vo.carTypes }
+						차종 : ${vo.carTypes }
 						</p>
 
 						</td>
@@ -76,7 +76,7 @@
 <button type="button" onclick="location='/rentcarboard/rentCarBoardList.do'">렌트카 리스트</button>
 	<!-- 페이징 처리 -->
 	<div>
-		<pageNav:rentCarPageNav listURI="list.do" pageObject="${pageObject }"/>
+		<pageNav:rentCarPageNav listURI="carBasicInfoList.do" pageObject="${pageObject }"/>
 	</div>
 
 

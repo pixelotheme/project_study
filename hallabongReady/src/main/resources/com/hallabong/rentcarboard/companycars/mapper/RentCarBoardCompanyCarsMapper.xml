@@ -3,9 +3,6 @@
 
 <mapper namespace="com.hallabong.rentcarboard.companycars.mapper.RentCarBoardCompanyCarsMapper">
 <!-- 차 번호판 가져오기-->
-	<select id="getCarInsurance" resultType="com.hallabong.rentcarboard.companycars.domain.RentCarBoardCompanyCarsVO">
-
-	</select>
 	
 		<!-- 해당 회사의 차량 번호판 , 검색 (번호판), 정렬 예약 남은 차량 역순-->
 	<select id="getCompanyCarsList" resultType="com.hallabong.rentcarboard.companycars.domain.RentCarBoardCompanyCarsSynthesizeVO">

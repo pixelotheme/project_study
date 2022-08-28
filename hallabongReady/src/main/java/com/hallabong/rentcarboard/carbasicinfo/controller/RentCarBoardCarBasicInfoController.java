@@ -75,7 +75,7 @@ public class RentCarBoardCarBasicInfoController {
 	@PostMapping("/carBasicInfoWrite.do")
 //	public String rentCarwrite(CarsVO carsVO, CarOptionVO carOptionVO, CarInsuranceVO carInsuranceVOList, MultipartFile[] uploadFile, HttpServletRequest request) throws Exception {
 //		public String rentCarwrite(CarsVO carsVO, CarOptionVO carOptionVO, MultipartFile[] uploadFile, HttpServletRequest request) throws Exception {
-		public String carBasicInfoWrite(RentCarBoardCarBasicInfoVO carBasicInfoVO, MultipartFile[] uploadFile, HttpServletRequest request) throws Exception {
+		public String carBasicInfoWrite(RentCarBoardCarBasicInfoVO carBasicInfoVO, MultipartFile[] uploadFile) throws Exception {
 		//carBasicInfoVO 의 번호를 업로드 vo db 넣어줄때 넘겨준다
 		
 		service.writeCarBasicInfoGetCarInfoNo(carBasicInfoVO);
