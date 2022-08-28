@@ -4,6 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
 <title>차량 기본정보</title>
 </head>
 <body>
@@ -18,7 +23,7 @@
 			</div>		
 			<div>
 			차종
-				<select name="carTypes">
+				<select name="carTypes" class="form-control">
 					<option value="소형">소형</option>
 					<option value="중형">중형</option>
 					<option value="고급">고급</option>
@@ -32,7 +37,7 @@
 			</div>		
 			<div>
 				연료
-				<select name="carFuel">
+				<select name="carFuel" class="form-control">
 					<option value="휘발유">휘발유</option>
 					<option value="경유">경유</option>
 					<option value="LPG">LPG</option>
@@ -43,13 +48,13 @@
 			
 			<div>
 				<label for="uploadFile">사진</label> 
-				<input type="file" name="uploadFile" multiple="multiple" >
+				<input type="file" name="uploadFile" multiple="multiple" class="btn btn-default">
 			</div>
 			
 			<div>
-				<button>등록</button>
-				<button type="reset">새로입력</button>
-				<button type="button" id="cancelBtn">취소</button>
+				<button class="btn btn-default">등록</button>
+				<button type="reset"class="btn btn-default">새로입력</button>
+				<button type="button" id="cancelBtn"class="btn btn-default">취소</button>
 			</div>
 		
 		</form>

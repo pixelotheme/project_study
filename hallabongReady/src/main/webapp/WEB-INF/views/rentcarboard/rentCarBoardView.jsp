@@ -34,8 +34,15 @@ $(function(){
 <body>
 <div class="container">
 
-		<h2>이미지 게시판 보기</h2>
-
+		<h2>렌트카 게시판 보기</h2>
+				<ul class="list-group">
+		<!-- grid 를 사용한다면 class="col-md-2" 으로 할경우 깨짐 row 를 속성으로 넣어줘야 안깨진다 -->
+<%-- 				<li class="list-group-item"><label>번호</label><strong id="no">${carBasicInfoVO.carInfoNo }</strong></li> --%>
+<%-- 				<li class="list-group-item"><label>모델</label>${carBasicInfoVO.carName }</li> --%>
+<%-- 				<li class="list-group-item"><label>연료</label>${carBasicInfoVO.carFuel }</li> --%>
+<%-- 				<li class="list-group-item"><label>정원</label>${carBasicInfoVO.carCapacity }</li> --%>
+<%-- 				<li class="list-group-item"><label>차종</label>${carBasicInfoVO.carTypes }</li> --%>
+			</ul>	
 		${companyVO }
 		${carsVO }
 		${carOptionVO }
@@ -51,6 +58,62 @@ $(function(){
 		<div>
 		${carBasicInfoVO}
 		</div>
+		
+		<!-- 차량 옵션 -->
+		<div>
+						<!-- 차 옵션 -->
+<%-- 						<p>${ vo.smoking == null ? "금연차량":"<strong>금연차량</strong>" } --%>
+<%-- 						${ vo.navigation == null ? "네이게이션":"<strong>네이게이션</strong>" } --%>
+<%-- 						${ vo.blackbox == null ? "블랙박스":"<strong>블랙박스</strong>" } --%>
+<%-- 						${ vo.rearCamera == null ? "후방카메라":"<strong>후방카메라</strong>" }</p> --%>
+
+<%-- 						<p>${ vo.frontSensor == null ? "전방센서":"<strong>전방센서</strong>" } --%>
+<%-- 						${ vo.rearSensor == null ? "후방센서":"<strong>후방센서</strong>" }</p> --%>
+<%-- 						<p>${ vo.sunroof == null ? "썬루프":"<strong>썬루프</strong>" } --%>
+<%-- 						${ vo.bluetooth == null ? "블루투스":"<strong>블루투스</strong>" }</p> --%>
+
+<%-- 						<p>${ vo.heatingSheet == null ? "열선시트":"<strong>열선시트</strong>" } --%>
+<%-- 						${ vo.heatingHandle == null ? "열선핸들":"<strong>열선핸들</strong>" }</p> --%>
+						
+									<p>
+				${(carOptionVO.smoking == '금연차량')? '<strong>금연차량</strong>':'금연차량'}
+				${(carOptionVO.navigation == '네비게이션')? '<strong>네비게이션</strong>':'네비게이션'}
+				${(carOptionVO.blackbox == '블랙박스')? '<strong>블랙박스</strong>':'블랙박스'}
+				${(carOptionVO.rearCamera == '후방카메라')? '<strong>후방카메라</strong>':'후방카메라'}
+			</p>
+				<p>
+				${(carOptionVO.frontSensor == '전방센서')? '<strong>전방센서</strong>':'전방센서'}
+				"${(carOptionVO.rearSensor == '후방센서')? '<strong>후방센서</strong>':'후방센서'}
+				${(carOptionVO.sunroof == '썬루프')? '<strong>썬루프</strong>':'썬루프'}
+				${(carOptionVO.bluetooth == '블루투스')? '<strong>블루투스</strong>':'블루투스'}
+				</p>
+				<p>
+				${(carOptionVO.heatingSheet == '열선시트')? '<strong>열선시트</strong>':'열선시트'}
+				${(carOptionVO.heatingHandle == '열선핸들')? '<strong>열선핸들</strong>':'열선핸들'}
+				${(carOptionVO.leatherSheet == '가죽시트')? '<strong>가죽시트</strong>':'가죽시트'}
+				${(carOptionVO.ventilationSheet == '통풍시트')? '<strong>통풍시트</strong>':'통풍시트'}
+				</p>
+				<p>
+				${(carOptionVO.carSeatPay == '카시트(유료)')? '<strong>카시트(유료)</strong>':'카시트(유료)'}
+				${(carOptionVO.carSeatFree == '카시트(무료)')? '<strong>카시트(무료)</strong>':'카시트(무료)'}
+				${(carOptionVO.driverAirbag == '운전석에어백')? '<strong>운전석에어백</strong>':'운전석에어백'}
+				${(carOptionVO.passengerAirbag == '조수석에어백')? '<strong>조수석에어백</strong>':'조수석에어백'}
+				</p>
+				<p>
+				${(carOptionVO.fourWheel == '4륜구동')? '<strong>4륜구동</strong>':'4륜구동'}
+				${(carOptionVO.smartKey == '스마트키')? '<strong>스마트키</strong>':'스마트키'}
+				${(carOptionVO.rearAutomaticDoor == '뒷자석자동문')? '<strong>뒷자석자동문</strong>':'뒷자석자동문'}
+				${(carOptionVO.freeCharge == '전기충전무료')? '<strong>전기충전무료</strong>':'전기충전무료'}
+				</p>
+				<p>
+				${(carOptionVO.usb == 'usb')? '<strong>usb</strong>':'usb'}
+				${(carOptionVO.aux == 'aux')? '<strong>aux</strong>':'aux'}
+				${(carOptionVO.dmb == 'dmb')? '<strong>dmb</strong>':'dmb'}
+				${(carOptionVO.camping == '캠핑카')? '<strong>캠핑카</strong>':'캠핑카'}
+				</p>
+						
+		</div>
+		
 					<!-- 이미지바꾸기 -->
 					
 		<img alt="차량 이미지" src="/upload/${carFileUploadVO.realSavePath}/s_${carFileUploadVO.fileName}" width="100px">

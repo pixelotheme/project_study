@@ -94,15 +94,15 @@
 		</table>
 				
 
+	<button type="button" onclick="location='/rentcarboard/rentCarBoardWrite.do'">렌트카 등록</button>
 	<button type="button" onclick="location='/rentcarcompany/rentCarCompanyList.do'">회사리스트</button>
 <!-- 	<button type="button" onclick="location='/rentcarboard/rentCarCompanyWrite.do'">회사등록</button> -->
 <!-- 	<button type="button" onclick="location='/rentcarboard/rentCarCompanyUpdate.do'">회사정보 수정</button> -->
 	<button type="button" onclick="location='/carbasicinfo/carBasicInfoList.do'">차종 리스트</button>
 	
-	<button type="button" onclick="location='/rentcarboard/rentCarBoardWrite.do'">렌트카 등록</button>
 	<!-- 페이징 처리 -->
 	<div>
-		<pageNav:rentCarPageNav listURI="list.do" pageObject="${pageObject }"/>
+		<pageNav:rentCarPageNav listURI="rentCarBoardList.do" pageObject="${pageObject }"/>
 	</div>
 
 

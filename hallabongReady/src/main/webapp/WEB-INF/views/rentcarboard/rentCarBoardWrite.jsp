@@ -34,6 +34,19 @@ $(function(){
 // 		alert(checkId);
 		//아이디 비교할 예정 다르면 선택불가
 		})
+
+	$("#submitBtn").on("click", function(){
+		var companyCheck = $("#selectCompany").find(':selected').data("id")
+		if(companyCheck == "N"){
+			alert("회사를 선택해주세요")
+			
+			return null;
+			}
+		else{
+			$("#actionForm").submit();
+			}
+		
+		})
 })
 	
 </script>
@@ -45,7 +58,7 @@ $(function(){
 			<div>
 			회사
 				<select name="companyNo" id="selectCompany">
-						<option>회사 선택</option>
+						<option data-id="N">회사 선택</option>
 					<c:forEach items="${companys }" var="company">
 						<option value="${company.companyNo }" data-id="${company.id }">${company.companyName }</option>
 					</c:forEach>
@@ -192,7 +205,7 @@ $(function(){
 
 			
 			<div>
-				<button id="submitBtn">등록</button>
+				<button type="button" id="submitBtn">등록</button>
 				<button type="reset">새로입력</button>
 				<button type="button" id="cancelBtn">취소</button>
 			</div>
