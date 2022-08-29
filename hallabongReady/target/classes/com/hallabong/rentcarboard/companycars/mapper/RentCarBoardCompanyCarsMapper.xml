@@ -41,9 +41,11 @@
 		count(cpc.companyCarsNo)
 	from 
 		companycars cpc
+<!-- 		, carbasicinfo cbi -->
 	where 
 	<include refid="searCompanyCars"/>
-		cpc.carNo = #{carNo}  and cpc.companyNo = #{companyNo}
+		cpc.companyNo = #{companyNo}
+		and cpc.carNo = #{carNo}  
 	</select>
 	<!-- 리스트 검색을 위한 쿼리 -->
 	<sql id="searCompanyCars">
@@ -55,6 +57,10 @@
 					<if test="pageObject.key == 'C'.toString()">
 						cpc.id like '%' || #{pageObject.word,jdbcType=VARCHAR} ||'%'
 					</if >
+<!-- 					<if test="pageObject.key == 'N'.toString()"> -->
+<!-- 						cbi.carname like '%' || #{pageObject.word,jdbcType=VARCHAR} ||'%' -->
+<!-- 					</if >
+						차량 명 검색 시  전체 번호판 나와야할때 사용한다 -->
 				
 		</trim>
 	</sql>

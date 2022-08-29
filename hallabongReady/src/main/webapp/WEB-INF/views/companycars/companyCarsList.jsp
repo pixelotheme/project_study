@@ -31,6 +31,8 @@
 				<select class="form-control" name="key" id="key">
 						<option value="P">번호판</option>
 						<option value="C">예약자</option>
+<!-- 						<option value="N">차량명</option> -->
+						
 				</select>
 			</div>
 			<!-- 검색 word -->
@@ -72,9 +74,11 @@
 						</td>
 						<td >
 						${vo.booking }
+						${vo.booking == 1? "예약 불가":"예약 가능" }
 						</td>
 						<td >
 						${vo.consumerId }
+						${vo.consumerId != null? "vo.consumerId":"예약자가 없습니다" }
 						</td>
 					</tr>
 				</c:forEach>

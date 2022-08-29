@@ -33,12 +33,16 @@ $(function(){
 		var checkId = $(this).find(':selected').data("id")
 // 		alert(checkId);
 		//아이디 비교할 예정 다르면 선택불가
-		})
+		});
 
 	$("#submitBtn").on("click", function(){
 		var companyCheck = $("#selectCompany").find(':selected').data("id")
-		if(companyCheck == "N"){
-			alert("회사를 선택해주세요")
+		
+		alert(companyCheck)
+		
+		// 선택된 아이디 == 로그인한 아이디
+		if(companyCheck != "admin"){
+			alert("회사를 등록한 아이디로 로그인해주세요")
 			
 			return null;
 			}
@@ -46,7 +50,7 @@ $(function(){
 			$("#actionForm").submit();
 			}
 		
-		})
+		});
 })
 	
 </script>

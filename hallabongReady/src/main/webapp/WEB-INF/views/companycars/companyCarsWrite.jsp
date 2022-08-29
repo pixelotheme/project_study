@@ -54,6 +54,8 @@ $(function(){
 	<div class="container">
 		<h2>번호판 등록</h2>
 			
+			<!-- 회사가 등록해둔 차량 목록 -->
+			
 			<!-- 방금 등록한 차번호 -->
 			<form action="" method="post">
 				<input type="hidden" name="carNo" value="${param.carNo }">

@@ -42,6 +42,41 @@ $(function(){
 <%-- 				<li class="list-group-item"><label>연료</label>${carBasicInfoVO.carFuel }</li> --%>
 <%-- 				<li class="list-group-item"><label>정원</label>${carBasicInfoVO.carCapacity }</li> --%>
 <%-- 				<li class="list-group-item"><label>차종</label>${carBasicInfoVO.carTypes }</li> --%>
+				<li class="list-group-item"><label>회사 이름</label>${companyVO.companyName }</li>
+				<li class="list-group-item">
+					<label>회사 연락처</label> - ${companyVO.tel }
+				</li>
+				<li class="list-group-item">
+					<label>회사 주소</label>${companyVO.address }
+				</li>
+				<li class="list-group-item">
+					<label>회사 등록 id</label>${companyVO.id }
+				</li>
+				<li class="list-group-item">
+					<label>차등록번호</label>
+					<p>${carsVO.carNo }</p>
+				</li>
+				<li class="list-group-item">
+					<label>회사 번호</label>${carsVO.companyNo }
+				</li>
+				<li class="list-group-item">
+					<label>가격</label>${carsVO.price}
+				</li>
+				<li class="list-group-item">
+					<label>기어</label>${carsVO.gearbox}
+				</li>
+				<li class="list-group-item">
+					<label>보험종류</label>${carsVO.insuranceType }
+				</li>
+				<li class="list-group-item">
+					<label>대여가능 나이</label>${carsVO.rentAge }
+				</li>
+				<li class="list-group-item">
+					<label>대여 가능 운전 경력</label>${carsVO.rentExperience }
+				</li>
+				<li class="list-group-item">
+					<label>면허</label>${carsVO.license }
+				</li>
 			</ul>	
 		${companyVO }
 		${carsVO }
@@ -144,6 +179,9 @@ $(function(){
 	<input class="datepicker">
 	
 	
+<button type="button" onclick="location='/rentcarboard/rentCarBoardList.do'">리스트</button>
+<!--회사 등록된 아이디와  관리자아이디가 같을 때만 보이게 한다 -->
+<c:if test="${companyVO.id eq 'admin'}">
 
 <button type="button" onclick="location='/rentcarboard/rentCarBoardUpdate.do?carNo=${carsVO.carNo}'">차량 정보 수정</button>
 
@@ -155,10 +193,10 @@ $(function(){
 
 </c:if>
 <button type="button" onclick="location='/rentcarboard/rentCarBoardDelete.do?carNo=${carsVO.carNo}'">차량 삭제</button>
-<button type="button" onclick="location='/rentcarboard/rentCarBoardList.do'">리스트</button>
 <!-- if(id = carsVO.id)  일때만 보이도록-->
 <button type="button" onclick="location='/companycars/companyCarsList.do?carNo=${carsVO.carNo}&companyNo=${carsVO.companyNo }&carInfoNo=${carBasicInfoVO.carInfoNo }'">차량 번호판 리스트</button>
 
+</c:if>
 
 </div>
 

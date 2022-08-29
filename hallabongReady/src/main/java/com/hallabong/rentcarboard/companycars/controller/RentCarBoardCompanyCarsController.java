@@ -30,12 +30,14 @@ public class RentCarBoardCompanyCarsController {
 	
 	@GetMapping("/companyCarsList.do")
 	public String companyCarslist(PageObjectCustom pageObject, long carNo,  long companyNo,Model model) {
+//	public String companyCarslist(PageObjectCustom pageObject,  long companyNo,Model model) {
 		//key = 매장, word = 차량검색
 		
 		//게시글, 회사, 차, 차옵션, 차보험, 파일업로드 불러와야함
 		//vo 한번에 뭉쳐서 테스트
 //		List<RentCarSynthesizeDTO> dto = service.list(pageObject);
 		List<RentCarBoardCompanyCarsSynthesizeVO> dto = service.getCompanyCarsList(pageObject, carNo, companyNo);
+//		List<RentCarBoardCompanyCarsSynthesizeVO> dto = service.getCompanyCarsList(pageObject, companyNo);
 		log.info("dto : "+ dto);
 		
 		

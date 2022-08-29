@@ -76,7 +76,7 @@
 	<!-- 변경 렌트카 가져오기-->
 	<select id="getCars" resultType="com.hallabong.rentcarboard.domain.RentCarBoardCarsVO">
 	select 
-		carNo, companyNo, carInfoNo, price, gearbox,
+		carNo, companyNo, carInfoNo, insuranceType, price, gearbox,
         to_char(modelyears, 'yyyy-MM') modelyears, rentAge,
 		rentExperience,license,insuranceInfo ,
 		rentCarNote ,cancelAndRefund,writeDate ,updateDate, id

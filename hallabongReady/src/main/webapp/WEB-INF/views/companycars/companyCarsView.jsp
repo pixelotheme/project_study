@@ -31,9 +31,9 @@
 		
 				<li class="list-group-item"><label>번호판</label>${companyCarsVO.licensePlate }</li>
 		
-				<li class="list-group-item"><label>정원</label>${companyCarsVO.booking == 1? "예약 불가":"예약 가능" }</li>
+				<li class="list-group-item"><label>예약 현황</label>${companyCarsVO.booking == 1? "예약 불가":"예약 가능" }</li>
 		
-				<li class="list-group-item"><label>차종</label>${companyCarsVO.consumerId != null? "companyCarsVO.consumerId":"예약자가 없습니다" }</li>
+				<li class="list-group-item"><label>예약자</label>${companyCarsVO.consumerId != null? "companyCarsVO.consumerId":"예약자가 없습니다" }</li>
 			</ul>	
 		<table width="100%"
 			class="table table-striped table-bordered table-hover">

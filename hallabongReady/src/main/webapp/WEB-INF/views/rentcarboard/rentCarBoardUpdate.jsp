@@ -26,7 +26,24 @@ $("#selectCompany").on("change",function(){
 	var checkId = $(this).find(':selected').data("id")
 // 		alert(checkId);
 	//아이디 비교할 예정 다르면 선택불가
-	})
+	});
+
+$("#submitBtn").on("click", function(){
+	var companyCheck = $("#selectCompany").find(':selected').data("id")
+	
+	alert(companyCheck)
+	
+	// 선택된 아이디 == 로그인한 아이디
+	if(companyCheck != "admin"){
+		alert("회사를 등록한 아이디로 로그인해주세요")
+		
+		return null;
+		}
+	else{
+		$("#actionForm").submit();
+		}
+	
+	});
 })
 </script>
 </head>
@@ -202,7 +219,7 @@ $("#selectCompany").on("change",function(){
 
 			
 			<div>
-				<button id="submitBtn">등록</button>
+				<button type="button" id="submitBtn">등록</button>
 				<button type="reset">새로입력</button>
 				<button type="button" id="cancelBtn">취소</button>
 			</div>

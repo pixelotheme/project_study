@@ -26,6 +26,7 @@ public class RentCarBoardCompanyCarsServiceImpl implements RentCarBoardCompanyCa
 	
 	@Override
 	public List<RentCarBoardCompanyCarsSynthesizeVO> getCompanyCarsList(PageObjectCustom pageObject, long carNo,
+//	public List<RentCarBoardCompanyCarsSynthesizeVO> getCompanyCarsList(PageObjectCustom pageObject,
 			long companyNo) {
 		// TODO Auto-generated method stub
 		pageObject.setTotalRow(mapper.getTotalRowForCompanyCars(pageObject, carNo, companyNo));

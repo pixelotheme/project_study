@@ -159,7 +159,9 @@ $(function(){
 			<c:forEach items="carInsuranceVO">
 			
 			</c:forEach>
+			
 			<div>
+			1.보험
 			${(carInsuranceVO[0].category == '일반자차')? '일반자차':'고급자차'} <button type="button" id="deleteTop">삭제</button>
 			</div>
 			
@@ -197,15 +199,15 @@ $(function(){
 			
 			
 				<div id="InsurancePlus">
-					<div>
+					<div>2.보험
 						${(carInsuranceVO[1].category == '일반자차')? '일반자차':'고급자차'} <button type="button" id="deleteBottom">삭제</button>
 					</div>
 					
 					<div>
 					보험 카테고리
 						<select name="category" id="category2">
-							<option value="일반자차" ${(carInsuranceVO[1].category == '일반자차')? 'selected':''}>일반자차</option>
 							<option value="고급자차" ${(carInsuranceVO[1].category == '고급자차')? 'selected':''}>고급자차</option>
+							<option value="일반자차" ${(carInsuranceVO[1].category == '일반자차')? 'selected':''}>일반자차</option>
 						</select>			
 					</div>
 					<div>
