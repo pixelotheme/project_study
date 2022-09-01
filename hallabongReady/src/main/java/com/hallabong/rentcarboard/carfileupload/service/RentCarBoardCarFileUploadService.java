@@ -10,8 +10,8 @@ public interface RentCarBoardCarFileUploadService {
 	public RentCarBoardCarFileUploadVO getCarFileUpload(long carInfoNo);
 	
 	//파일업로드
-	public int writeCarFileUpload(List<RentCarBoardCarFileUploadVO> list);
-	
+//	public int writeCarFileUpload(List<RentCarBoardCarFileUploadVO> list);
+	public int writeCarFileUpload(RentCarBoardCarFileUploadVO list);
 	
 	//파일 삭제 (파일업로드는 db 삭제후 다시만든다)
 	public int deleteCarFileUpload(long carInfoNo);

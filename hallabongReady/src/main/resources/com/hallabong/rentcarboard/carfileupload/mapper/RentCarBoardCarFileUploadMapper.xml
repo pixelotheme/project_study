@@ -12,15 +12,12 @@
 		carInfoNo = #{carInfoNo}
 	</select>
 	
-				<!-- 변경 carInfoNo 로 , 파일업로드-->
-	<insert id="writeCarFileUpload"  parameterType="java.util.List">
+	<insert id="writeCarFileUpload"  >
 	
-		<foreach collection="list" item="item" index="index" open="INSERT ALL " separator=" " close="SELECT * FROM DUAL">
-		into 
-			car_FileUpload (carInfoNo, orgFileName, fileName, fileSize, realSavePath, fileType)
+	insert into 
+			car_FileUpload (uploadNo, carInfoNo, orgFileName, fileName, fileSize, realSavePath, fileType)
 		values
-		(#{item.carInfoNo}, #{item.orgFileName,jdbcType=VARCHAR}, #{item.fileName,jdbcType=VARCHAR}, #{item.fileSize}, #{item.realSavePath,jdbcType=VARCHAR},#{item.fileType,jdbcType=VARCHAR})
-		</foreach>
+		(seq_car_FileUpload.nextval,#{carInfoNo}, #{orgFileName,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, #{fileSize}, #{realSavePath,jdbcType=VARCHAR},#{fileType,jdbcType=VARCHAR})
 	</insert>
 	
 			<!-- 변경 -->

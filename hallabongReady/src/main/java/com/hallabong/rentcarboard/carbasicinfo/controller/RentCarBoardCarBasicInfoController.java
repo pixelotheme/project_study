@@ -97,7 +97,10 @@ public class RentCarBoardCarBasicInfoController {
 		
 		log.info(list);
 		//업로드후 정보 db에 입력
-		cfupService.writeCarFileUpload(list);
+//		cfupService.writeCarFileUpload(list);
+		//1개씩 입력하자
+		list.forEach(vo -> cfupService.writeCarFileUpload(vo));
+		
 		
 		
 		return "redirect:/carbasicinfo/carBasicInfoList.do?";
@@ -158,7 +161,8 @@ public class RentCarBoardCarBasicInfoController {
 			
 			log.info(list);
 			//업로드후 정보 db에 입력
-			cfupService.writeCarFileUpload(list);
+//			cfupService.writeCarFileUpload(list);
+			list.forEach(vo -> cfupService.writeCarFileUpload(vo));
 		}//파일이 넘어온 값이 있으면 수정해라
 		
 		return "redirect:/carbasicinfo/carBasicInfoView.do?carInfoNo="+carBasicInfoVO.getCarInfoNo();

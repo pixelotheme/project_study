@@ -23,7 +23,7 @@ public class RentCarBoardCarFileUploadServiceImpl implements RentCarBoardCarFile
 	}
 
 	@Override
-	public int writeCarFileUpload(List<RentCarBoardCarFileUploadVO> list) {
+	public int writeCarFileUpload(RentCarBoardCarFileUploadVO list) {
 		// TODO Auto-generated method stub
 		return mapper.writeCarFileUpload(list);
 	}

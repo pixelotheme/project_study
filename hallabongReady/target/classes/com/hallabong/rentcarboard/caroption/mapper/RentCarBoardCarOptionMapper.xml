@@ -18,11 +18,11 @@
 		<!-- 차옵션 등록 -->
 	<insert id="writeCarOption">
 	insert into 
-		caroption(carNo, smoking, navigation, blackbox,rearCamera,rearSensor,
+		caroption(carOptionNo,carNo, smoking, navigation, blackbox,rearCamera,rearSensor,
 		sunroof,bluetooth,heatingSheet, heatingHandle, leatherSheet, driverAirbag,smartKey,
 		usb,aux,dmb)
 	values(
-	#{carNo}, #{smoking,jdbcType=VARCHAR}, #{navigation,jdbcType=VARCHAR}, #{blackbox,jdbcType=VARCHAR},#{rearCamera,jdbcType=VARCHAR},#{rearSensor,jdbcType=VARCHAR},
+	seq_carOption.nextval,#{carNo}, #{smoking,jdbcType=VARCHAR}, #{navigation,jdbcType=VARCHAR}, #{blackbox,jdbcType=VARCHAR},#{rearCamera,jdbcType=VARCHAR},#{rearSensor,jdbcType=VARCHAR},
 		#{sunroof,jdbcType=VARCHAR},#{bluetooth,jdbcType=VARCHAR},#{heatingSheet,jdbcType=VARCHAR}, #{heatingHandle,jdbcType=VARCHAR}, #{leatherSheet,jdbcType=VARCHAR}, #{driverAirbag,jdbcType=VARCHAR},#{smartKey,jdbcType=VARCHAR},
 		#{usb,jdbcType=VARCHAR},#{aux,jdbcType=VARCHAR},#{dmb,jdbcType=VARCHAR}
 	)

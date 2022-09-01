@@ -55,6 +55,7 @@ public class RentCarBoardCompanyCarsController {
 	@GetMapping("/companyCarsWrite.do")
 	public String companyCarsWriteForm() {
 		
+		//현재 보고있는  차량 의 번호판 목록 (같은회사의) ajax로 불러와 데이터 저장해둔뒤 넘어가는 데이터와 비교 
 		
 		
 		return "companycars/companyCarsWrite";

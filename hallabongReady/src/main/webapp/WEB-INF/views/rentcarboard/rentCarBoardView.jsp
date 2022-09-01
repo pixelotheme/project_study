@@ -35,7 +35,11 @@ $(function(){
 <div class="container">
 
 		<h2>렌트카 게시판 보기</h2>
+		
+		<div>
+		
 				<ul class="list-group">
+				${carsVO }
 		<!-- grid 를 사용한다면 class="col-md-2" 으로 할경우 깨짐 row 를 속성으로 넣어줘야 안깨진다 -->
 <%-- 				<li class="list-group-item"><label>번호</label><strong id="no">${carBasicInfoVO.carInfoNo }</strong></li> --%>
 <%-- 				<li class="list-group-item"><label>모델</label>${carBasicInfoVO.carName }</li> --%>
@@ -77,14 +81,45 @@ $(function(){
 				<li class="list-group-item">
 					<label>면허</label>${carsVO.license }
 				</li>
+				<li class="list-group-item">
+					<label>보험 안내</label>${carsVO.insuranceInfo }
+				</li>
+				<li class="list-group-item">
+					<label>참고사항</label>${carsVO.rentCarNote }
+				</li>
+				<li class="list-group-item">
+					<label>취소/환불</label>${carsVO.cancelAndRefund }
+				</li>
+				<li class="list-group-item">
+					<label>연식</label>${carsVO.modelYears }
+				</li>
+				<li class="list-group-item">
+					<label>렌트카 등록 아이디</label>${carsVO.id }
+				</li>
 			</ul>	
+			
+		
+		</div>
 		${companyVO }
-		${carsVO }
-		${carOptionVO }
+			<ul class="list-group">
+				<li class="list-group-item">
+					<p>
+					회사명 : ${companyVO.companyName }				
+					</p>
+					<p>
+					연락처 : ${companyVO.tel }				
+					</p>
+					<p>
+					주소 : ${companyVO.address }				
+					</p>
+				</li>
+				<li></li>
+			</ul>
 		
 		<div>
 		
 		${carFileUploadVO }
+		
 		</div> 
 		<span>날짜 ${carsVO.modelYears }
 		
@@ -96,6 +131,7 @@ $(function(){
 		
 		<!-- 차량 옵션 -->
 		<div>
+		${carOptionVO }
 						<!-- 차 옵션 -->
 <%-- 						<p>${ vo.smoking == null ? "금연차량":"<strong>금연차량</strong>" } --%>
 <%-- 						${ vo.navigation == null ? "네이게이션":"<strong>네이게이션</strong>" } --%>
