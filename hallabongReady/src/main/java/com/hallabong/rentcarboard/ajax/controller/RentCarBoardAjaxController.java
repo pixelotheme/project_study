@@ -1,6 +1,7 @@
 package com.hallabong.rentcarboard.ajax.controller;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +22,7 @@ import com.hallabong.rentcarboard.ajax.service.RentCarBoardAjaxService;
 import com.hallabong.rentcarboard.carbasicinfo.domain.RentCarBoardCarBasicInfoVO;
 import com.hallabong.rentcarboard.carinsurance.domain.RentCarBoardCarInsuranceVO;
 import com.hallabong.rentcarboard.rentcarcompany.domain.RentCarBoardRentCarCompanyVO;
+import com.hallabong.rentcarbooking.domain.RentCarBookingVO;
 
 import lombok.extern.log4j.Log4j;
 
@@ -131,5 +134,54 @@ public class RentCarBoardAjaxController {
 			}
 			return	new ResponseEntity<String>("delete success",HttpStatus.OK);
 		}
+	
 		
+		//최종값 계산
+		//write, consumes 받는 형식, porduces 넘기는 형식
+		//json 타입 받으려면 RequestBody 써줘야함
+		@PostMapping(value = "/totalPrice.do", consumes = "application/json",produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+		public ResponseEntity<Map<String, Object>> totalPrice(@RequestBody RentCarBookingVO bookingVO, Model model){
+			log.info("ajax : =" +bookingVO);
+			Date rentalDate = bookingVO.getRentalDate();
+			Date returnDate = bookingVO.getReturnDate();
+			int result = 0;
+			long calDate = 0L;
+			long calDateDays = 0L;
+			long totalPrice = 0L;
+			Map<String, Object> map = new HashMap<String, Object>();
+			
+			if(rentalDate.compareTo(returnDate) > 0) {
+				//렌탈 시작일이 더 먼저다 - > 잘못된 선택이라 리셋 시켜야함
+				System.out.println(rentalDate.compareTo(returnDate));
+				System.out.println("잘못된 선택");
+				
+				map.put("totalPrice", bookingVO.getPrePrice());
+				
+				return new ResponseEntity<Map<String, Object>>(map ,HttpStatus.OK);
+				
+			}else {
+//				Date.getTime() 은 해당날짜를 기준으로1970년 00:00:00 부터 몇 초가 흘렀는지를 반환해준다.
+				calDate = rentalDate.getTime() - returnDate.getTime();
+//				 24*60*60*1000(각 시간값에 따른 차이점) 을 나눠주면 일수가 나온다.
+				calDateDays = calDate / (24*60*60*1000);
+				
+//				음수 결과일 경우 양수로 바꿔주었습니다.
+				calDateDays = Math.abs(calDateDays);
+				System.out.println("두 날짜의 날짜 차이: "+calDateDays);
+				result = 1;
+				
+				totalPrice = calDateDays * bookingVO.getPrePrice();
+			}
+			
+			
+			log.info(totalPrice);
+			String strPrice = Long.toString(totalPrice);
+
+			map.put("totalPrice", totalPrice);
+			//write 가 안되면 오류~ 예외처리 따로해준다
+			return	result == 1 ?
+					new ResponseEntity<Map<String, Object>>(map ,HttpStatus.OK)
+					: new ResponseEntity<Map<String, Object>>(HttpStatus.INTERNAL_SERVER_ERROR);
+//			return "rentcarajax/rentCarBoardViewAjax";
+		}
 }

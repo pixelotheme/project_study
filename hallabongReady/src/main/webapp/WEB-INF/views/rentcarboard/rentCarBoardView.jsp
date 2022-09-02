@@ -210,11 +210,75 @@ $(function(){
 	<!-- 자차미포함 일때 보험 가격탭 나온다 + 일반자차,고급자차 둘다 표시 -->
 	
 	
+	<div>
+	<script type="text/javascript">
+$(function(){
+	//날짜 선택시 자동 가격계산
+	$("#returnDate").on("change",function(){
+
+		 var prePrice =  "${carsVO.price}";
+		
+// 		var Date = {rentalDate : $("#rentalDate").val() , returnDate : $("#returnDate").val(), prePrice: $("#plusPrice").data("price")}
+		var Date = {rentalDate : $("#rentalDate").val() , returnDate : $("#returnDate").val(), prePrice: prePrice}
+		
+		alert(JSON.stringify(Date))
+
+		$.ajax({
+			     method: 'post',
+			     url: '/rentcarboardajaxcontroller/totalPrice.do',
+			     data: JSON.stringify(Date),
+			     contentType: "application/json; charset=utf-8",
+// 			     success: function (data,status, xhr) {
+			     success: function (data,status, xhr) {
+			        if (data) {
+						if(data.totalPrice == prePrice){
+							alert("대여,반납일을 다시선택해주세요")
+							}
+						else{
+							alert("성공 "+data.totalPrice);
+							var ajaxPrice = data.totalPrice;
+							alert("천단위"+ajaxPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+							var formatPrice = ajaxPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+							str = "<p>"+formatPrice+"</p>"
+							$("#bookingPrice").html(str);
+							}
+
+// 			         $("#totalPrice").val(data);
+			        }
+			     },
+			     error: function (xhr,status, error){
+			    	  	alert("에러"+error);
+			    	  }
+			   });//end of ajax
+
+		 	
+	
+	})
+})
+	</script>
+	
 	
 <!--  선택한 날짜 차이에 따라 가격이 변해야한다 -->	
-	<input class="datepicker">
+	<form action="">
+		<input type="hidden" value="${carVO.price }" name="price">
+		<div>
+			<label for="rentalDate">대여일</label>
+			<input class="datepicker" name="rentalDate" id="rentalDate">
+		</div>
+		<div>
+			<label for="returnDate">반납일</label>
+			<input class="datepicker" name="returnDate" id="returnDate">
+		</div>
+		
+		<div id="bookingPrice">
+			<fmt:formatNumber value="${carsVO.price}" pattern="#,###" />
+		</div>
+		
+		
+	</form>
 	
 	
+	</div>
 <button type="button" onclick="location='/rentcarboard/rentCarBoardList.do'">리스트</button>
 <!--회사 등록된 아이디와  관리자아이디가 같을 때만 보이게 한다 -->
 <c:if test="${companyVO.id eq 'admin'}">

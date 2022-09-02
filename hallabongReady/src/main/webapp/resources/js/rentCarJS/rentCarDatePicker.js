@@ -29,7 +29,7 @@ $(function(){
 	        monthNames: ['년 1월','년 2월','년 3월','년 4월','년 5월','년 6월','년 7월','년 8월','년 9월','년 10월','년 11월','년 12월'],
 	        nextText: '다음 달',
 	        prevText: '이전 달',
-	        beforeShowDay: disableAllTheseDays 
+	        beforeShowDay: noBefore 
 	    });
 	     
 	});
