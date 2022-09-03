@@ -214,10 +214,19 @@ $(function(){
 	<script type="text/javascript">
 $(function(){
 	//날짜 선택시 자동 가격계산
-	$("#returnDate").on("change",function(){
+	$("#dateChange").on("change",function(){
 
 		 var prePrice =  "${carsVO.price}";
-		
+		 var rentalDate = $("#rentalDate").val();
+		 var returnDate = $("#returnDate").val();
+		if(!rentalDate){
+			alert("대여일을 선택해주세요")
+			return
+			}
+		if(!returnDate){
+			alert("반납일을 선택해주세요")
+			return			
+			}
 // 		var Date = {rentalDate : $("#rentalDate").val() , returnDate : $("#returnDate").val(), prePrice: $("#plusPrice").data("price")}
 		var Date = {rentalDate : $("#rentalDate").val() , returnDate : $("#returnDate").val(), prePrice: prePrice}
 		
@@ -237,10 +246,12 @@ $(function(){
 						else{
 							alert("성공 "+data.totalPrice);
 							var ajaxPrice = data.totalPrice;
+
 							alert("천단위"+ajaxPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
 							var formatPrice = ajaxPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 							str = "<p>"+formatPrice+"</p>"
 							$("#bookingPrice").html(str);
+							$("#totalPrice").attr("value", ajaxPrice)
 							}
 
 // 			         $("#totalPrice").val(data);
@@ -250,31 +261,57 @@ $(function(){
 			    	  	alert("에러"+error);
 			    	  }
 			   });//end of ajax
-
-		 	
 	
 	})
+
+// 	$("#rentalDate").on("change",function(){
+//         var selected = $(this).val();
+//         alert(selected);
+//         $("#rentalDateInput").val(selected);
+// 		})
+// 	$("#returnDate").on("change",function(){
+//         var selected = $(this).val();
+//         alert(selected);
+//         $("#rentalDateInput").val(selected);
+// 		})
+	
+	$("#bookingBtn").on("click", function(){
+		event.preventDefault();
+// 		alert($("#totalPrice").val());
+		$("#bookingForm").submit();
+		})
+
+	
 })
 	</script>
 	
 	
 <!--  선택한 날짜 차이에 따라 가격이 변해야한다 -->	
-	<form action="">
-		<input type="hidden" value="${carVO.price }" name="price">
-		<div>
-			<label for="rentalDate">대여일</label>
-			<input class="datepicker" name="rentalDate" id="rentalDate">
-		</div>
-		<div>
-			<label for="returnDate">반납일</label>
-			<input class="datepicker" name="returnDate" id="returnDate">
+	<form action="/rentcarbooking/booking.do" id="bookingForm">
+		<input type="hidden" value="${carsVO.price }" name="prePrice">
+		<input type="hidden" value="${carsVO.carNo }" name="carNo">
+		<input type="hidden" value="${companyVO.companyNo }" name="companyNo">
+		<input type="hidden" value="${carBasicInfoVO.carInfoNo }" name="carInfoNo">
+		<input type="hidden" value="" name='totalPrice' id='totalPrice'>
+<!-- 		<input type="hidden" value="" name='rentalDate' id='rentalDateInput'> -->
+<!-- 		<input type="hidden" value="" name='returnDate' id='returnDateInput'> -->
+<%-- 		<input type="hidden" value="${param.perPageNum }" name="perPageNum"> --%>
+		<div id="dateChange">
+			<div>
+				<label for="rentalDate">대여일</label>
+				<input class="datepicker" id="rentalDate" name='rentalDate'/>
+			</div>
+			<div>
+				<label for="returnDate">반납일</label>
+				<input class="datepicker" id="returnDate" name='returnDate'>
+			</div>
 		</div>
 		
 		<div id="bookingPrice">
 			<fmt:formatNumber value="${carsVO.price}" pattern="#,###" />
 		</div>
 		
-		
+		<button type="button" id="bookingBtn">예약하기</button>
 	</form>
 	
 	
