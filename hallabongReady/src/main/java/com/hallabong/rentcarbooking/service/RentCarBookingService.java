@@ -18,6 +18,8 @@ public interface RentCarBookingService {
 	public RentCarBookingVO getInfoForBooking(RentCarBookingVO vo) throws Exception;	
 	//해당 차량의 회사차량번호 가져오기
 	public RentCarBookingVO getCompanyCarsNo(Long carNo) throws Exception;	
+	//등록시 번호판 예약상황 업데이트
+	public int updateCompanyCars(RentCarBookingVO vo, long booking)throws Exception;
 	//차량 등록후 결제 정보 업데이트
 	public int writePayment(RentCarBookingVO vo) throws Exception;	
 	

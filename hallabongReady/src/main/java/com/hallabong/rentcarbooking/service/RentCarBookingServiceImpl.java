@@ -34,6 +34,7 @@ public class RentCarBookingServiceImpl implements RentCarBookingService {
 		return mapper.view(bookingNo);
 	}
 
+	//예약등록
 	@Override
 	public Long write(RentCarBookingVO vo) throws Exception {
 		// TODO Auto-generated method stub
@@ -50,12 +51,17 @@ public class RentCarBookingServiceImpl implements RentCarBookingService {
 		return mapper.getCompanyCarsNo(carNo);
 	}
 	@Override
+	public int updateCompanyCars(RentCarBookingVO vo, long booking) throws Exception {
+		// TODO Auto-generated method stub
+		return mapper.updateCompanyCars(vo, booking);
+	}
+	@Override
 	public int writePayment(RentCarBookingVO vo) throws Exception {
 		// TODO Auto-generated method stub
 		return mapper.writePayment(vo);
 	}
 	
-
+	//예약수정
 	@Override
 	public int update(RentCarBookingVO vo) throws Exception {
 		// TODO Auto-generated method stub
@@ -73,6 +79,8 @@ public class RentCarBookingServiceImpl implements RentCarBookingService {
 		// TODO Auto-generated method stub
 		return mapper.delete(bookingNoo);
 	}
+
+
 
 
 

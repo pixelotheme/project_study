@@ -39,7 +39,7 @@ $(function(){
 	$("#deleteBtn").on("click", function(){
 		// alert("새로고침 클릭");
 		if(confirm("삭제?")){
-		location = "delete.do?bookingNo=${vo.bookingNo}";
+		location = "delete.do?bookingNo=${vo.bookingNo}&companyCarsNo=${vo.companyCarsNo}";
 			}
 	});
 	

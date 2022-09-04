@@ -129,6 +129,14 @@
 		</selectKey> 
 		
 	</insert>
+	<!-- 차 번호판 예약상태 업데이트 -->
+	<update id="updateCompanyCars">
+		update 
+			companycars
+		set
+			booking = #{booking}, consumerId = #{vo.consumerId,jdbcType=VARCHAR}
+		where companyCarsNo = #{vo.companyCarsNo}
+	</update>
 	<!-- 결제정보 업데이트 -->
 	<update id="writePayment">
 	update 

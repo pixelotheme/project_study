@@ -80,6 +80,7 @@ public class RentCarBookingController {
 		model.addAttribute("companyCarsNo", service.getCompanyCarsNo(basicVO.getCarNo()));
 		//가져올정보 추가로 회원 id 에 맞는 이름,이메일, 휴대폰
 		
+		
 		return "rentcarbooking/booking";
 		
 	}
@@ -95,6 +96,8 @@ public class RentCarBookingController {
 		
 		service.write(vo);
 		String companyName = java.net.URLEncoder.encode(vo.getCompanyName(), "utf-8");
+		//회사차 번호판 에 예약현황 업데이트 시킨다(booking,cunsumerId)
+		service.updateCompanyCars(vo, 1);
 		
 //		return "redirect:payment.do?bookingNo="+bookingNo+"&companyName="+vo.getCompanyName();
 		return "redirect:payment.do?bookingNo="+vo.getBookingNo()+"&companyName="+companyName;
@@ -169,6 +172,16 @@ public class RentCarBookingController {
 		log.info("예약 수정 처리------------------"+vo);
 		
 		service.update(vo);
+		
+		//반납이면 booking 상태 0 으로 
+		if(vo.getBookingStatus() == "반납" || vo.getBookingStatus().equals("반납")) {
+			vo.setConsumerId("");
+			log.info("아이디 null" + vo);
+			service.updateCompanyCars(vo, 0);
+		}else {
+			service.updateCompanyCars(vo, 1);
+		}
+		
 		return "redirect:updatePayment.do?bookingNo="+vo.getBookingNo()
 		;
 		
@@ -197,10 +210,13 @@ public class RentCarBookingController {
 	
 	//예약 삭제
 	@GetMapping("/delete.do")
-	public String delete(long bookingNo) throws Exception{
+	public String delete(RentCarBookingVO vo) throws Exception{
 		
 		log.info("예약 삭제------------------");
-		service.delete(bookingNo);
+		service.delete(vo.getBookingNo());
+		
+		//회사차량 예약,아이디0으로
+		service.updateCompanyCars(vo, 0);
 		return "redirect:list.do";
 		
 	}	
