@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
+
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
 	<!-- Appenders -->
@@ -11,7 +12,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.hallabong.controller">
+	<logger name="com.hallabong">
 		<level value="info" />
 	</logger>
 	
@@ -32,9 +33,22 @@
 		<level value="info" />
 	</logger>
 
+	<!-- jdbc 로그  경고이상 나와야 찍는다
+	audit 권한, reesultset, connection-->
+	<logger name="jdbc.audit">
+		<level value="warn"/>
+	</logger>
+	<logger name="jdbc.resultset">
+		<level value="warn"/>
+	</logger>
+	<logger name="jdbc.connection">
+		<level value="warn"/>
+	</logger>
+
+
 	<!-- Root Logger -->
 	<root>
-		<priority value="warn" />
+		<priority value="info" />
 		<appender-ref ref="console" />
 	</root>
 	
