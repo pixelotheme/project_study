@@ -17,6 +17,14 @@
 
 
 <title>차량 번호판 리스트</title>
+<script type="text/javascript">
+$(function(){
+	
+$("#key").val("${empty(pageObject.key)?'P':pageObject.key}");	
+})
+
+</script>
+
 </head>
 <body>
 <div class="container">
@@ -35,6 +43,7 @@
 						
 				</select>
 			</div>
+			
 			<!-- 검색 word -->
 			<div class="input-group">
 				<input type="text" class="form-control" placeholder="Search" name="word" value="${pageObject.word }">
@@ -50,8 +59,13 @@
 			
 			
 		<table width="100%"
-			class="table table-striped table-bordered table-hover">
-			
+			class="table table-bordered table-hover">
+			<tr>
+				<th>회사명, 회사이름</th>
+				<th>번호판</th>
+				<th>예약 상황</th>
+				<th>예약자</th>
+			</tr>
 			
 			
 			
@@ -59,16 +73,13 @@
 				<c:forEach items="${list }" var="vo">
 				<!-- move 를 클릭하면 그안에 bno 가져와서 js 로  form태그의 action을 글보기로
 				바꿔 넘겨준다 -->
-					<tr onclick="location='/companycars/companyCarsView.do?companyCarsNo=${vo.companyCarsNo}&carNo=${vo.carNo}&companyNo=${vo.companyNo }&carInfoNo=${param.carInfoNo }'">
-						<td>
-						</td>
+					<tr onclick="location='/companycars/companyCarsView.do?companyCarsNo=${vo.companyCarsNo}&carNo=${vo.carNo}&companyNo=${vo.companyNo }&carInfoNo=${param.carInfoNo }&page=${pageObject.page }&perPageNum=${pageObject.perPageNum }&key=${pageObject.key }&word=${pageObject.word }'">
 						
-						<td data-carNo="${vo.carNo }"></td>
 						<td data-carInfoNo="${vo.companyNo }">
 						<p>${vo.companyName}</p>
 						<p>${vo.carName }</p>
 						</td>
-						<td>
+						<td data-carNo="${vo.carNo }">
 						<!-- 차 옵션 -->
 						${vo.licensePlate }
 						</td>
@@ -86,14 +97,13 @@
 			</tbody>
 
 		</table>
-				
 
-	<button type="button" onclick="location='/companycars/companyCarsWrite.do?carNo=${param.carNo}&companyNo=${param.companyNo }&carInfoNo=${param.carInfoNo }'">번호판 등록</button>
+	<button class="btn btn-default" type="button" onclick="location='/companycars/companyCarsWrite.do?carNo=${param.carNo}&companyNo=${param.companyNo }&carInfoNo=${param.carInfoNo }'">번호판 등록</button>
 	
-	<button type="button" onclick="location='/rentcarboard/rentCarBoardView.do?carNo=${param.carNo}&carInfoNo=${param.carInfoNo }&companyNo=${param.companyNo }'">렌트카 보기</button>
+	<button class="btn btn-default" type="button" onclick="location='/rentcarboard/rentCarBoardView.do?carNo=${param.carNo}&carInfoNo=${param.carInfoNo }&companyNo=${param.companyNo }'">렌트카 보기</button>
 	<!-- 페이징 처리 -->
 	<div>
-		<pageNav:rentCarPageNav listURI="list.do" pageObject="${pageObject }"/>
+		<pageNav:rentCarPageNav listURI="companyCarsList.do" pageObject="${pageObject }" query="&carNo=${param.carNo}&companyNo=${param.companyNo }&carInfoNo=${param.carInfoNo }"/>
 	</div>
 
 

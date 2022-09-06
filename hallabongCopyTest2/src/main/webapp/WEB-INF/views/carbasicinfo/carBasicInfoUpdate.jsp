@@ -20,7 +20,8 @@ ${carFileUploadVO }
 	<div class="container">
 	<h2>차량 기본정보 수정</h2>
 		<form  method="post" id="actionForm" enctype="multipart/form-data">
-		
+			<input type="hidden" name="page" value="${param.page}">
+			<input type="hidden" name="perPageNum" value="${param.perPageNum}">				
 			<div class="form-group">
 				<!--  for 는 id 와 연결된다   name은 vo 변수명과 같아야한다-->
 				<label for="carName">차 이름</label>

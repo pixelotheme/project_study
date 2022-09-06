@@ -158,7 +158,7 @@ $(function(){
 					</div>
 						<div class="form-group">
 							<label>결제계좌</label> 
-							<input class="form-control" name="paymentAccount" value="" id="paymentAccountID"/>
+							<input class="form-control" name="paymentAccount" value="" id="paymentAccountID" readonly="readonly"/>
 								
 						</div>
 

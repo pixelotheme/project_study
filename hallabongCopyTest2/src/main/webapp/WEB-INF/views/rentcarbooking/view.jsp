@@ -32,7 +32,11 @@ $(function(){
 	$("#updateBtn").on("click", function(){
 		// alert("글등록으로 이동");
 		location = "update.do?bookingNo=${vo.bookingNo}&companyCarsNo=${vo.companyCarsNo}"
-		+ "&carNo=${vo.carNo}&companyNo=${vo.companyNo}&carInfoNo=${vo.carInfoNo}";
+		+ "&carNo=${vo.carNo}&companyNo=${vo.companyNo}&carInfoNo=${vo.carInfoNo}"
+		+ "&page=" + "${param.page}"
+		+ "&perPageNum=" + "${param.perPageNum}"
+		+ "&key=" + "${param.key}"
+		+ "&word=" + "${param.word}";
 	});
 	
 	// 삭제 버튼 이벤트

@@ -10,12 +10,55 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 <title>차량 기본정보</title>
+
+<script type="text/javascript">
+$(function(){
+	$("#cancelBtn").on("click",function(){
+		location="/carbasicinfo/carBasicInfoList.do?perPageNum=${param.perPageNum}"
+		})
+
+		//대여가능(만)나이
+		$("#carCapacity").keyup(function(){
+			var regex = /[^0-9]/g;				// 숫자가 아닌 문자열을 선택하는 정규식
+
+			var carCapacity = $("#carCapacity").val();
+			carCapacity = carCapacity.replace(regex, "")+'명';
+			$("#carCapacity").val(carCapacity);
+					
+			})	
+
+		$("#submitBtn").on("click", function(){
+			
+			
+			//  == 로그인한 아이디 == 등급번호
+			if("admin" != "admin"){
+				alert("회사를 등록한 아이디로 로그인해주세요")
+				
+				return null;
+				}
+			else{
+				event.preventDefault();
+				var regex = /[^0-9]/g;
+				//input 태그 hidden으로 집어넣어줄 예정 - 가격, 대여가능나이, 대여가능 운정 경력
+				var carCapacity = $("#carCapacity").val();
+				carCapacity = carCapacity.replace(regex, "");
+
+				var str = '<input type="hidden" name="carCapacity"  value="'+carCapacity+'" />';
+
+				$("#actionForm").append(str)
+				$("#actionForm").submit();
+				}
+			
+			});
+})
+
+</script>
 </head>
 <body>
 	<div class="container">
 	<h2>차량 기본정보 등록</h2>
 		<form  method="post" id="actionForm" enctype="multipart/form-data">
-		
+		<input type="hidden" value="${param.perPageNum }" name="perPageNum">
 			<div class="form-group">
 				<!--  for 는 id 와 연결된다   name은 vo 변수명과 같아야한다-->
 				<label for="carName">차 이름</label>
@@ -33,7 +76,7 @@
 			</div>	
 			<div class="form-group">
 				<label for="carCapacity">차량 정원</label>
-				<input name="carCapacity" id="carCapacity" class="form-control" required="required">
+				<input id="carCapacity" class="form-control" required="required">
 			</div>		
 			<div>
 				연료
@@ -52,9 +95,9 @@
 			</div>
 			
 			<div>
-				<button class="btn btn-default">등록</button>
-				<button type="reset"class="btn btn-default">새로입력</button>
-				<button type="button" id="cancelBtn"class="btn btn-default">취소</button>
+				<button class="btn btn-default" type="button" class="btn btn-default" id="submitBtn">등록</button>
+				<button class="btn btn-default" type="reset"class="btn btn-default">새로입력</button>
+				<button class="btn btn-default" type="button" id="cancelBtn"class="btn btn-default">취소</button>
 			</div>
 		
 		</form>

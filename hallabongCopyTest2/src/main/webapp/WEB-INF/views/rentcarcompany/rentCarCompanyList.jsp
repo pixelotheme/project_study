@@ -42,7 +42,7 @@
 		<!-- 검색 종료 -->
 			
 		<table width="100%"
-			class="table table-striped table-bordered table-hover">
+			class="table table-bordered table-hover">
 			
 			<tr>
 				<th>글번호</th>
@@ -57,7 +57,7 @@
 				<c:forEach items="${list }" var="vo">
 				<!-- move 를 클릭하면 그안에 bno 가져와서 js 로  form태그의 action을 글보기로
 				바꿔 넘겨준다 -->
-					<tr onclick="location='/rentcarcompany/rentCarCompanyUpdate.do?companyNo=${vo.companyNo}'">
+					<tr onclick="location='/rentcarcompany/rentCarCompanyUpdate.do?companyNo=${vo.companyNo}&page=${pageObject.page}&perPageNum=${pageObject.perPageNum}&key=${pageObject.key}&word=${pageObject.word}'">
 						<td>
 						${vo.companyNo}
 						</td>
@@ -81,23 +81,9 @@
 
 		</table>
 		
-<!-- 		<div class="list-group"> -->
-<!-- 		<div></div> -->
-		
-<%-- 		<c:forEach items="${list }" var="vo"> --%>
-<%-- 			<a href="/rentcarcompany/rentCarCompanyUpdate.do?companyNo=${vo.companyNo}" class="list-group-item"> --%>
-<%-- 				<p>${vo.companyNo}. ${vo.companyName}</p> --%>
-<!-- 				<hr> -->
-<%-- 				<strong>${vo.id}</strong> (${vo.tel}) --%>
-<!-- 			</a> -->
-<%-- 		</c:forEach> --%>
-<!-- 		</div> -->
-		
-				
-				
 				
 
-	<button type="button" onclick="location='/rentcarcompany/rentCarCompanyWrite.do'">회사등록</button>
+	<button type="button" onclick="location='/rentcarcompany/rentCarCompanyWrite.do?perPageNum=${pageObject.perPageNum}'">회사등록</button>
 <!-- 	<button type="button" onclick="location='/rentcarcompany/rentCarCompanyUpdate.do'">회사정보 수정</button> -->
 	
 <!-- 	<button type="button" onclick="location='/rentcarboard/rentCarWrite.do'">차량등록</button> -->

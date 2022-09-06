@@ -29,18 +29,38 @@ $(function(){
 		<h2>이미지 게시판 보기</h2>
 
 		
-		<div>
-		${carBasicInfoVO}
-		</div>
 				<ul class="list-group">
 		<!-- grid 를 사용한다면 class="col-md-2" 으로 할경우 깨짐 row 를 속성으로 넣어줘야 안깨진다 -->
-				<li class="list-group-item"><label>번호</label><strong id="no">${carBasicInfoVO.carInfoNo }</strong></li>
-				<li class="list-group-item"><label>모델</label>${carBasicInfoVO.carName }</li>
-				<li class="list-group-item"><label>연료</label>${carBasicInfoVO.carFuel }</li>
-				<li class="list-group-item"><label>정원</label>${carBasicInfoVO.carCapacity }</li>
-				<li class="list-group-item"><label>차종</label>${carBasicInfoVO.carTypes }</li>
+				<li class="list-group-item row">
+					<div class="col-md-3">번호</div>
+					<div class="col-md-9">${carBasicInfoVO.carInfoNo }</div>
+				</li>
+				<li class="list-group-item row">
+				<div class="col-md-3">모델</div>
+				<div class="col-md-9">
+				${carBasicInfoVO.carName }
+				</div>
+				</li>
+				<li class="list-group-item row">
+				<div class="col-md-3">연료</div>
+				<div class="col-md-9">
+				${carBasicInfoVO.carFuel }
+				</div>
+				</li>
+				<li class="list-group-item row">
+				<div class="col-md-3">정원</div>
+				<div class="col-md-9">
+				${carBasicInfoVO.carCapacity }
+				</div>
+				</li>
+				<li class="list-group-item row">
+				<div class="col-md-3">차종</div>
+				<div class="col-md-9">
+				${carBasicInfoVO.carTypes }
+				</div>
+				</li>
 			</ul>	
-			
+		  	
 					<!-- 이미지바꾸기 -->
 			
 							<img alt="차량 이미지" src="/upload/rentcarboard/${carFileUploadVO.realSavePath}/s_${carFileUploadVO.fileName}" width="100px">
@@ -62,10 +82,10 @@ $(function(){
 	
 	
 
-<button type="button" onclick="location='/carbasicinfo/carBasicInfoUpdate.do?carInfoNo=${carBasicInfoVO.carInfoNo}'">차량 기본 정보 수정</button>
+<button class="btn btn-default" type="button" onclick="location='/carbasicinfo/carBasicInfoUpdate.do?carInfoNo=${carBasicInfoVO.carInfoNo}&page=${param.page }&perPageNum=${param.perPageNum }&key=${param.key }&word=${param.word }'">차량 기본 정보 수정</button>
 
-<button type="button" onclick="location='/carbasicinfo/carBasicInfoDelete.do?carInfoNo=${carBasicInfoVO.carInfoNo}'">차량 기본 정보 삭제</button>
-<button type="button" onclick="location='/carbasicinfo/carBasicInfoList.do'">리스트</button>
+<button class="btn btn-default" type="button" onclick="location='/carbasicinfo/carBasicInfoDelete.do?carInfoNo=${carBasicInfoVO.carInfoNo}&perPageNum=${param.perPageNum }'">차량 기본 정보 삭제</button>
+<button class="btn btn-default" type="button" onclick="location='/carbasicinfo/carBasicInfoList.do?page=${param.page }&perPageNum=${param.perPageNum }&key=${param.key }&word=${param.word }'">리스트</button>
 
 </div>
 

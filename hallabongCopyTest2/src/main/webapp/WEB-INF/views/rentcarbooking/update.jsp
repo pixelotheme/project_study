@@ -106,6 +106,94 @@ $(function(){
 	
 	})
 	
+//정규표현식
+	
+	$("#userName").change(function(){
+		var regex = /\s/g;				
+
+		var userName = $("#userName").val();
+		userName = userName.replace(regex, "");
+		$("#userName").val(userName);
+				
+		})	
+	$("#userEmail").change(function(){
+		 var regEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
+		 var regex = /\s/g;	
+
+		 
+		 var userEmail = $("#userEmail").val();
+		 userEmail = userEmail.replace(regex, "");
+		 
+		 if(regEmail.test(userEmail) === false){
+				alert("이메일을 확인해주세요 (영문+숫자)")
+				$("#userEmail").val(userEmail);
+			 }
+		})
+		
+	$("#drivingLicense").change(function(){
+		var regexLicense = /(\d{2}-\d{2}-\d{6}-\d{2})/;			
+
+		
+		var drivingLicense = $("#drivingLicense").val();
+
+		if(regexLicense.test(drivingLicense) === false){
+			alert("운전면허를 확인해주세요  - 형식 11-11-111111-11");
+
+		}		
+		})
+
+	$("#submitBtn").on("click",function(){
+		event.preventDefault();
+		 var regEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
+		 var regex = /\s/g;		//공백 확인	
+		 var regexLicense = /(\d{2}-\d{2}-\d{6}-\d{2})/;
+		 var regName = /^[가-힣]{2,10}$/ 
+
+
+		var userName = $("#userName").val();
+		if(regName.test(userName) === false){
+			alert("이름 입력 2~10 이내 공백 제외");
+			return false;
+			}	
+			
+		 var userEmail = $("#userEmail").val();
+		 userEmail = userEmail.replace(regex, "");
+		 
+		 if(regEmail.test(userEmail) === false){
+				alert("이메일을 확인해주세요 (영문+숫자)")
+				$("#userEmail").val(userEmail);
+				return false
+			 }
+		var drivingLicense = $("#drivingLicense").val();
+
+		if(regexLicense.test(drivingLicense) === false){
+				alert("운전면허를 확인해주세요  - 형식 11-11-111111-11");
+
+			return false;
+			
+			};	
+
+		var regTel1 = /(\d{2,3}[ ,-]-?\d{2,4}[ ,-]-?\d{4})/; //00-
+// 		var regTel1 = /^(\d{0,2})(\d{0,3})(\d{0,4})$/g; //00-
+// 		var regTel2 = /^(\d{0,3})(\d{0,4})(\d{0,4})$/g;	// 000-
+		
+		var userTel = $("#userTel").val();
+		alert(regTel1.test(userTel));
+// 		alert(regTel2.test(userTel));
+		if(regTel1.test(userTel) === false){
+			alert("연락처를 입력")
+			return false;			
+
+			}
+
+		$("#actionForm").submit();
+		
+		})//end of submitBtn
+
+
+	$("#cancelBtn").on("click",function(){
+		location="/rentcarboard/rentCarBoardView.do?carNo=${param.carNo}&carInfoNo=${param.carInfoNo}&companyNo=${param.companyNo}"
+		})
 	
 });
 jQuery(document).ready(function() {
@@ -140,29 +228,30 @@ ${vo }
 			<!-- /.panel-heading -->
 			<div class="panel-body">
 					<div class="form-group">
-						<label>회사이름</label> <input class="form-control" value="${vo.companyName }" />
+						<label>회사이름</label> <input class="form-control" value="${vo.companyName }" readonly="readonly"/>
 					</div>
 					<div class="form-group">
-						<label>차량이름</label> <input class="form-control" value="${vo.carName }" />
+						<label>차량이름</label> <input class="form-control" value="${vo.carName }" readonly="readonly"/>
 					</div>
 					<div class="form-group">
-						<label>연료</label> <input class="form-control" value="${vo.carFuel }"  />
+						<label>연료</label> <input class="form-control" value="${vo.carFuel }"  readonly="readonly"/>
 					</div>
 					<div class="form-group">
-						<label>보험종류</label> <input class="form-control" value="${vo.insuranceType }" />
+						<label>보험종류</label> <input class="form-control" value="${vo.insuranceType }" readonly="readonly"/>
 					</div>
 					<div class="form-group">
-						<label>대여일</label> <input class="form-control" value='<fmt:formatDate value="${bookingVO.rentalDate }" pattern="yyyy-MM-dd"/>' />
+						<label>대여일</label> <input class="form-control" value='<fmt:formatDate value="${bookingVO.rentalDate }" pattern="yyyy-MM-dd"/>' readonly="readonly"/>
 					</div>
 					<div class="form-group">
-						<label>반납일</label> <input class="form-control" value='<fmt:formatDate value="${bookingVO.returnDate }" pattern="yyyy-MM-dd"/>'  />
+						<label>반납일</label> <input class="form-control" value='<fmt:formatDate value="${bookingVO.returnDate }" pattern="yyyy-MM-dd"/>'  readonly="readonly"/>
 					</div>
 					<div class="form-group">
-						<label>상품금액</label> <input class="form-control" value="${vo.prePrice }" />
+						<label>상품금액</label> <input class="form-control" value="<fmt:formatNumber value='${vo.prePrice }' pattern='#,###'/>" readonly="readonly"/>
 					</div>
 					<div class="form-group">
-						<label>최종금액</label> <input class="form-control" value="${bookingVO.totalPrice }"  />
+						<label>최종금액</label> <input class="form-control" value="<fmt:formatNumber value='${vo.totalPrice }' pattern='#,###'/>"  readonly="readonly"/>
 					</div>
+
 
 
 				
@@ -205,7 +294,7 @@ ${vo }
 			<div class="panel-heading">사용자 정보 입력</div>
 			<!-- /.panel-heading -->
 			<div class="panel-body">
-				<form method="post">
+				<form method="post" id="actionForm">
 				
 				<input type="hidden" value="${bookingVO.bookingNo }" name="bookingNo">
 				<input type="hidden" value="${bookingVO.carNo }" name="carNo">
@@ -217,19 +306,21 @@ ${vo }
 				<input type="hidden" value="test" name="consumerId" />		
 				<input type="hidden" value="${bookingVO.companyName}" name="companyName" />	
 				<input type="hidden" value="${bookingVO.paymentType}" name="paymentType" />	
-				<input type="hidden" value="${bookingVO.paymentAccount}" name="paymentAccount" />	
-					
-					<div class="form-group">
-						<label>이름</label> <input class="form-control" name="userName" value="${bookingVO.userName }"/>
+				<input type="hidden" value="${bookingVO.paymentAccount}" name="paymentAccount" />
+				<input type="hidden" name="page" value="${param.page}">
+				<input type="hidden" name="perPageNum" value="${param.perPageNum}">			
+				<div class="form-group">
+					<div>
+						<label>이름</label> <input class="form-control" name="userName" id="userName" value="${bookingVO.userName }"/>
 					</div>
-					<div class="form-group">
-						<label>이메일</label> <input class="form-control" name="userEmail" value="${bookingVO.userEmail }"/>
+					<div>
+						<label>이메일</label> <input class="form-control" name="userEmail" id="userEmail" value="${bookingVO.userEmail }"/>
 					</div>
-					<div class="form-group">
-						<label>휴대폰</label> <input class="form-control" name="userTel" value="${bookingVO.userTel }"/>
+					<div >
+						<label>휴대폰</label> <input class="form-control" name="userTel" id="userTel" value="${bookingVO.userTel }"/>
 					</div>
-					<div class="form-group">
-						<label>면허번호</label> <input class="form-control" name="drivingLicense"value="${bookingVO.drivingLicense }" />
+					<div >
+						<label>면허번호</label> <input class="form-control" name="drivingLicense" id="drivingLicense" value="${bookingVO.drivingLicense }" />
 					</div>
 					
 					<div id="dateChange">
@@ -248,7 +339,8 @@ ${vo }
 					</div>
 					<!-- 관리자 권한일때만 수정가능 -->					
 					<div>
-						<select name="bookingStatus" id="bookingStatus">
+					<label for="bookingStatus">예약 현황</label>
+						<select name="bookingStatus" id="bookingStatus" class="form-control">
 							<option value="예약">예약</option>
 							<option value="결제">결제</option>
 							<option value="대여">대여</option>
@@ -256,7 +348,8 @@ ${vo }
 						</select>
 					
 					</div>
-					<button type="submit" class="btn btn-default">예약하기</button>
+				</div>
+					<button type="button" class="btn btn-default" id="submitBtn">예약하기</button>
 					<button type="reset" class="btn btn-default">새로고침</button>
 				</form>
 

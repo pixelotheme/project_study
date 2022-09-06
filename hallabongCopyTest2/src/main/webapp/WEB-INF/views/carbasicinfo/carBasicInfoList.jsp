@@ -13,6 +13,12 @@
 
 <meta charset="UTF-8">
 <title>차량 기본정보</title>
+<script type="text/javascript">
+$(function(){
+	
+	$("#key").val("${empty(pageObject.key)?'N':pageObject.key}");	
+	})
+</script>
 </head>
 <body>
 <div class="container">
@@ -42,28 +48,28 @@
 		<table width="100%"
 			class="table table-striped table-bordered table-hover">
 			
-			
+			<tr>
+				<th>이미지</th>
+				<th>차종</th>
+				<th>연료</th>
+				<th>차분류</th>
+			</tr>
 			
 			
 			<tbody>
 				<c:forEach items="${list }" var="vo">
 				<!-- move 를 클릭하면 그안에 bno 가져와서 js 로  form태그의 action을 글보기로
 				바꿔 넘겨준다 -->
-					<tr onclick="location='/carbasicinfo/carBasicInfoView.do?carInfoNo=${vo.carInfoNo}'">
+					<tr onclick="location='/carbasicinfo/carBasicInfoView.do?carInfoNo=${vo.carInfoNo}&page=${pageObject.page }&perPageNum=${pageObject.perPageNum }&key=${pageObject.key }&word=${pageObject.word }'">
 						<td><img alt="차량 이미지" src="/upload/rentcarboard/${vo.realSavePath}/${vo.fileName}" width="100px"> </td>
-						
 						<td data-carInfoNo="${vo.carInfoNo }">
-						
-						<p>
-						차명 : ${vo.carName }
-						</p>
-						<p>
-						연료 : ${vo.carFuel }
-						</p>
-						<p>
-						차종 : ${vo.carTypes }
-						</p>
-
+						${vo.carName }
+						</td>
+						<td>
+						${vo.carFuel }
+						</td>
+						<td>
+						${vo.carTypes }
 						</td>
 					</tr>
 				</c:forEach>
@@ -72,8 +78,8 @@
 
 		</table>
 				
-<button onclick="location='carBasicInfoWrite.do'">차량 기본정보 등록</button>
-<button type="button" onclick="location='/rentcarboard/rentCarBoardList.do'">렌트카 리스트</button>
+<button class="btn btn-default" onclick="location='carBasicInfoWrite.do?perPageNum=${pageObject.perPageNum }'">차량 기본정보 등록</button>
+<button class="btn btn-default" type="button" onclick="location='/rentcarboard/rentCarBoardList.do'">렌트카 리스트</button>
 	<!-- 페이징 처리 -->
 	<div>
 		<pageNav:rentCarPageNav listURI="carBasicInfoList.do" pageObject="${pageObject }"/>

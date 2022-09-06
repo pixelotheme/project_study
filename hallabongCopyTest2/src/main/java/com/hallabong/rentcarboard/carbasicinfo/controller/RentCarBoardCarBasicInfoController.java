@@ -1,5 +1,6 @@
 package com.hallabong.rentcarboard.carbasicinfo.controller;
 
+import java.net.URLEncoder;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -64,7 +65,7 @@ public class RentCarBoardCarBasicInfoController {
 	}
 	//등록 
 	@PostMapping("/carBasicInfoWrite.do")
-		public String carBasicInfoWrite(RentCarBoardCarBasicInfoVO carBasicInfoVO, MultipartFile[] uploadFile) throws Exception {
+		public String carBasicInfoWrite(RentCarBoardCarBasicInfoVO carBasicInfoVO, MultipartFile[] uploadFile,long perPageNum) throws Exception {
 		
 		service.writeCarBasicInfoGetCarInfoNo(carBasicInfoVO);
 		
@@ -83,7 +84,7 @@ public class RentCarBoardCarBasicInfoController {
 		
 		
 		
-		return "redirect:/carbasicinfo/carBasicInfoList.do?";
+		return "redirect:/carbasicinfo/carBasicInfoList.do?perPageNum="+perPageNum;
 	}
 	
 	//차량  기본정보 수정
@@ -97,7 +98,7 @@ public class RentCarBoardCarBasicInfoController {
 
 	//수정처리 진행 작업해야함
 	@PostMapping("/carBasicInfoUpdate.do")
-	public String carBasicInfoUpdate(@RequestParam(defaultValue = "0") String del,RentCarBoardCarBasicInfoVO carBasicInfoVO, MultipartFile[] uploadFile) throws Exception {
+	public String carBasicInfoUpdate(@RequestParam(defaultValue = "0") String del,RentCarBoardCarBasicInfoVO carBasicInfoVO, MultipartFile[] uploadFile, PageObjectCustom pageObject) throws Exception {
 		
 		service.updateCarBasicInfo(carBasicInfoVO);
 		
@@ -129,7 +130,15 @@ public class RentCarBoardCarBasicInfoController {
 			list.forEach(vo -> cfupService.writeCarFileUpload(vo));
 		}//파일이 넘어온 값이 있으면 수정해라
 		
-		return "redirect:/carbasicinfo/carBasicInfoView.do?carInfoNo="+carBasicInfoVO.getCarInfoNo();
+		pageObject.setKey(URLEncoder.encode(pageObject.getKey(), "UTF-8"));
+		pageObject.setWord(URLEncoder.encode(pageObject.getWord(), "UTF-8"));
+		
+		return "redirect:/carbasicinfo/carBasicInfoView.do?carInfoNo="+carBasicInfoVO.getCarInfoNo()
+		+"&page="+pageObject.getPage()
+		+"&perPageNum="+pageObject.getPerPageNum()
+		+"&key="+pageObject.getKey()
+		+"&word="+pageObject.getWord()
+		;
 	}
 	
 	//챠량 기본 정보 보기
@@ -172,7 +181,7 @@ public class RentCarBoardCarBasicInfoController {
 	}	
 
 	@GetMapping("/carBasicInfoDelete.do")
-	public String carBasicInfoDelete(long carInfoNo) throws Exception {
+	public String carBasicInfoDelete(long carInfoNo,long perPageNum) throws Exception {
 		RentCarBoardCarFileUploadController fileUploadController = new RentCarBoardCarFileUploadController();
 		
 		RentCarBoardCarFileUploadVO fileList = (cfupService.getCarFileUpload(carInfoNo));
@@ -180,7 +189,7 @@ public class RentCarBoardCarBasicInfoController {
 		service.deleteCarBasicInfo(carInfoNo);
 		
 		
-		return "redirect:/carbasicinfo/carBasicInfoList.do";
+		return "redirect:/carbasicinfo/carBasicInfoList.do?perPageNum"+perPageNum;
 	}
 	
 	

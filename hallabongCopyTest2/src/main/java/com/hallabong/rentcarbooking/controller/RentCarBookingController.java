@@ -1,5 +1,6 @@
 package com.hallabong.rentcarbooking.controller;
 
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -156,7 +157,7 @@ public class RentCarBookingController {
 	}
 	//예약 보기 수정 처리
 	@PostMapping("/update.do")
-	public String update(RentCarBookingVO vo) throws Exception{
+	public String update(RentCarBookingVO vo, PageObjectCustom pageObject) throws Exception{
 		
 		log.info("예약 수정 처리------------------"+vo);
 		
@@ -170,8 +171,13 @@ public class RentCarBookingController {
 		}else {
 			service.updateCompanyCars(vo, 1);
 		}
-		
+		pageObject.setKey(URLEncoder.encode(pageObject.getKey(), "UTF-8"));
+		pageObject.setWord(URLEncoder.encode(pageObject.getWord(), "UTF-8"));		
 		return "redirect:updatePayment.do?bookingNo="+vo.getBookingNo()
+		+"&page="+pageObject.getPage()
+		+"&perPageNum="+pageObject.getPerPageNum()
+		+"&key="+pageObject.getKey()
+		+"&word="+pageObject.getWord()
 		;
 		
 	}	
@@ -187,12 +193,16 @@ public class RentCarBookingController {
 	}
 	
 	@PostMapping("/updatePayment.do")
-	public String updatePayment(RentCarBookingVO vo) throws Exception {
+	public String updatePayment(RentCarBookingVO vo, PageObjectCustom pageObject) throws Exception {
 		log.info(vo);
 		service.updatePayment(vo);
 		
 		
-		return "redirect:list.do";
+		return "redirect:view.do?bookingNo="+vo.getBookingNo()
+				+"&page="+pageObject.getPage()
+				+"&perPageNum="+pageObject.getPerPageNum()
+				+"&key="+pageObject.getKey()
+				+"&word="+pageObject.getWord();
 	}
 		
 	

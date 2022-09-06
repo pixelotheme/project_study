@@ -31,20 +31,51 @@ $(function(){
 	
 	$("#licensePlatePlusbtn").on("click",function(){
 		var str = "";
-		//아예 추가하는스크립트짜기로
-// 		$("#InsurancePlus").fadeToggle(100);
 
 		str += "<div>"
 		str += "<label for='licensePlate'>번호판"
 		str += "</label>"
-		str += "<input name='licensePlate' id='licensePlate'>"		
+		str += "<input name='licensePlate' id='licensePlate' class='form-control licensePlate'>"		
 		str += "</div>"
 
 			licensePlateDiv.append(str);
 	})	
 		
-	
 
+	$("#submitBtn").on("click",function(){
+		event.preventDefault();
+		
+		var reg = /\s/g;
+		
+		var licensePlates = $("#licensePlateDiv input");
+		
+		var n = licensePlates.length;
+// 		alert(n);
+// 		alert(licensePlates);
+		var i = 0;
+		licensePlates.each(function(){
+			//값 수정
+			var licensePlateVal =licensePlates.eq(i).val();
+			
+			licensePlateVal = licensePlateVal.replace(reg, "");
+// 			alert(licensePlateVal)
+			licensePlates.eq(i).val(licensePlateVal)
+			
+			if(i < n){
+				i = i + 1;
+// 				alert(i);
+				}
+			
+			})
+		$("#actionForm").submit();
+		})// end of submitBtn
+
+	$("#cancelBtn").on("click",function(){
+			$("#licensePlateDiv").remove();
+	        $("#actionForm").attr("action", "/companycars/companyCarsList.do").attr("method","get").submit();
+				
+		})
+		
 })
 	
 </script>
@@ -59,21 +90,42 @@ $(function(){
 			-->
 			
 			<!-- 방금 등록한 차번호 -->
-			<form action="" method="post">
+			<form action="" method="post" id="actionForm">
 				<input type="hidden" name="carNo" value="${param.carNo }">
 				<input type="hidden" name="companyNo" value="${param.companyNo}">
-			<button id="licensePlatePlusbtn" type="button">번호판 입력 추가</button>
-					<div id="licensePlateDiv">
-						<div>
-							<label for="licensePlate">번호판</label> 
-							<input name="licensePlate" id="licensePlate">
+				<input type="hidden" name="carInfoNo" value="${param.carInfoNo}">
+
+			<!-- /.row -->
+			<div class="row">
+				<!-- /.col-lg-12 차량 정보 표시 -->
+				<div class="col-lg-12">
+					<div class="panel panel-default row">
+						<!-- 테이블의 소제목 -->
+						<div class="panel-heading">번호판 등록
+						<button id="licensePlatePlusbtn" type="button">번호판 입력 추가</button>
 						</div>
-					
+						<!-- /.panel-heading -->
+						<div class="panel-body">
+						
+							<div id="licensePlateDiv" >
+								<div>
+									<label for="licensePlate">번호판</label> 
+									<input name="licensePlate" id="licensePlate" class="form-control licensePlate">
+								</div>
+							
+							</div>						
+						
+						</div>
+						<!-- /.panel-body -->
 					</div>
-				
+					<!-- /.panel -->
+				</div>
+				<!-- /.col-lg-12 차량 정보 표시 -->
+			</div>
+			<!--/. row -->				
 				
 			<div>
-				<button type="submit" id="submitBtn">등록</button>
+				<button type="button" id="submitBtn">등록</button>
 				<button type="reset">새로입력</button>
 				<button type="button" id="cancelBtn">취소</button>
 			</div>

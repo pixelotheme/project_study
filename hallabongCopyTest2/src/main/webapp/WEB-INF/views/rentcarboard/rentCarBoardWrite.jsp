@@ -20,12 +20,6 @@
 	//다음 api js 파일로 옮김
 $(function(){
 
-	$("#InsurancePlus").hide();
-	
-	$("#InsurancePlusbtn").on("click",function(){
-		$("#InsurancePlus").show();
-		})	
-
 	$("#selectCompany").on("change",function(){
 
 		var checkId = $(this).find(':selected').data("id")
@@ -34,6 +28,7 @@ $(function(){
 		});
 
 	$("#submitBtn").on("click", function(){
+		event.preventDefault();
 		var companyCheck = $("#selectCompany").find(':selected').data("id")
 		
 		alert(companyCheck)
@@ -45,7 +40,7 @@ $(function(){
 			return null;
 			}
 		else{
-			event.preventDefault();
+			
 			var regex = /[^0-9]/g;
 			//input 태그 hidden으로 집어넣어줄 예정 - 가격, 대여가능나이, 대여가능 운정 경력
 			var price = $("#price").val();
@@ -67,12 +62,15 @@ $(function(){
 	//가격 변환
 	$("#price").change(function(){
 		var price = $("#price").val();
+		var regex = /[^0-9]/g;	
+		price = price.replace(regex, "")
+		
 		price = price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 
 		$("#price").val(price);
 		})
 	//대여가능(만)나이
-	$("#rentAge").keyup(function(){
+	$("#rentAge").change(function(){
 		var regex = /[^0-9]/g;				// 숫자가 아닌 문자열을 선택하는 정규식
 
 		var rentAge = $("#rentAge").val();
@@ -81,7 +79,7 @@ $(function(){
 				
 		})	
 // 	대여가능 운전 경력
-	$("#rentExperience").keyup(function(){
+	$("#rentExperience").change(function(){
 		var regex = /[^0-9]/g;				// 숫자가 아닌 문자열을 선택하는 정규식
 
 		var rentExperience = $("#rentExperience").val();
@@ -113,7 +111,7 @@ function inputYMDNumber(obj) {
                 return number;
 
             }
-//              else if(number.length <= 6){
+//              else if(number.length < 6){
 
 //                 ymd += number.substr(0, 4);
 

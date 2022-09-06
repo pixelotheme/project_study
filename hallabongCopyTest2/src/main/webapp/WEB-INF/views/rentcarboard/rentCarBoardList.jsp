@@ -46,6 +46,11 @@ font-size: 30px;
 
 <script type="text/javascript">
 
+jQuery(document).ready(function() {
+
+	   $("#key").val("${empty(pageObject.key)?'':pageObject.key}");
+	});	
+
 
 </script>
 

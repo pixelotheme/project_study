@@ -84,7 +84,7 @@ $(function(){
 			        if (data) {
 			          alert("성공 "+data);
 			          location='/rentcarboard/rentCarBoardView.do?carNo='+carNo+'&carInfoNo='+carInfoNo
-			          +'&companyNo=${param.companyNo}';
+			          +'&companyNo=${param.companyNo}&page=${param.page }&perPageNum=${param.perPageNum }&key=${param.key }&word=${param.word }';
 			        }
 			     },
 			     error: function (xhr,status, error){
@@ -162,79 +162,113 @@ $(function(){
 			
 			</c:forEach>
 			
-			<div>
-			1.보험
-			${(carInsuranceVO[0].category == '일반자차')? '일반자차':'고급자차'} <button type="button" id="deleteTop">삭제</button>
-			</div>
-			
-			 <div>
-			보험 카테고리
-				<select name="category" id="category1">
-					<option value="일반자차" ${(carInsuranceVO[0].category == '일반자차')? 'selected':''}>일반자차</option>
-					<option value="고급자차" ${(carInsuranceVO[0].category == '고급자차')? 'selected':''}>고급자차</option>
-				</select>			
-			</div>
-			<div>
-				<label for="insurancePrice">보험금</label> 
-				<input name="insurancePrice" id="insurancePrice1" value="${carInsuranceVO[0].insurancePrice }">
-			</div>
-			
-			<div>
-				<label for="insuranceAge">보험 가입 대상 나이</label> 
-				<input name="insuranceAge" id="insuranceAge1"  value="${carInsuranceVO[0].insuranceAge }">
-			</div>
-			<div>
-				<label for="insuranceExperience">보험 가입 운전경력</label> 
-				<input name="insuranceExperience" id="insuranceExperience1" value="${carInsuranceVO[0].insuranceExperience }">
-			</div>
-			<div>
-				<label for="compensation">보상한도</label> 
-				<input name="compensation" id="compensation1"value="${carInsuranceVO[0].compensation }">
-			</div>
-			<div>
-				<label for="customerCharge">고객 부담금</label> 
-				<textarea rows="5" name="customerCharge" id="customerCharge1">${carInsuranceVO[0].customerCharge }</textarea>
-			</div>
-			
-			<button id="InsurancePlusbtn" type="button">보험 내용 추가</button>
-			
-			
-			
-				<div id="InsurancePlus">
-					<div>2.보험
-						${(carInsuranceVO[1].category == '일반자차')? '일반자차':'고급자차'} <button type="button" id="deleteBottom">삭제</button>
+			<!-- /.row -->
+			<div class="row">
+				<!-- /.col-lg-12 차량 정보 표시 -->
+				<div class="col-lg-12">
+					<div class="panel panel-default row">
+						<!-- 테이블의 소제목 -->
+						<div class="panel-heading">등록할 회사, 차량
+						 <button type="button" id="deleteTop">${(carInsuranceVO[0].category == '일반자차')? '일반자차':'고급자차'} 삭제</button>
+						</div>
+						<!-- /.panel-heading -->
+						<div class="panel-body form-group">	
+						<!-- 내용  -->		
+						 	<div class="col-lg-6">
+								<label for="category">보험 카테고리</label> 
+								<select name="category" id="category1" class="form-control">
+									<option value="일반자차" ${(carInsuranceVO[0].category == '일반자차')? 'selected':''}>일반자차</option>
+									<option value="고급자차" ${(carInsuranceVO[0].category == '고급자차')? 'selected':''}>고급자차</option>
+								</select>			
+							</div>
+							<div class="col-lg-6">
+								<label for="insurancePrice">보험금</label> 
+								<input class="form-control" name="insurancePrice" id="insurancePrice1" value="${carInsuranceVO[0].insurancePrice }">
+							</div>
+							
+							<div class="col-lg-6">
+								<label for="insuranceAge">보험 가입 대상 나이</label> 
+								<input class="form-control" name="insuranceAge" id="insuranceAge1"  value="${carInsuranceVO[0].insuranceAge }">
+							</div>
+							<div class="col-lg-6">
+								<label for="insuranceExperience">보험 가입 운전경력</label> 
+								<input class="form-control" name="insuranceExperience" id="insuranceExperience1" value="${carInsuranceVO[0].insuranceExperience }">
+							</div>
+							<div class="col-lg-6">
+								<label for="compensation">보상한도</label> 
+								<input class="form-control" name="compensation" id="compensation1"value="${carInsuranceVO[0].compensation }">
+							</div>
+							<div class="col-lg-6">
+								<label for="customerCharge">고객 부담금</label> 
+								<textarea class="form-control" rows="5" name="customerCharge" id="customerCharge1">${carInsuranceVO[0].customerCharge }</textarea>
+							</div>
+
+						</div>
+						<!-- /.panel-body -->
 					</div>
-					
-					<div>
-					보험 카테고리
-						<select name="category" id="category2">
-							<option value="고급자차" ${(carInsuranceVO[1].category == '고급자차')? 'selected':''}>고급자차</option>
-							<option value="일반자차" ${(carInsuranceVO[1].category == '일반자차')? 'selected':''}>일반자차</option>
-						</select>			
-					</div>
-					<div>
-						<label for="insurancePrice">보험금</label> 
-						<input name="insurancePrice" id="insurancePrice2" value="${carInsuranceVO[1].insurancePrice }">
-					</div>
-					
-					<div>
-						<label for="insuranceAge">보험 가입 대상 나이</label> 
-						<input name="insuranceAge" id="insuranceAge2"value="${carInsuranceVO[1].insuranceAge }">
-					</div>
-					<div>
-						<label for="insuranceExperience">보험 가입 운전경력</label> 
-						<input name="insuranceExperience" id="insuranceExperience2" value="${carInsuranceVO[1].insuranceExperience }">
-					</div>
-					<div>
-						<label for="compensation">보상한도</label> 
-						<input name="compensation" id="compensation2" value="${carInsuranceVO[1].compensation }">
-					</div>
-					<div>
-						<label for="customerCharge">고객 부담금</label> 
-						<textarea rows="5" name="customerCharge" id="customerCharge2">${carInsuranceVO[1].customerCharge }</textarea>
-					</div>
+					<!-- /.panel -->
 				</div>
+				<!-- /.col-lg-12 차량 정보 표시 -->
+			</div>
+			<!--/. row -->
 			
+			<button id="InsurancePlusbtn" type="button">보험 내용 추가 on,off</button>
+			
+			
+			
+			<div id="InsurancePlus">
+	
+				<!-- /.row -->
+				<div class="row">
+					<!-- /.col-lg-12 차량 정보 표시 -->
+					<div class="col-lg-12">
+						<div class="panel panel-default row">
+							<!-- 테이블의 소제목 -->
+							<div class="panel-heading">등록할 회사, 차량
+							 <button type="button" id="deleteBottom">${(carInsuranceVO[1].category == '일반자차')? '일반자차':'고급자차'}삭제</button>
+							</div>
+							<!-- /.panel-heading -->
+							<div class="panel-body form-group">			
+					
+								<div class="col-lg-6">
+								<label for="category">보험 카테고리</label> 
+									<select class="form-control" name="category" id="category2">
+										<option value="고급자차" ${(carInsuranceVO[1].category == '고급자차')? 'selected':''}>고급자차</option>
+										<option value="일반자차" ${(carInsuranceVO[1].category == '일반자차')? 'selected':''}>일반자차</option>
+									</select>			
+								</div >
+								<div class="col-lg-6">
+									<label for="insurancePrice">보험금</label> 
+									<input  class="form-control"name="insurancePrice" id="insurancePrice2" value="${carInsuranceVO[1].insurancePrice }">
+								</div>
+								
+								<div class="col-lg-6">
+									<label for="insuranceAge">보험 가입 대상 나이</label> 
+									<input class="form-control" name="insuranceAge" id="insuranceAge2"value="${carInsuranceVO[1].insuranceAge }">
+								</div>
+								<div class="col-lg-6">
+									<label for="insuranceExperience">보험 가입 운전경력</label> 
+									<input class="form-control" name="insuranceExperience" id="insuranceExperience2" value="${carInsuranceVO[1].insuranceExperience }">
+								</div>
+								<div class="col-lg-6">
+									<label for="compensation">보상한도</label> 
+									<input class="form-control" name="compensation" id="compensation2" value="${carInsuranceVO[1].compensation }">
+								</div>
+								<div class="col-lg-6">
+									<label for="customerCharge">고객 부담금</label> 
+									<textarea class="form-control" rows="5" name="customerCharge" id="customerCharge2">${carInsuranceVO[1].customerCharge }</textarea>
+								</div>
+							</div>
+						</div>
+							<!-- /.panel-body -->
+					</div>
+						<!-- /.panel -->
+				</div>
+					<!-- /.col-lg-12 차량 정보 표시 -->
+			</div>
+				<!--/. row -->	
+			
+					
 			<div>
 				<button type="button" id="submitBtn">등록</button>
 				<button type="reset">새로입력</button>

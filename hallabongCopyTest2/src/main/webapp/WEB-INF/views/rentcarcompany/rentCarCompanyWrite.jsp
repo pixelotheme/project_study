@@ -29,7 +29,7 @@ $(function(){
 	<div class="container">
 	<h2>렌트카 회사 등록</h2>
 		<form method="post">
-		
+		<input type="hidden" value="${param.perPageNum }" name="perPageNum">
 			<div class="form-group">
 				<!--  for 는 id 와 연결된다   name은 vo 변수명과 같아야한다, 비어있지않게-->
 				<label for="companyName">회사명</label>
@@ -38,7 +38,7 @@ $(function(){
 			<div class="form-group">
 				<!--  나중에 유효성검사 010-0000-0000 으로 자동으로 바뀌게 해주기 -->
 				<label for="tel">연락처</label>
-				<input name="tel" id="tel" class="form-control" required="required" maxlength="13" placeholder="숫자만 입력해주세요"/>
+				<input name="tel" id="tel" class="form-control" required="required" maxlength="13" placeholder="숫자만 입력해주세요" value="064"/>
 			</div>		
 			<div class="input-group">
 				<!--  주소 api 쓰기-->

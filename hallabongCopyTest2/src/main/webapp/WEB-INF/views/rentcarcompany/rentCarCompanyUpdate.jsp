@@ -31,8 +31,12 @@ $(function(){
 		})
 //리스트로 돌아가기
 		$("#cancelBtn").on("click", function(){
-		location='/rentcarcompany/rentCarCompanyList.do?';
+			history.back();
+// 		location='/rentcarcompany/rentCarCompanyList.do?';
+		
 		})
+		
+
 //수정시 아이디비교
 		$("#submitBtn").on("click", function(){
 			// "test" 자리에 로그인 아이디 넣어주면된다
@@ -70,7 +74,9 @@ jQuery(document).ready(function() {
 			</div>
 	
 		<form method="post" id="updateForm">
-		<input type="hidden" value="" id="updateCompanyNo" name="companyNo">
+				<input type="hidden" name="page" value="${param.page}">
+				<input type="hidden" name="perPageNum" value="${param.perPageNum}">
+<!-- 		<input type="hidden" value="" id="updateCompanyNo" name="companyNo"> -->
 		
 		
 			<div class="form-group">

@@ -1,5 +1,6 @@
 package com.hallabong.rentcarboard.controller;
 
+import java.net.URLEncoder;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,7 +145,7 @@ public class RentCarBoardController {
 	}
 
 	@PostMapping("/rentCarBoardUpdate.do")
-	public String rentCarUpdate(RentCarBoardCarsVO carsVO, RentCarBoardCarOptionVO carOptionVO,RentCarBoardCarBasicInfoVO carBasicInfoVO) throws Exception {
+	public String rentCarUpdate(RentCarBoardCarsVO carsVO, RentCarBoardCarOptionVO carOptionVO,RentCarBoardCarBasicInfoVO carBasicInfoVO, PageObjectCustom pageObject) throws Exception {
 		//차 수정, 차옵션 수정
 		log.info(carsVO );
 		carsVO.setId("admin");
@@ -159,12 +160,19 @@ public class RentCarBoardController {
 		//차 옵션 업데이트
 		updateResult += copService.updateCarOption(carOptionVO);
 		log.info(updateResult);
-		
+		pageObject.setKey(URLEncoder.encode(pageObject.getKey(), "UTF-8"));
+		pageObject.setWord(URLEncoder.encode(pageObject.getWord(), "UTF-8"));
+				
 		
 		
 		return "redirect:/rentcarboard/rentCarBoardView.do?carNo="+carsVO.getCarNo()
 		+"&carInfoNo="+carBasicInfoVO.getCarInfoNo()
-		+"&companyNo="+carsVO.getCompanyNo();
+		+"&companyNo="+carsVO.getCompanyNo()
+		+"&page="+pageObject.getPage()
+		+"&perPageNum="+pageObject.getPerPageNum()
+		+"&key="+pageObject.getKey()
+		+"&word="+pageObject.getWord()
+		;
 	}
 	
 	@GetMapping("/rentCarBoardDelete.do")

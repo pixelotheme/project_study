@@ -77,37 +77,88 @@ $(function(){
 		})
 	
 		//보험금가격 변환
-		$(".insurancePrice").change(function(){
-			var insurancePrice = $(".insurancePrice").val();
+		$("#insurancePrice1").change(function(){
+			var insurancePrice = $("#insurancePrice1").val();
+			var regex = /[^0-9]/g;
+
+			insurancePrice = insurancePrice.replace(regex, "")
+			
 			insurancePrice = insurancePrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 
-			$(".insurancePrice").val(insurancePrice);
+			$("#insurancePrice1").val(insurancePrice);
 			})
 		//보상한도가격 변환
-		$(".compensation").change(function(){
-			var compensation = $(".compensation").val();
+		$("#compensation1").change(function(){
+			var compensation = $("#compensation1").val();
+			var regex = /[^0-9]/g;
+
+			compensation = compensation.replace(regex, "");
+			
 			compensation = compensation.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 
-			$(".compensation").val(compensation);
+			$("#compensation1").val(compensation);
 			})
 		//보험 가입 대상 (만)나이
-		$(".insuranceAge").keyup(function(){
+		$("#insuranceAge1").keyup(function(){
 			var regex = /[^0-9]/g;				// 숫자가 아닌 문자열을 선택하는 정규식
 
-			var insuranceAge = $(".insuranceAge").val();
+			var insuranceAge = $("#insuranceAge1").val();
 			insuranceAge = insuranceAge.replace(regex, "")+'살';
-			$(".insuranceAge").val(insuranceAge);
+			$("#insuranceAge1").val(insuranceAge);
 					
 			})	
 //	 	보허 가입 대상 운전 경력
-		$(".insuranceExperience").keyup(function(){
+		$("#insuranceExperience1").keyup(function(){
 			var regex = /[^0-9]/g;				// 숫자가 아닌 문자열을 선택하는 정규식
 
-			var insuranceExperience = $(".insuranceExperience").val();
+			var insuranceExperience = $("#insuranceExperience1").val();
 			insuranceExperience = insuranceExperience.replace(regex, "")+'년';
-			$(".insuranceExperience").val(insuranceExperience);
+			$("#insuranceExperience1").val(insuranceExperience);
 					
 			})
+	
+		//보험금가격 변환
+		$("#insurancePrice2").change(function(){
+			var insurancePrice = $("#insurancePrice2").val();
+			var regex = /[^0-9]/g;
+
+			insurancePrice = insurancePrice.replace(regex, "")
+			
+			insurancePrice = insurancePrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+
+			$("#insurancePrice2").val(insurancePrice);
+			})
+		//보상한도가격 변환
+		$("#compensation2").change(function(){
+			var compensation = $("#compensation2").val();
+			var regex = /[^0-9]/g;
+
+			compensation = compensation.replace(regex, "");
+			
+			compensation = compensation.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+
+			$("#compensation2").val(compensation);
+			})
+		//보험 가입 대상 (만)나이
+		$("#insuranceAge2").keyup(function(){
+			var regex = /[^0-9]/g;				// 숫자가 아닌 문자열을 선택하는 정규식
+
+			var insuranceAge = $("#insuranceAge2").val();
+			insuranceAge = insuranceAge.replace(regex, "")+'살';
+			$("#insuranceAge2").val(insuranceAge);
+					
+			})	
+//	 	보허 가입 대상 운전 경력
+		$("#insuranceExperience2").keyup(function(){
+			var regex = /[^0-9]/g;				// 숫자가 아닌 문자열을 선택하는 정규식
+
+			var insuranceExperience = $("#insuranceExperience2").val();
+			insuranceExperience = insuranceExperience.replace(regex, "")+'년';
+			$("#insuranceExperience2").val(insuranceExperience);
+					
+			})
+			
+
 				
 })
 	
@@ -128,8 +179,9 @@ $(function(){
 						<!-- /.panel-heading -->
 						<div class="panel-body form-group">
 						
-							 <div class="col-lg-6">
-							보험 카테고리
+						    <div class="col-lg-6">
+							
+							<label for="category">보험 카테고리</label> 
 								<select name="category" id="category1" class="form-control">
 									<option value="일반자차" selected="selected">일반자차</option>
 									<option value="고급자차">고급자차</option>
@@ -200,8 +252,8 @@ $(function(){
 						<div class="panel-heading">등록할 회사, 차량</div>
 						<!-- /.panel-heading -->
 						<div class="panel-body form-group">
-							 <div>
-							보험 카테고리
+							 <div class="col-lg-6">
+							 	<label for="category">보험 카테고리</label> 
 								<select name="category" id="category2" class="form-control">
 									<option value="일반자차">일반자차</option>
 									<option value="고급자차" selected="selected">고급자차</option>

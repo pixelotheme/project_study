@@ -17,33 +17,33 @@
 <script type="text/javascript">
 $(function(){
 	
-	// 리스트버튼 클릭 이벤트 -> 글보기로 이동
-	$("#listBtn").on("click", function(){
-		// alert("글보기로 이동");
-		location = "list.do?"
-					+ "&page=" + "${param.page}"
-					+ "&perPageNum=" + "${param.perPageNum}"
-					+ "&key=" + "${param.key}"
-					+ "&word=" + "${param.word}";
-	});
+// 	// 리스트버튼 클릭 이벤트 -> 글보기로 이동
+// 	$("#listBtn").on("click", function(){
+// 		// alert("글보기로 이동");
+// 		location = "list.do?"
+// 					+ "&page=" + "${param.page}"
+// 					+ "&perPageNum=" + "${param.perPageNum}"
+// 					+ "&key=" + "${param.key}"
+// 					+ "&word=" + "${param.word}";
+// 	});
 
-	// 글수정 버튼 이벤트
-	$("#updateBtn").on("click", function(){
-		// alert("글등록으로 이동");
-		location = "update.do?bookingNo=${vo.bookingNo}"
-		+ "&page=" + "${param.page}"
-		+ "&perPageNum=" + "${param.perPageNum}"
-		+ "&key=" + "${param.key}"
-		+ "&word=" + "${param.word}";
-	});
+// 	// 글수정 버튼 이벤트
+// 	$("#updateBtn").on("click", function(){
+// 		// alert("글등록으로 이동");
+// 		location = "update.do?bookingNo=${vo.bookingNo}"
+// 		+ "&page=" + "${param.page}"
+// 		+ "&perPageNum=" + "${param.perPageNum}"
+// 		+ "&key=" + "${param.key}"
+// 		+ "&word=" + "${param.word}";
+// 	});
 	
-	// 삭제 버튼 이벤트
-	$("#deleteBtn").on("click", function(){
-		// alert("새로고침 클릭");
-		if(confirm("삭제?")){
-		location = "delete.do?bookingNo=${vo.bookingNo}&perPageNum=${param.perPageNum}";
-			}
-	});
+// 	// 삭제 버튼 이벤트
+// 	$("#deleteBtn").on("click", function(){
+// 		// alert("새로고침 클릭");
+// 		if(confirm("삭제?")){
+// 		location = "delete.do?bookingNo=${vo.bookingNo}&perPageNum=${param.perPageNum}";
+// 			}
+// 	});
 
 
 
@@ -129,7 +129,8 @@ $(function(){
 			<div class="panel-body">
 				<form action="" method="post" id="paymentForm">
 				<input type="hidden" value="${vo.bookingNo }" name="bookingNo" />
-				
+				<input type="hidden" name="page" value="${param.page}">
+				<input type="hidden" name="perPageNum" value="${param.perPageNum}">			
 				
 					<div class="form-group">
 						<label>결제종류</label>
@@ -159,7 +160,7 @@ $(function(){
 					</div>
 						<div class="form-group">
 							<label>결제계좌</label> 
-							<input class="form-control" name="paymentAccount" value="${vo.paymentAccount}"/>
+							<input class="form-control" name="paymentAccount" value="${vo.paymentAccount}" readonly="readonly"/>
 								
 						</div>
 
@@ -180,16 +181,6 @@ $(function(){
 <!-- /.row  -->
 	<!-- /.데이터 표시 끝 -->
 	
-	<!--  버튼 -->
-	<div class="row">
-		<div class="col-md-4">
-			<div class="btn-group" style="padding: 20px;">
-			  <button type="button" class="btn btn-default" id="updateBtn">수정</button>
-			  <button type="button" class="btn btn-default" id="deleteBtn">삭제</button>
-			  <button type="button" class="btn btn-default" id="listBtn">리스트</button>
-			</div>
-		</div>
-	</div>
 	
 	<!-- 버튼 끝-->
 	

@@ -1,5 +1,7 @@
 package com.hallabong.rentcarboard.companycars.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,11 +111,19 @@ public class RentCarBoardCompanyCarsController {
 	}
 	//update
 	@PostMapping("companyCarsUpdate.do")
-	public String companyCarsUpdate(RentCarBoardCompanyCarsVO companyCarsVO,long carInfoNo) {
+	public String companyCarsUpdate(RentCarBoardCompanyCarsVO companyCarsVO,long carInfoNo, PageObjectCustom pageObject) throws Exception {
 		log.info("update ..... : "+ companyCarsVO);
 		service.updateCompanyCars(companyCarsVO);
+		log.info(" 11 : "+pageObject);
+		pageObject.setWord(URLEncoder.encode(pageObject.getWord(), "UTF-8"));
 		
-		return "redirect:/companycars/companyCarsView.do?companyCarsNo="+companyCarsVO.getCompanyCarsNo()+"&carNo="+companyCarsVO.getCarNo()+"&companyNo="+companyCarsVO.getCompanyNo()+"&carInfoNo="+carInfoNo;
+		return "redirect:/companycars/companyCarsView.do?companyCarsNo="+companyCarsVO.getCompanyCarsNo()+"&carNo="+companyCarsVO.getCarNo()
+		+"&companyNo="+companyCarsVO.getCompanyNo()+"&carInfoNo="+carInfoNo
+		+"&page="+pageObject.getPage()
+		+"&perPageNum="+pageObject.getPerPageNum()
+		+"&key="+pageObject.getKey()
+		+"&word="+pageObject.getWord()
+		;
 	}
 	// 번호판 삭제
 	@GetMapping("/companyCarsDelete.do")

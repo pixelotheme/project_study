@@ -220,17 +220,23 @@ $(function(){
 		 var rentalDate = $("#rentalDate").val();
 		 var returnDate = $("#returnDate").val();
 		if(!rentalDate){
-			alert("대여일을 선택해주세요")
+// 			alert("대여일을 선택해주세요")
 			return
 			}
 		if(!returnDate){
-			alert("반납일을 선택해주세요")
+// 			alert("반납일을 선택해주세요")
 			return			
 			}
+		if(!returnDate && !rentalDate){
+			alert("예약날짜를 선택해주세요")
+			return;
+			}
+		else{
+			
 // 		var Date = {rentalDate : $("#rentalDate").val() , returnDate : $("#returnDate").val(), prePrice: $("#plusPrice").data("price")}
 		var Date = {rentalDate : $("#rentalDate").val() , returnDate : $("#returnDate").val(), prePrice: prePrice}
 		
-		alert(JSON.stringify(Date))
+// 		alert(JSON.stringify(Date))
 
 		$.ajax({
 			     method: 'post',
@@ -241,13 +247,21 @@ $(function(){
 			     success: function (data,status, xhr) {
 			        if (data) {
 						if(data.totalPrice == prePrice){
-							alert("대여,반납일을 다시선택해주세요")
-							}
-						else{
-							alert("성공 "+data.totalPrice);
 							var ajaxPrice = data.totalPrice;
 
-							alert("천단위"+ajaxPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+// 							alert("천단위"+ajaxPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+							var formatPrice = ajaxPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+							str = "<p>"+formatPrice+"</p>"
+							$("#bookingPrice").html(str);
+							$("#totalPrice").attr("value", ajaxPrice)
+														
+// 							alert("대여,반납일을 다시선택해주세요")
+							}
+						else{
+// 							alert("성공 "+data.totalPrice);
+							var ajaxPrice = data.totalPrice;
+
+// 							alert("천단위"+ajaxPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
 							var formatPrice = ajaxPrice.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 							str = "<p>"+formatPrice+"</p>"
 							$("#bookingPrice").html(str);
@@ -261,6 +275,8 @@ $(function(){
 			    	  	alert("에러"+error);
 			    	  }
 			   });//end of ajax
+
+		}
 	
 	})
 
@@ -282,8 +298,8 @@ $(function(){
 // 		alert(checkStatus);
 		 var rentalDate = $("#rentalDate").val();
 		 var returnDate = $("#returnDate").val();
-
-
+		 var rentalDateD = new Date($("#rentalDate").val());
+		 var returnDateD = new Date($("#returnDate").val());
 
 		if(checkStatus == "예약하기"){
 				if(!rentalDate){
@@ -294,13 +310,17 @@ $(function(){
 					alert("반납일을 선택해주세요")
 					return			
 					}
+				if(rentalDateD >= returnDateD ){
+					alert("예약일을 다시 선택해주세요")
+					return
+					}
 			$("#bookingForm").submit();
-			}
+		}
 		else{
 			alert("회사로 문의")
 			return false;
 			}
-		})
+	})
 
 	
 })
@@ -337,14 +357,14 @@ $(function(){
 	
 	
 	</div>
-<button type="button" onclick="location='/rentcarboard/rentCarBoardList.do'">리스트</button>
+<button type="button" onclick="location='/rentcarboard/rentCarBoardList.do?page=${param.page }&perPageNum=${param.perPageNum }&key=${param.key }&word=${param.word }'">리스트</button>
 <!--회사 등록된 아이디와  관리자아이디가 같을 때만 보이게 한다 -->
 <c:if test="${companyVO.id eq 'admin'}">
 
-<button type="button" onclick="location='/rentcarboard/rentCarBoardUpdate.do?carNo=${carsVO.carNo}'">차량 정보 수정</button>
+<button type="button" onclick="location='/rentcarboard/rentCarBoardUpdate.do?carNo=${carsVO.carNo}&page=${param.page }&perPageNum=${param.perPageNum }&key=${param.key }&word=${param.word }'">차량 정보 수정</button>
 
 <c:if test="${!empty carInsuranceVO }">
-<button type="button" onclick="location='/carinsurance/carInsuranceUpdate.do?carNo=${carsVO.carNo}&carInfoNo=${carBasicInfoVO.carInfoNo }&companyNo=${carsVO.companyNo }'">보험 상세 수정</button>
+<button type="button" onclick="location='/carinsurance/carInsuranceUpdate.do?carNo=${carsVO.carNo}&carInfoNo=${carBasicInfoVO.carInfoNo }&companyNo=${carsVO.companyNo }&page=${param.page }&perPageNum=${param.perPageNum }&key=${param.key }&word=${param.word }'">보험 상세 수정</button>
 </c:if>
 <c:if test="${empty carInsuranceVO }">
 <button type="button" onclick="location='/carinsurance/carInsuranceWrite.do?carNo=${carsVO.carNo}&companyNo=${carsVO.companyNo }'">보험 등록</button>

@@ -1,5 +1,7 @@
 package com.hallabong.rentcarboard.rentcarcompany.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,14 +55,14 @@ public class RentCarBoardRentCarCompanyController {
 	}
 	//렌트카 회사 등록
 	@PostMapping("/rentCarCompanyWrite.do")
-	public String rentCarCompanyWrite(RentCarBoardRentCarCompanyVO vo) {
+	public String rentCarCompanyWrite(RentCarBoardRentCarCompanyVO vo, long perPageNum) {
 		log.info("vo 찍기"+vo);
 		vo.setAddress(vo.getZipcode()+"/"+vo.getStreetAdr()+"/"+vo.getDetailAdr());
 		//로그인한 아이디로 지정
 		vo.setId("admin");
 		
 		service.writeRentCarCompany(vo);
-		return "redirect:/rentcarcompany/rentCarCompanyList.do";
+		return "redirect:/rentcarcompany/rentCarCompanyList.do?perPageNum="+perPageNum;
 	}
 	
 	//렌트카 회사 수정
@@ -74,13 +76,20 @@ public class RentCarBoardRentCarCompanyController {
 	}
 
 	@PostMapping("/rentCarCompanyUpdate.do")
-	public String rentCarCompanyUpdate(RentCarBoardRentCarCompanyVO vo) {
+	public String rentCarCompanyUpdate(RentCarBoardRentCarCompanyVO vo,PageObjectCustom pageObject) throws Exception {
 		log.info("vo 찍기"+vo);
 		vo.setAddress(vo.getZipcode()+"/"+vo.getStreetAdr()+"/"+vo.getDetailAdr());
 		vo.setId("admin");
 		
 		service.updateRentCarCompany(vo);
-		return "redirect:/rentcarcompany/rentCarCompanyList.do";
+		pageObject.setKey(URLEncoder.encode(pageObject.getKey(), "UTF-8"));
+		pageObject.setWord(URLEncoder.encode(pageObject.getWord(), "UTF-8"));
+		
+		return "redirect:/rentcarcompany/rentCarCompanyList.do?"
+				+"&page="+pageObject.getPage()
+				+"&perPageNum="+pageObject.getPerPageNum()
+				+"&key="+pageObject.getKey()
+				+"&word="+pageObject.getWord();
 	}
 	
 	// 회사 삭제, 사진은 남아있다	
