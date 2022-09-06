@@ -2,6 +2,8 @@ package com.hallabong.rentcarboard.domain;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 @Data
 public class RentCarBoardCarsVO {
@@ -26,5 +28,7 @@ public class RentCarBoardCarsVO {
 	private Date writeDate;
 	private Date updateDate;
 	private String modelYears; //date 로 변경 -> 다시 string으로 설정
+//	@DateTimeFormat(pattern = "yyyy-MM")
+//	private Date modelYears; //date 로 변경 -> 다시 string으로 설정
 	private String id;//id 중복 
 }

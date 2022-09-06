@@ -98,7 +98,7 @@
 				
 
 	<button type="button" onclick="location='/rentcarcompany/rentCarCompanyWrite.do'">회사등록</button>
-	<button type="button" onclick="location='/rentcarcompany/rentCarCompanyUpdate.do'">회사정보 수정</button>
+<!-- 	<button type="button" onclick="location='/rentcarcompany/rentCarCompanyUpdate.do'">회사정보 수정</button> -->
 	
 <!-- 	<button type="button" onclick="location='/rentcarboard/rentCarWrite.do'">차량등록</button> -->
 	<button type="button" onclick="location='/rentcarboard/rentCarBoardList.do'">렌트카 리스트</button>

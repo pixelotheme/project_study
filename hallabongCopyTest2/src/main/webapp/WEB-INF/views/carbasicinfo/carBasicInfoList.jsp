@@ -50,7 +50,7 @@
 				<!-- move 를 클릭하면 그안에 bno 가져와서 js 로  form태그의 action을 글보기로
 				바꿔 넘겨준다 -->
 					<tr onclick="location='/carbasicinfo/carBasicInfoView.do?carInfoNo=${vo.carInfoNo}'">
-						<td><img alt="차량 이미지" src="/upload/${vo.realSavePath}/${vo.fileName}" width="100px"> </td>
+						<td><img alt="차량 이미지" src="/upload/rentcarboard/${vo.realSavePath}/${vo.fileName}" width="100px"> </td>
 						
 						<td data-carInfoNo="${vo.carInfoNo }">
 						

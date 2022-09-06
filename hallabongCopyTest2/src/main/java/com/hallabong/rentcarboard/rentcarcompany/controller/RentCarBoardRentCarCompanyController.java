@@ -28,12 +28,14 @@ public class RentCarBoardRentCarCompanyController {
 	//렌트카 회사 리스트
 	@GetMapping("/rentCarCompanyList.do")
 	public String rentCarCompanyList(PageObjectCustom pageObject,Model model) {
-		List<RentCarBoardRentCarCompanyVO> vo = service.rentCarCompanyList(pageObject);
-		log.info("dto : "+ vo);
+		List<RentCarBoardRentCarCompanyVO> list = service.rentCarCompanyList(pageObject);
+		
+		log.info("dto : "+ list);
+		list.forEach(vo -> vo.setAddress(vo.getAddress().replace("/", "<br>")));
+		log.info("dto : "+ list);
 		
 		
-		
-		model.addAttribute("list", vo);
+		model.addAttribute("list", list);
 		model.addAttribute("pageObject", pageObject);
 		
 		log.info("페이지 오브젝트"+pageObject);

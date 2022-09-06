@@ -110,7 +110,7 @@ public class RentCarBoardController {
 	}
 	//등록 
 	@PostMapping("/rentCarBoardWrite.do")
-		public String rentCarwrite(RentCarBoardCarsVO carsVO, RentCarBoardCarOptionVO carOptionVO,RentCarBoardCarBasicInfoVO carBasicInfoVO) throws Exception {
+		public String rentCarwrite(RentCarBoardCarsVO carsVO, RentCarBoardCarOptionVO carOptionVO,RentCarBoardCarBasicInfoVO carBasicInfoVO, long perPageNum) throws Exception {
 		log.info("rentCarWrite"+carsVO);
 		carsVO.setCarInfoNo(carBasicInfoVO.getCarInfoNo());
 		log.info("rentCarWrite"+carsVO);
@@ -126,7 +126,7 @@ public class RentCarBoardController {
 		log.info(carOptionVO);
 		copService.writeCarOption(carOptionVO, carNo);
 		
-		return "redirect:/carinsurance/carInsuranceWrite.do?carNo="+carNo;
+		return "redirect:/carinsurance/carInsuranceWrite.do?carNo="+carNo+"&perPageNum="+perPageNum;
 	}		
 	
 	//렌트카 수정

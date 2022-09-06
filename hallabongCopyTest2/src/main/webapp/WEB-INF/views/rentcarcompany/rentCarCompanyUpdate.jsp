@@ -13,52 +13,16 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <title>렌트카 회사 수정</title>
 
-<script type="text/javascript" src="/resources/js/rentCarJS/companyWrite.js"></script>
+<script type="text/javascript" src="/resources/js/rentCarJS/rentCarCompany/addressForWrite.js"></script>
+<script type="text/javascript" src="/resources/js/rentCarJS/rentCarCompany/telForWrite.js"></script>
+<script type="text/javascript" src="/resources/js/rentCarJS/rentCarCompany/ajaxForUpdate.js"></script>
+<!-- ajax  -->
+<script type="text/javascript" src="/resources/js/rentCarJS/rentCarCompany/infoForUpdateFunc.js"></script>
+<script type="text/javascript" src="/resources/js/rentCarJS/rentCarCompany/infoForUpdateEvent.js"></script>
+
 <script>
+
 $(function(){
-
-	var companyNo = 0;
-	
-	//렌트카 회사를 선택할때 변경되게
-	$("#companySelect").on("change",function(){
-		//넘어가는 데이터 회사 번호
-
-		companyNo = $(this).val();
-// 		alert(companyNo);
-	 	$.getJSON(
-		 		 "/rentcarboardajaxcontroller/companyView.do?companyNo="+companyNo,
-		 		function(data){ 
-					
-		 			if(data){ 
-			 			
-		 			 
-		 			 $("#companyName").val(data.companyView.companyName);
-		 			 $("#tel").val(data.companyView.tel);
-		 			 $("#updateCompanyNo").val(data.companyView.companyNo);
-		 			 
-		 			 $("#zipcode").val(data.companyView.zipcode);
-		 			 $("#streetAdr").val(data.companyView.streetAdr);
-		 			 $("#detailAdr").val(data.companyView.detailAdr);
-
-		 			 $("#id").val(data.companyView.id);
-		 			return ;
-		 			} 
-		 			else{
-		 			
-		 			if(cvo != null && cvo.length > 0){ alert("데이터가 있습니다.");}
-		 			else{alert("데이터가 없습니다.");}
-		 			
-		 			}
-		 		}
-		 	).fail(function(xhr, status, error){
-		 		if(error)
-		 			error();
-		 			
-		 	});//getJSON() 의 끝
-		 	
-	
-	})
-
 
 //회사 삭제
 	$("#deleteBtn").on("click", function(){
@@ -122,7 +86,7 @@ jQuery(document).ready(function() {
 			<div class="form-group">
 				<!--  나중에 유효성검사 010-0000-0000 으로 자동으로 바뀌게 해주기 -->
 				<label for="tel">연락처</label>
-				<input name="tel" id="tel" class="form-control" required="required">
+				<input name="tel" id="tel" class="form-control" required="required" maxlength="13">
 			</div>		
 			
 			<div>
